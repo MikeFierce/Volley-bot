@@ -1,0 +1,18 @@
+{
+  "name": "Питерский Скаут — LIVE",
+  "short_name": "Питерский Скаут",
+  "description": "Быстрый волейбольный скаутинг матчей вживую и по видео",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#132a3d",
+  "background_color": "#f6f9fc",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
