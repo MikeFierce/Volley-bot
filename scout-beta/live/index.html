@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#132a3d" name="theme-color"/><meta content="Питерский Скаут — интуитивный видеоразбор и карты атак для тренера" name="description"/><title>Питерский Скаут — подготовка двух команд и тактический разбор — Бета</title><style>:root{--navy:#122a3e;--ink:#17283b;--muted:#68798b;--bg:#f3f6fa;--surface:#fff;--line:#dbe4ed;--mint:#d8f79a;--green:#178663;--red:#d5535e;--blue:#3972cb;--sand:#f0d6a7;--shadow:0 10px 30px rgba(24,53,81,.07);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}*{box-sizing:border-box}body{background:var(--bg);margin:0;min-width:320px}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:inherit}.container{max-width:1160px;margin:auto;padding:0 20px}.header{background:var(--navy);color:white;position:sticky;top:0;z-index:30;box-shadow:0 4px 20px #132c3e25}.head-inner{display:flex;align-items:center;justify-content:space-between;min-height:70px;gap:12px}.brand{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:900;letter-spacing:.3px}.brandmark{display:grid;place-items:center;background:var(--mint);color:var(--navy);font-weight:900;border-radius:13px;height:42px;width:42px;font-size:20px}.brand small{display:block;font-size:10px;letter-spacing:1.3px;color:#a8bfd0;margin-top:2px}.navrow{display:flex;gap:8px;align-items:center}.btn{border:none;border-radius:13px;padding:12px 17px;background:var(--mint);color:var(--navy);font-weight:800;transition:transform .12s,background .12s;min-height:44px}.btn:hover{transform:translateY(-1px)}.btn.primary{background:var(--navy);color:white}.btn.secondary{background:#e9f0f7;color:#263d53}.btn.white{background:white;color:#203244}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}.btn.danger{background:#ffe9ed;color:#a73c4f}.btn.small{font-size:12px;padding:8px 11px;min-height:38px}.btn.block{display:block;width:100%;text-align:center}.container.main{padding-top:27px;padding-bottom:90px}.eyebrow{font-size:11px;color:#6b8499;font-weight:850;letter-spacing:1.4px;text-transform:uppercase}.lead{font-size:16px;line-height:1.7;color:#596c7e;max-width:760px}h1{font-size:clamp(27px,4vw,44px);margin:10px 0 12px;letter-spacing:-1.3px;line-height:1.12}h2{font-size:clamp(22px,3vw,29px);letter-spacing:-.6px;margin:0 0 10px}h3{font-size:18px;margin:0 0 10px}p{line-height:1.55}.hero{background:linear-gradient(118deg,#133249,#224965);border-radius:24px;padding:36px;display:grid;grid-template-columns:1fr 310px;gap:20px;color:#fff;min-height:315px}.hero .lead{color:#d1dfe9}.hero .eyebrow{color:var(--mint)}.hero-preview{background:#ffffff13;border:1px solid #ffffff35;border-radius:20px;padding:16px;align-self:center}.hero-preview strong{font-size:12px;letter-spacing:1px}.mini-field{margin-top:12px;background:#deecf8;height:153px;border:2px solid white;position:relative;overflow:hidden}.mini-field:before{content:"";position:absolute;top:50%;height:3px;background:#273b4e;left:0;right:0}.mini-field .mdot{position:absolute;background:#30966f;width:11px;height:11px;border:2px solid white;border-radius:50%}.panel{background:var(--surface);border:1px solid #e3e9ee;box-shadow:var(--shadow);border-radius:20px;padding:22px}.panel + .panel{margin-top:16px}.surface-note{background:#ebf2f8;border:1px solid #d9e7f2;border-radius:13px;padding:13px 15px;color:#436077;font-size:13px;line-height:1.55}.surface-note.success{background:#e9f6ed;border-color:#bce2c5;color:#286744}.surface-note.warn{background:#fff3e2;border-color:#f1dcbd;color:#886225}.sports{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:18px 0}.sport-tile{text-align:left;background:white;border:2px solid var(--line);border-radius:18px;padding:17px 13px;min-height:170px;color:var(--ink);display:flex;flex-direction:column;align-items:flex-start;gap:8px}.sport-tile:hover,.sport-tile.active{border-color:#7eab66;box-shadow:0 5px 18px #19362011}.sport-icon{font-size:28px}.sport-tile b{font-size:14px}.sport-tile small{color:var(--muted);font-size:11px;line-height:1.45}.sport-tile em{margin-top:auto;font-size:11px;font-style:normal;color:#33866a;font-weight:900}.flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.gap{display:grid;gap:15px}.mt{margin-top:16px}.mb{margin-bottom:16px}.muted{color:var(--muted)}.tiny{font-size:12px}.pill{display:inline-flex;gap:6px;align-items:center;background:#ebf2f7;color:#476078;border-radius:100px;padding:6px 10px;font-size:11px;font-weight:800}.pill.green{background:#daf5e8;color:#167352}.pill.gold{background:#fff0d9;color:#99632b}.pill.red{background:#ffe6e7;color:#b24550}.crumb{font-size:12px;color:#7890a1;margin:0 0 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.crumb button{border:none;background:none;text-decoration:underline;color:inherit;padding:0}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin:20px 0;scrollbar-width:thin}.tabs button{flex:none;white-space:nowrap;border:1px solid var(--line);background:white;border-radius:12px;padding:11px 16px;font-weight:800;color:#597089}.tabs button.active{background:var(--navy);color:white;border-color:var(--navy)}.stat{padding:20px;border-radius:17px;background:white;border:1px solid var(--line)}.stat strong{font-size:33px;display:block;line-height:1.1}.stat small{color:var(--muted);font-size:12px}.courtholder{max-width:440px;margin:auto;position:relative}.court-svg{display:block;width:100%;touch-action:manipulation;border-radius:12px;overflow:hidden}.court-svg.touch{cursor:crosshair}.hintbox{min-height:53px;display:flex;align-items:center;background:#e5f2df;border-radius:11px;padding:13px 15px;line-height:1.4;font-weight:780;margin-bottom:14px}.step{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:15px}.step span{border-radius:99px;background:#e8eef3;color:#8296a7;padding:5px 9px;font-size:11px;font-weight:800}.step span.on{color:#1a5c45;background:#d7f4df}.step span.done{color:#6e8c69;background:#e6f6d8}.choices{display:flex;flex-wrap:wrap;gap:9px}.choice{border:1px solid var(--line);background:#fff;color:var(--ink);padding:11px 14px;border-radius:12px;min-width:79px;text-align:left;font-weight:730}.choice.selected{background:#dff5cf;border-color:#5da267}.choice small{display:block;font-size:10px;font-weight:500;color:#627a8b;margin-top:3px}.choice:disabled{opacity:.38}.entry{border-left:4px solid #81b3a0;background:#f4f8fb;border-radius:10px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;gap:12px;align-items:center}.entry b{font-size:13px}.entry small{font-size:11px;color:#738497}.field{border:1.5px solid #d8e2ea;border-radius:11px;width:100%;min-height:44px;padding:10px 12px;background:white;color:#263d53}.field:focus{outline:2px solid #97c980;outline-offset:1px}.fieldlabel{display:block;font-size:12px;font-weight:850;color:#4d6479;margin-bottom:6px}.formrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rosteritem{display:grid;grid-template-columns:65px 1fr minmax(130px,.8fr) 38px;gap:9px;align-items:center;margin:7px 0}.rosteritem .field{padding:9px}.ghostx{background:#ffe8ea;border:none;color:#ad4155;border-radius:10px;height:40px}.positions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.position{border:1px solid #d6e5ed;border-radius:14px;padding:12px;background:#f5f9fb}.position p{font-size:11px;color:#7890a0;margin:0 0 5px}.position label{font-size:12px;font-weight:800;display:block;margin-bottom:5px}.score{background:var(--navy);padding:17px;border-radius:16px;color:white;display:flex;gap:14px;justify-content:space-between;align-items:center}.score b{font-size:20px}.score small{color:#b4cbdc}.score span{font-size:14px}.tracebar{display:flex;align-items:center;gap:7px;overflow-x:auto;padding:10px 0}.tracebar span{background:#ecf3f7;flex:none;border-radius:9px;padding:9px 11px;font-size:12px;font-weight:760}.bigquestion{font-size:21px;font-weight:900;margin:0 0 10px}.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:#61768a}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}.chartbar{height:10px;background:#eaf0f3;border-radius:99px;overflow:hidden;margin:7px 0}.chartbar>span{display:block;background:#7fbd93;height:100%}.srow{display:grid;grid-template-columns:1fr 45px;gap:5px;margin-bottom:12px}.report-head{background:#162f45;color:white;border-radius:18px;padding:22px;margin-bottom:15px}.video{width:100%;max-height:340px;border-radius:14px;background:#14283b}.videoarea{margin:10px 0}.filebtn{display:inline-flex;position:relative;overflow:hidden}.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}.timeline{display:grid;gap:6px;margin-top:12px}.historycard{display:grid;grid-template-columns:1fr auto;align-items:center;gap:15px;padding:17px;border:1px solid var(--line);border-radius:15px;background:white;margin:9px 0}.foot{padding:28px 0 65px;text-align:center;color:#93a3af;font-size:12px}.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px}.empty{padding:30px;border:2px dashed #cadbe5;border-radius:15px;color:#72899a;text-align:center}.subtle{border-top:1px solid #edf1f4;margin:18px 0}.mode-tag{display:inline-flex;gap:7px;background:#dff3e1;border-radius:50px;font-size:11px;font-weight:800;padding:7px 10px;color:#348055}.ball{pointer-events:none;filter:drop-shadow(0 3px 3px #283e6c55)}#toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);z-index:100;background:#182f40;color:#fff;border-radius:13px;padding:13px 18px;opacity:0;transition:.2s;pointer-events:none;max-width:min(90vw,600px);font-size:13px;box-shadow:0 10px 25px #17253340}#toast.show{opacity:1;transform:translate(-50%,0)}.chip{font-size:11px;padding:6px 9px;border-radius:9px;background:#edf4fa;font-weight:760}.court-helper{color:#648299;text-align:center;font-size:12px;margin-top:10px}.pro-note{border-left:3px solid #88be91;padding:8px 12px;background:#eff7ee;font-size:12px;color:#476e52}.court-key{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.court-key span{font-size:11px;border-radius:7px;padding:5px 8px;background:#eaf1f5;color:#567086}.module-caption{font-size:13px;color:#637a8c;line-height:1.6}.blink{animation:blink .8s linear infinite alternate}@keyframes blink{from{opacity:.3}to{opacity:1}}@media(max-width:980px){.sports{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{grid-template-columns:1fr 240px}.split{grid-template-columns:1fr}}@media(max-width:640px){.container{padding:0 13px}.container.main{padding-top:16px}.header .brand{font-size:13px;gap:7px}.brandmark{height:34px;width:34px;font-size:17px;border-radius:10px}.brand small{font-size:8px}.head-inner{min-height:58px}.navrow .btn{padding:8px 9px;font-size:11px;min-height:36px}.hero{padding:23px 18px;display:block;min-height:0;border-radius:17px}.hero-preview{margin-top:20px;display:none}.sports{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.sport-tile{min-height:143px;padding:12px}.grid2,.grid3{grid-template-columns:1fr}.panel{padding:15px;border-radius:14px}.formrow{grid-template-columns:1fr}.rosteritem{grid-template-columns:54px minmax(0,1fr) 96px 30px;gap:5px}.rosteritem .field{padding:7px 5px;font-size:12px}.ghostx{height:40px}.positions{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.position{padding:8px}.position .field{padding:7px 4px;font-size:11px}.btn{font-size:13px;padding:11px}.choices{gap:6px}.choice{padding:9px 10px;font-size:12px;min-width:61px}.historycard{grid-template-columns:1fr}.score b{font-size:17px}.stat{padding:13px}.stat strong{font-size:25px}}@media print{.header,.no-print,.tabs,.btn,.foot,#toast,.filebtn,.videoarea{display:none!important}body{background:#fff}.container{max-width:none}.panel{break-inside:avoid;box-shadow:none;border-color:#ccd9e5}.grid2{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:repeat(2,1fr)}}
+
+/* Тактическая студия Питерского Скаута */
+.tac-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:15px;align-items:start;margin-top:16px}
+.tac-layout>.tac-box,.tac-layout>.tac-right{min-width:0}
+.tac-box{background:var(--surface,#fff);background:#fff;border:1px solid #dce5e9;border-radius:17px;padding:16px;margin-bottom:14px;color:#20374b;box-shadow:0 3px 14px rgba(23,53,75,.045)}
+.tac-box-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.tac-box-h>b{font-size:17px}.tac-box-h>small{color:#698092}
+.tac-welcome{position:sticky;top:10px}.tac-welcome>p{font-size:14px;line-height:1.55;color:#526678;margin-bottom:12px}
+.tac-boardwrap{max-width:530px;margin:8px auto 0}.tac-board{display:block;width:100%;height:auto;max-height:680px;touch-action:none;user-select:none}
+.tac-person{touch-action:none;user-select:none}
+.tac-side,.tac-skills{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.tac-skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tac-chip{font-size:12px;line-height:1.3;display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:10px;border:1px solid #d4e0e5;padding:10px 11px;background:#f6f9fa;color:#234257;font-weight:700;min-height:39px;cursor:pointer}.tac-chip.on{background:#d8efa6;border-color:#9dcb5d;color:#28431b}
+.tac-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:12px 0}.tac-fields>label{display:flex;flex-direction:column;gap:5px;min-width:0}.tac-fields>label>span{font-size:12px;color:#5e7383;font-weight:700}.tac-fields .field{width:100%;min-width:0}
+.tac-note{background:#eef6f7;color:#426074;border-radius:11px;padding:10px 12px;font-size:13px;line-height:1.5;margin:11px 0}
+.tac-status{padding:10px;background:#f1f5eb;border-radius:11px;color:#365224;font-size:13px}
+.tac-muted{font-size:12px;line-height:1.5;color:#647b8c;margin-top:8px}.tac-legend{display:flex;flex-wrap:wrap;gap:7px;margin:7px 0;font-size:11px;font-weight:700;color:#536b77}
+.tac-legend span{padding:5px 7px;border-radius:8px;background:#eef2f5}
+.tac-players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.tac-name{background:#eef3f6;border-radius:8px;padding:7px;font-size:12px;font-weight:750}.tac-name small{display:block;color:#6c8090;font-size:10px;font-weight:500}.tac-name.lib{background:#fce5ce}
+.tac-entry{display:flex;flex-direction:column;gap:3px;padding:9px 11px;border-radius:8px;border:1px solid #e4eaf0;margin-top:5px}.tac-entry>b{font-size:13px}.tac-entry>small{font-size:11px;color:#6b7e8d}.tac-entry.lit{border-color:#eea464;background:#fff2e2}
+.tac-box.minor{background:#f9fbfc;box-shadow:none;margin-top:14px}
+.tac-rotation{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+@media(max-width:990px){.tac-layout{grid-template-columns:1fr}.tac-welcome{position:relative;top:auto}.tac-boardwrap{max-width:470px}}
+@media(max-width:540px){.tac-box{padding:11px;border-radius:12px}.tac-skills{grid-template-columns:repeat(2,minmax(0,1fr))}.tac-fields{grid-template-columns:1fr}.tac-legend{gap:4px}.tac-legend span{font-size:10px}.tac-players{grid-template-columns:repeat(2,minmax(0,1fr))}.tac-box-h>b{font-size:15px}}
+
+.tac-entry{width:100%;background:#fff;text-align:left;cursor:pointer;color:#24364c}.tac-entry:hover{background:#f3f9fc}.tac-entry.lit{background:#fff2e2}
+
+
+/* LIVE — основной интерфейс, рассчитанный на планшет и телефон */
+.live-root{display:grid;gap:14px;max-width:1200px;margin:0 auto 38px}
+.live-top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 23px;background:#122b3e;color:white;border-radius:20px}
+.live-top h2{color:#fff;margin:6px 0}.live-fastserve{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:15px;border:1px solid #bdd1db;background:#eef6fc;border-radius:15px}.live-fastbuttons{display:flex;gap:8px;flex-wrap:wrap}.live-fastbuttons button{border:0;background:#214961;color:#fff;border-radius:10px;padding:13px 15px;font-weight:800;cursor:pointer}.live-fastbuttons button:first-child{background:#b63e49}.live-fastbuttons button:nth-child(2){background:#178d6b}.live-player.recipient{outline:3px solid #c65397;outline-offset:-2px}.live-sub{font-size:13px;color:#d9e5ef;line-height:1.5}
+.live-giant-score{display:flex;align-items:center;gap:11px;font-size:clamp(36px,5vw,66px);font-weight:900;white-space:nowrap}.live-giant-score i{color:#d5f384;font-style:normal}
+.live-section{background:var(--card,#fff);border:1px solid var(--border,#dae4ec);padding:19px;border-radius:18px;min-width:0}
+.live-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.live-h h3{margin:0;font-size:19px}.live-h span{font-size:13px;color:#67788a}
+.live-teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.live-team{padding:12px;border:2px solid #d8e1ea;border-radius:15px}.live-team.active{border-color:#68b6df;background:#f4fbff}
+.live-teamname{border:0;background:transparent;font-size:15px;font-weight:800;display:block;margin-bottom:10px;color:#1a405b;cursor:pointer;text-align:left}
+.live-six{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.live-player{min-width:0;position:relative;border:1px solid #cfdce6;background:#edf3f9;border-radius:11px;min-height:88px;padding:6px;display:flex;align-items:center;flex-direction:column;gap:2px;justify-content:center;color:#273d51;cursor:pointer}
+.live-player .live-zone{font-size:10px;opacity:.7}.live-player b{font-size:22px;font-weight:900}.live-player small{font-size:10px;text-align:center;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.live-player em{font-style:normal;font-size:9px;font-weight:900;position:absolute;right:4px;top:4px;padding:2px 3px;border-radius:4px;background:#fff5}
+.live-player.setter{background:#c7dbff;border-color:#7196db}.live-player.libero{background:#fce6b5;border-color:#e1b95f}.live-player.chosen{outline:3px solid #2b78d1;outline-offset:-2px;box-shadow:0 0 0 2px white}
+.live-selected{background:#eff6f9;border-radius:11px;padding:9px 12px;margin-bottom:10px}
+.live-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.live-action,.live-out{border:1px solid #c8d5df;min-height:51px;padding:12px 7px;border-radius:12px;background:#eaf1f8;color:#23445c;font-size:14px;font-weight:700;cursor:pointer}
+.live-action.on{background:#d7f39c;color:#2a3d28;border-color:#aed066}
+.live-outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.live-out{font-size:16px;color:#fff}.live-out.point{background:#229a6d;border-color:#229a6d}.live-out.good{background:#3475ba;border-color:#3475ba}.live-out.error{background:#ce4e56;border-color:#ce4e56}
+.live-bottom{display:grid;grid-template-columns:1fr 1fr;gap:13px}.live-map{display:flex;justify-content:center;margin:8px 0}
+.live-extra{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}.live-extra label{flex:1;min-width:165px;font-size:12px;font-weight:700}
+.live-manual{display:flex;gap:8px;flex-wrap:wrap}.live-manual button{flex:1}
+.live-options{background:#f5f8fa;border-radius:13px;padding:10px 15px}.live-options summary{cursor:pointer;font-weight:800;color:#2f4d65}
+.live-policies{display:grid;grid-template-columns:1fr 1fr;gap:7px}.live-policies label{font-size:12px}.live-config{min-width:0}.live-hotkeys{text-align:center;font-size:12px;color:#65788a}
+.live-recent .entry{margin-top:5px}.live-recent small{display:block}
+@media(max-width:760px){.live-teams,.live-bottom{grid-template-columns:1fr}.live-top{padding:15px;align-items:start}.live-sub{font-size:11px}.live-giant-score{font-size:42px}.live-section{padding:12px}.live-player{min-height:73px}.live-player small{font-size:9px}.live-action{font-size:12px;min-height:48px}.live-out{font-size:13px}.live-teams{gap:8px}.live-six{gap:5px}.live-hotkeys{display:none}.live-h h3{font-size:17px}}
+</style><link href="./manifest.webmanifest" rel="manifest"/><link href="./icon.svg" rel="icon" type="image/svg+xml"/><link href="./icon-192.png" rel="apple-touch-icon"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/></head><body><div id="app"></div><div aria-live="polite" id="toast" role="status"></div><script>/* Питерский Скаут — обособленная логика волейбольного розыгрыша.
+ * No UI, no storage. Shared by browser + Node regression tests.
+ * Not a referee-grade substitution/rotation validator yet.
+ */
+(function(root,factory){
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  if(root)root.PVScoutRally=api;
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  const ROTATE={'1':'2','6':'1','5':'6','4':'5','3':'4','2':'3'};
+  const BACK=new Set(['1','5','6']);
+  function copy(v){return v==null?v:JSON.parse(JSON.stringify(v))}
+  function rotateLineup(lineup){const result={};for(const [to,from] of Object.entries(ROTATE))result[to]=lineup[from]||null;return result}
+  function setServer(match,who){if(!['us','them'].includes(who))throw Error('Нужно выбрать, чья подача');match.servingTeam=who;if(match.sport==='indoor'&&!(match.rallies||[]).length){match.setStarts=match.setStarts||{};match.setStarts[1]=who}return who}
+  function rotateSide(match,side,number){
+  const key=side==='us'?'lineup':'opponentLineup',lk=side==='us'?'libero':'opponentLibero';
+  const was=match[lk]?copy(match[lk]):null;
+  match[key]=rotateLineup(match[key]||{});
+  if(was){
+    const next=Object.entries(ROTATE).find(([,src])=>src===String(was.position))?.[0];
+    if(BACK.has(next))match[lk]={...was,position:next,replaced:match[key][next]};
+    else {match[lk]=null;logLibero(match,side,'out',was,number,'Выход при переходе на переднюю линию')}
+  }
+}
+  function activeAtSide(match,side,position){
+    const lineup=side==='us'?match.lineup:match.opponentLineup;
+    const lib=side==='us'?match.libero:match.opponentLibero;
+    return lib&&String(lib.position)===String(position)?lib.id:(lineup||{})[String(position)]||null;
+  }
+  function roleAt(match,side,zone){
+    const list=side==='us'?match.players||[]:match.opponentPlayers||[];
+    const lineup=side==='us'?match.lineup||{}:match.opponentLineup||{};
+    return list.find(p=>p.id===lineup[String(zone)])?.role||'';
+  }
+  function policyFor(match,side){
+    const roster=side==='us'?match.players||[]:match.opponentPlayers||[];
+    const libs=roster.filter(p=>p.role==='Либеро');
+    const saved=match.liberoPolicy?.[side]||{};
+    const get=id=>libs.some(p=>p.id===id)?id:null;
+    return {receive:get(saved.receive)||libs[0]?.id||null,serve:get(saved.serve)||libs[1]?.id||libs[0]?.id||null};
+  }
+  function logLibero(match,side,kind,lib,rally,reason){
+    (match.substitutions||(match.substitutions=[])).push({kind:'auto-libero-'+kind,side,pid:lib.id,pos:lib.position,replaced:lib.replaced,rally,reason,at:Date.now()});
+    match.liberoLastChange=match.liberoLastChange||{};
+    match.liberoLastChange[side]=rally;
+  }
+  function syncLibero(match,side,rally){
+    if(match.autoLibero===false||match.sport!=='indoor')return;
+    const roster=side==='us'?match.players||[]:match.opponentPlayers||[];
+    const lineup=side==='us'?match.lineup||{}:match.opponentLineup||{};
+    const key=side==='us'?'libero':'opponentLibero';
+    const policy=policyFor(match,side);if(!policy.receive)return;
+    const serving=match.servingTeam===side;
+    // Server in zone 1 must remain available until service changes.
+    const zones=(serving?['6','5']:['1','6','5']).filter(z=>roleAt(match,side,z)==='Центральный');
+    let cur=match[key]||null;
+    const nowLast=(match.liberoLastChange||{})[side]??-10;
+    if(cur){
+      const valid=BACK.has(String(cur.position))&&(!serving||String(cur.position)!=='1')&&lineup[String(cur.position)]===cur.replaced;
+      if(!valid){
+        if(nowLast>=rally)return;
+        match[key]=null;logLibero(match,side,'out',cur,rally,'Возврат основного игрока');cur=null;
+      }
+    }
+    if(cur){
+      // Keep the original replacement position until its actual rotation exit.
+      // Only the acting Libero can be exchanged directly for the other Libero.
+      const desired=policy[serving?'serve':'receive'];
+      if(desired&&desired!==cur.id&&nowLast<rally){
+        const from={...cur};match[key]={...cur,id:desired};
+        logLibero(match,side,'switch',match[key],rally,'Смена действующего либеро '+from.id+' → '+desired);
+      }
+      return;
+    }
+    // No direct two-for-one replacement during the same dead ball.
+    if(((match.liberoLastChange||{})[side]??-10)>=rally)return;
+    const zone=zones[0];if(!zone)return;
+    const id=policy[serving?'serve':'receive'];if(!id)return;
+    match[key]={id,position:zone,replaced:lineup[zone]};
+    logLibero(match,side,'in',match[key],rally,'Автоматический выход центрального');
+  }
+  function terminalWinner(action,result,side){
+    if(!['us','them'].includes(side))return null;
+    const opposite=side==='us'?'them':'us';
+    if(result==='error')return opposite;
+    if(result==='point'&&['serve','attack','block','free','tip'].includes(action))return side;
+    return null;
+  }
+  function finishRally(match,winner,getScore){
+    if(!['us','them'].includes(winner))throw Error('Неизвестный победитель розыгрыша');
+    if(match.pendingSetSetup)throw Error('Сначала подтверди стартовые расстановки новой партии');
+    if(['indoor','beach'].includes(match.sport)&&!['us','them'].includes(match.servingTeam))throw Error('Сначала выбери, кто подавал');
+    const prior=getScore(match.sport,match.rallies);
+    if(prior.done)throw Error('Матч уже завершён');
+    const setBefore=prior.sets[0]+prior.sets[1]+1;
+    const pre={lineup:copy(match.lineup||{}),opponentLineup:copy(match.opponentLineup||{}),libero:copy(match.libero||null),opponentLibero:copy(match.opponentLibero||null),rotationNo:match.rotationNo||1,opponentRotationNo:match.opponentRotationNo||1,servingTeam:match.servingTeam,pendingSetSetup:!!match.pendingSetSetup,setStarts:copy(match.setStarts||{}),nextSetServer:match.nextSetServer||null,liberoLastChange:copy(match.liberoLastChange||{}),substitutionsLen:(match.substitutions||[]).length};
+    const sideout=winner==='us'&&pre.servingTeam==='them';
+    const breakpoint=winner==='us'&&pre.servingTeam==='us';
+    const entry={id:'r'+Date.now().toString(36)+Math.random().toString(36).slice(2),number:match.rallyNo||match.rallies.length+1,winner,serveBefore:pre.servingTeam,serveNext:winner,set:setBefore,sideout,breakpoint,before:pre,at:Date.now()};
+    match.rallies.push(entry);
+    const after=getScore(match.sport,match.rallies);
+    const setEnded=after.sets[0]+after.sets[1]>prior.sets[0]+prior.sets[1];
+    entry.setEnded=setEnded;
+    entry.rotated=false;
+    entry.rotatedSide=null;
+    if(match.sport==='indoor'&&winner!==pre.servingTeam&&!setEnded){
+      rotateSide(match,winner,entry.number);
+      if(winner==='us')match.rotationNo=(match.rotationNo||1)+1;
+      else match.opponentRotationNo=(match.opponentRotationNo||1)+1;
+      entry.rotated=true;
+      entry.rotatedSide=winner;
+    }
+    if(match.sport==='tennis'||match.sport==='padel'){
+      const gameDone=(after.games[0]+after.games[1])>(prior.games[0]+prior.games[1])||setEnded;
+      match.servingTeam=(prior.tiebreak||after.tiebreak)?null:gameDone?(pre.servingTeam==='us'?'them':pre.servingTeam==='them'?'us':null):pre.servingTeam;
+    }else if(setEnded&&match.sport==='indoor'){
+      // Sets 2-4 start with the opposite of the preceding set's first server.
+      // The fifth starts after a NEW coin toss, so no guess is made.
+      match.pendingSetSetup=!after.done;
+      match.nextSetServer=setBefore+1===5?null:pre.setStarts?.[setBefore]==='us'?'them':pre.setStarts?.[setBefore]==='them'?'us':null;
+      match.servingTeam=null;
+      match.libero=null;match.opponentLibero=null;
+    }else match.servingTeam=setEnded?null:winner;
+    if(match.sport==='indoor'&&!setEnded){
+      syncLibero(match,'us',entry.number);
+      syncLibero(match,'them',entry.number);
+    }
+    entry.serveNext=match.servingTeam;
+    match.rallyNo=entry.number+1;
+    return {rally:entry,prior,after,setEnded,rotated:entry.rotated,rotatedSide:entry.rotatedSide,sideout,breakpoint};
+  }
+  function undoRally(match){
+    const prev=match.rallies?.pop();if(!prev)return null;
+    match.rallyNo=prev.number;
+    if(prev.before){match.lineup=copy(prev.before.lineup);match.opponentLineup=copy(prev.before.opponentLineup||{});match.libero=copy(prev.before.libero);match.opponentLibero=copy(prev.before.opponentLibero);match.rotationNo=prev.before.rotationNo;match.opponentRotationNo=prev.before.opponentRotationNo;match.servingTeam=prev.before.servingTeam;match.pendingSetSetup=prev.before.pendingSetSetup;match.setStarts=copy(prev.before.setStarts||{});match.nextSetServer=prev.before.nextSetServer;match.liberoLastChange=copy(prev.before.liberoLastChange||{});if(Array.isArray(match.substitutions)&&Number.isInteger(prev.before.substitutionsLen))match.substitutions.length=prev.before.substitutionsLen;}
+    // Old v3 backups have no snapshot, so only restore the score, not guessed positions.
+    return prev;
+  }
+  // A single authority for the actual person standing in each rotation slot.
+  // A libero replacement is not simultaneously on court, even though the
+  // replaced athlete remains in the underlying rotation lineup.
+  function activeAt(match,position){
+    if(match.libero&&String(match.libero.position)===String(position))return match.libero.id;
+    return (match.lineup||{})[String(position)]||null;
+  }
+  function activeZone(match,playerId){
+    if(match.sport!=='indoor')return null;
+    return ['1','2','3','4','5','6'].find(zone=>activeAt(match,zone)===playerId)||null;
+  }
+  function validateActor(match,action,playerId){
+    const player=(match.players||[]).find(p=>p.id===playerId);
+    if(!player)return 'Сначала выбери игрока из состава';
+    if(match.sport==='indoor'){
+      if(player.role==='Либеро'&&['serve','block'].includes(action))return 'Либеро не может подавать или блокировать';
+      const zone=activeZone(match,playerId);
+      if(!zone)return 'Этот игрок сейчас не находится на площадке (возможно, его заменил либеро)';
+      if(action==='serve'){
+        if(match.servingTeam&&match.servingTeam!=='us')return 'Подаёт соперник: сначала проверь сторону подачи';
+        if(zone!=='1')return 'Подавать может только игрок, занимающий зону 1';
+      }
+      if(action==='block'&&BACK.has(zone))return 'Игрок задней линии не может участвовать в завершённом блоке';
+    } else if(match.sport==='beach') {
+      if((match.players||[]).indexOf(player)>=2)return 'В пляжном волейболе на площадке только два игрока';
+    }
+    return null;
+  }
+  function insight(rallies){let serveUs=0,serveThem=0,bp=0,so=0;let unknown=0;
+    for(const r of rallies||[]){if(r.serveBefore==='us'){serveUs++;if(r.winner==='us')bp++}else if(r.serveBefore==='them'){serveThem++;if(r.winner==='us')so++}else unknown++}
+    return {serveUs,serveThem,bp,so,unknown,bpPercent:serveUs?Math.round(bp/serveUs*100):null,sideoutPercent:serveThem?Math.round(so/serveThem*100):null};
+  }
+  return {rotateLineup,rotateSide,setServer,finishRally,undoRally,validateActor,activeAt,activeAtSide,activeZone,insight,policyFor,syncLibero,terminalWinner};
+});
+</script><script>/* ПИТЕРСКИЙ СКАУТ 3.0 • учебный прототип, реальные данные сохраняются локально.
+ * Единый движок событий. Правила классического волейбола проходят ограниченные проверки; другие виды спорта в ознакомительном режиме.
+ * Подписки и подлинная авторизация НЕ реализованы.
+ */
+(()=>{'use strict';
+const KEY='piterskiy_scout_v3'; // keep v3 storage to preserve existing matches
+const RALLY=window.PVScoutRally;
+const SPORTS={
+ indoor:{name:'Классический волейбол',icon:'🏐',short:'Волейбол 6 × 6',court:'18 × 9 м',places:6,rosterMin:6,roles:['Связующий','Доигровщик','Диагональный','Центральный','Либеро','Универсальный'],skills:[['receive','Приём'],['set','Передача'],['attack','Атака'],['serve','Подача'],['dig','Защита'],['block','Блок']],target:25,decider:15,best:5,hint:'Шестёрка, запасные, до двух либеро, атаки первой и второй линии. Либеро — только задняя линия.'},
+ beach:{name:'Пляжный волейбол',icon:'🏖️',short:'Пляжка 2 × 2',court:'16 × 8 м',places:2,rosterMin:2,roles:['Универсальный','Защитник','Блокирующий'],skills:[['receive','Приём'],['set','Передача'],['attack','Атака'],['serve','Подача'],['dig','Защита'],['block','Блок']],target:21,decider:15,best:3,hint:'Два игрока весь матч. Нет либеро и обычных замен. Не используется шестёрка или линия 3 метров.'},
+ tennis:{name:'Теннис',icon:'🎾',short:'Теннис',court:'23,77 × 8,23 м (одиночный)',places:1,rosterMin:1,roles:['Игрок'],skills:[['serve','Подача'],['return','Приём подачи'],['forehand','Форхенд'],['backhand','Бэкхенд'],['volley','Удар с лёта'],['lob','Свеча'],['smash','Смэш']],hint:'Карты ударов, 15/30/40, геймы, сеты и тай-брейк. В тестовой версии — одиночный формат.'},
+ padel:{name:'Падел',icon:'🏓',short:'Падел 2 × 2',court:'20 × 10 м',places:2,rosterMin:2,roles:['Игрок пары'],skills:[['serve','Подача'],['return','Приём подачи'],['volley','Удар с лёта'],['bandeja','Бандеха'],['vibora','Вибора'],['lob','Свеча'],['smash','Смэш'],['wall','После стенки']],hint:'Пара из двух игроков, свои направления ударов и счёт по геймам. Сейчас действует классическая система преимущества.'},
+ badminton:{name:'Бадминтон',icon:'🏸',short:'Бадминтон',court:'13,4 × 5,18 м (одиночный)',places:1,rosterMin:1,roles:['Игрок'],skills:[['serve','Подача'],['return','Приём подачи'],['clear','Клир'],['drop','Укороченный'],['smash','Смэш'],['drive','Драйв'],['lift','Высокий удар'],['net','Игра у сетки']],target:21,decider:21,best:3,hint:'Карты ударов и счёт до 21 с преимуществом в два очка (при 29:29 — до 30). Экспериментальный режим — одиночка, не для официального судейства.'}
+};
+const ACTION_NAMES={receive:'Приём',set:'Пас',attack:'Атака',serve:'Подача',dig:'Защита',block:'Блок',return:'Приём',forehand:'Форхенд',backhand:'Бэкхенд',volley:'С лёта',lob:'Свеча',smash:'Смэш',bandeja:'Бандеха',vibora:'Вибора',wall:'От стенки',clear:'Клир',drop:'Укороченный',drive:'Драйв',lift:'Высокий',net:'У сетки'};
+const POS_ORDER=['4','3','2','5','6','1'];const BACK=['5','6','1'];const POSITION_LABELS={'4':'4 · у сетки слева','3':'3 · у сетки центр','2':'2 · у сетки справа','5':'5 · сзади слева','6':'6 · сзади центр','1':'1 · сзади справа'};
+const POS_XY={'4':{x:18,y:61},'3':{x:50,y:61},'2':{x:82,y:61},'5':{x:18,y:84},'6':{x:50,y:84},'1':{x:82,y:84}};
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const id=()=>window.crypto?.randomUUID?.()||('p'+Date.now().toString(36)+Math.random().toString(36).slice(2));
+const clamp=(x,low,high)=>Math.max(low,Math.min(high,Number(x)||0));
+const date=()=>new Date().toLocaleDateString('sv-SE');
+const timecode=n=>{n=Math.max(0,Math.floor(n||0));return [Math.floor(n/3600),Math.floor((n%3600)/60),n%60].map(x=>String(x).padStart(2,'0')).join(':')};
+const canSave=()=>true;
+function emptyState(){return {profile:null,matches:[],selected:null}}
+function read(){try{const original=localStorage.getItem(KEY);if(original&&!localStorage.getItem(KEY+'_backup_before_live'))localStorage.setItem(KEY+'_backup_before_live',original);let s=JSON.parse(original);return s&&Array.isArray(s.matches)?s:emptyState()}catch{return emptyState()}}
+let state=read();function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{toast('Браузер не сохранил данные. Экспортируйте JSON.')}}
+let ui={screen:'home',sport:'indoor',demoTab:'episode',workTab:'input',editing:null,coachStep:'skill',draft:null,videoUrl:null,videoName:null,trace:[],playId:0,showDemoAll:false,reportSport:'indoor',wizardStep:1,newTeam:'',newOpponent:'',newDate:date(),newPlayers:[],newOpponentPlayers:[],newLineup:{},newOpponentLineup:{},newFirstServer:'us',newSchemeUs:'5-1',newSchemeThem:'5-1',newLibero:null,mapAction:'attack',mapSide:'target',picked:null,filters:{player:'all',set:'all',quality:'all',rotation:'all'},liveSide:'us',livePlayer:null,liveRecipient:null,liveAction:'attack',liveSubtype:'Силовой удар',liveCourt:false,liveLastPoint:null,liveQuickMode:'simple',liveBlockPlayers:[],liveSubSide:'us',toastTimeout:null};
+let activeDemo=null;
+function toast(text){const x=document.getElementById('toast');if(!x)return;x.textContent=text;x.classList.add('show');clearTimeout(ui.toastTimeout);ui.toastTimeout=setTimeout(()=>x.classList.remove('show'),3300)}
+function playerName(m,pid){const p=m.players.find(x=>x.id===pid);return p?`№${p.number} ${p.name}`:'Игрок не выбран'}
+const rosterTemplate=(number,name,role)=>({id:id(),number:String(number),name,role});
+function demo(sport){const s=SPORTS[sport];let players=[];
+ if(sport==='indoor'){players=[[3,'Алексеев','Связующий'],[7,'Иванов','Доигровщик'],[9,'Петров','Диагональный'],[11,'Смирнов','Доигровщик'],[5,'Орлов','Центральный'],[12,'Климов','Центральный'],[1,'Морозов','Либеро'],[14,'Соколов','Либеро'],[6,'Павлов','Связующий'],[8,'Ковалёв','Доигровщик'],[10,'Громов','Диагональный'],[15,'Беляев','Центральный'],[17,'Сидоров','Универсальный'],[18,'Волков','Универсальный']].map(p=>rosterTemplate(...p))}
+ else if(sport==='beach'){players=[rosterTemplate(1,'Иванов','Универсальный'),rosterTemplate(2,'Петров','Универсальный')]}
+ else {let names=s.places===1?['Спортсмен А']:['Спортсмен А','Спортсмен Б'];players=names.map((n,i)=>rosterTemplate(i+1,n,s.roles[0]))}
+ let ref=n=>players.find(p=>p.number===String(n))?.id||players[0].id;
+ let lineup=sport==='indoor'?{'4':ref(7),'3':ref(5),'2':ref(9),'5':ref(11),'6':ref(12),'1':ref(3)}:{};
+ let rallies=[];let events=[];let seq=0;
+ const put=(rally,action,num,origin,target,result='play',other={})=>{events.push({id:id(),rally,order:++seq,action,playerId:ref(num),recipientId:other.recipient?ref(other.recipient):null,result,origin,target,quality:other.quality||null,videoTime:other.videoTime??(33+rally*21+seq*2),set:other.set||1,position:other.position||null,rotation:other.rotation||null,created:Date.now()})};
+ if(['indoor','beach'].includes(sport)){
+  put(1,'receive',sport==='indoor'?1:1,{x:43,y:87},{x:50,y:65},'good',{quality:'Хороший',videoTime:18});
+  put(1,'set',sport==='indoor'?3:2,{x:50,y:65},{x:18,y:59},'good',{recipient:sport==='indoor'?7:1,videoTime:20});
+  put(1,'attack',sport==='indoor'?7:1,{x:18,y:59},{x:78,y:20},'point',{videoTime:22,position:'4'});
+  rallies.push({id:id(),number:1,winner:'us'});
+  put(2,'serve',sport==='indoor'?9:2,{x:82,y:96},{x:18,y:14},'good',{videoTime:42});
+  put(2,'dig',sport==='indoor'?1:1,{x:70,y:85},{x:50,y:59},'good',{videoTime:47});
+  put(2,'set',sport==='indoor'?3:2,{x:50,y:59},{x:53,y:77},'good',{recipient:sport==='indoor'?9:1,videoTime:49});
+  put(2,'attack',sport==='indoor'?9:1,{x:53,y:77},{x:24,y:18},'point',{videoTime:51,position:'6'});
+  rallies.push({id:id(),number:2,winner:'us'});
+  put(3,'receive',sport==='indoor'?11:2,{x:10,y:80},{x:43,y:64},'good',{quality:'Выбитый',videoTime:80});
+  put(3,'set',sport==='indoor'?3:1,{x:43,y:64},{x:84,y:58},'good',{recipient:sport==='indoor'?9:2,videoTime:82});
+  put(3,'attack',sport==='indoor'?9:2,{x:84,y:58},{x:43,y:32},'error',{videoTime:84,position:'2'});
+  rallies.push({id:id(),number:3,winner:'them'});
+  for(let r=4;r<12;r++){let attacker=sport==='indoor'?[7,9,5,11,9,7,12,9][r-4]:[1,2][r%2];let origin= r%3===0?{x:50,y:79}:r%3===1?{x:19,y:61}:{x:79,y:60};let landing={x:12+(r*19)%76,y:11+(r*11)%31};let result=r%5===0?'error':r%4===0?'good':'point';put(r,'set',sport==='indoor'?3:(attacker===1?2:1),{x:46,y:60},origin,'good',{recipient:attacker,videoTime:90+r*26});put(r,'attack',attacker,origin,result==='error'?null:landing,result,{videoTime:92+r*26,position:origin.y>67?'6':origin.x<33?'4':origin.x>66?'2':'3'});rallies.push({id:id(),number:r,winner:result==='point'?'us':'them'})}
+ }else{
+  const acts=s.skills.map(x=>x[0]);for(let r=1;r<=12;r++){const action=acts[r%acts.length];put(r,action,r%players.length+1,{x:12+(r*7)%75,y:73+(r%3)*5},{x:15+(r*13)%70,y:9+(r*9)%31},r%5===0?'error':r%3===0?'point':'good',{videoTime:r*18});rallies.push({id:id(),number:r,winner:r%3===0?'us':'them'})}
+ }
+ return {id:'DEMO-'+sport,sport,team:'Учебная команда',opponent:'Соперник',date:'2026-11-16',players,lineup,libero:sport==='indoor'?{id:ref(1),position:'6',replaced:ref(12)}:null,substitutions:[],rallies,events,rallyNo:rallies.length+1,rotationNo:1,isDemo:true};
+}
+const DEMOS=Object.fromEntries(Object.keys(SPORTS).map(s=>[s,demo(s)]));
+const current=()=>state.matches.find(m=>m.id===state.selected)||null;
+const selected=()=>ui.screen==='demo'?DEMOS[ui.sport]:current();
+const inSix=m=>m.sport==='indoor'?Object.values(m.lineup||{}).filter(Boolean):[];
+function activeAt(m,pos){return m.libero&&m.libero.position===pos?m.libero.id:m.lineup?.[pos]||null}
+const onCourt=m=>m.sport==='indoor'?POS_ORDER.map(p=>activeAt(m,p)).filter(Boolean):m.players.slice(0,SPORTS[m.sport].places).map(x=>x.id);
+function availableActors(m,action){let pool=m.isDemo||m.sport!=='indoor'?m.players.filter(p=>m.sport!=='indoor'||onCourt(m).includes(p.id)):m.players.filter(p=>onCourt(m).includes(p.id));if(action==='serve'||action==='block')pool=pool.filter(p=>!(m.sport==='indoor'&&p.role==='Либеро'));if(m.sport==='indoor'&&action==='block')pool=pool.filter(p=>!BACK.includes(RALLY.activeZone(m,p.id)));if(m.sport==='indoor'&&action==='serve')pool=pool.filter(p=>RALLY.activeZone(m,p.id)==='1');return pool}
+function focusGuide(){requestAnimationFrame(()=>{const n=document.querySelector('.bigquestion');if(n){n.style.scrollMarginTop='90px';n.scrollIntoView({block:'start',behavior:'instant'})}})}
+function stageReset(){ui.coachStep='skill';ui.draft={action:null,playerId:null,recipientId:null,origin:null,target:null,result:'good',quality:'Не указано',videoTime:null}}
+stageReset();
+function show(screen,other={}){ui.screen=screen;Object.assign(ui,other);ui.picked=null;ui.playId++;window.scrollTo(0,0);render()}
+function startDemo(sport){ui.sport=sport;ui.demoTab=['indoor','beach'].includes(sport)?'tactics':'episode';ui.mode='demo';stageReset();show('demo')}
+function startNew(sport=ui.sport){ui.sport=sport;ui.newPlayers=[];ui.newOpponentPlayers=[];ui.newTeam='';ui.newOpponent='';ui.newDate=date();ui.newLineup={};ui.newOpponentLineup={};ui.newFirstServer='us';ui.newSchemeUs='5-1';ui.newSchemeThem='5-1';ui.newLibero=null;ui.wizardStep=1;show(state.profile?'wizard':'account')}
+function matchScore(sport,rallies){let r={scores:[0,0],sets:[0,0],completed:[],games:[0,0],points:[0,0],tie:[0,0],tiebreak:false,done:false,format:'',rallies:[0,0]};const s=SPORTS[sport];for(const rr of rallies){if(r.done)break;const w=rr.winner==='us'?0:1;const loser=1-w;r.rallies[w]++;
+ if(sport==='tennis'||sport==='padel'){
+   if(r.tiebreak){r.tie[w]++;if(r.tie[w]>=7&&r.tie[w]-r.tie[loser]>=2){r.completed.push({games:[...r.games.map((g,i)=>i===w?7:6)],tie:[...r.tie]});r.sets[w]++;r.games=[0,0];r.points=[0,0];r.tie=[0,0];r.tiebreak=false}}
+   else{r.points[w]++;if(r.points[w]>=4&&r.points[w]-r.points[loser]>=2){r.games[w]++;r.points=[0,0];if(r.games[w]>=6&&r.games[w]-r.games[loser]>=2){r.completed.push({games:[...r.games]});r.sets[w]++;r.games=[0,0]}else if(r.games[0]===6&&r.games[1]===6){r.tiebreak=true;r.tie=[0,0]}}}
+   if(r.sets[w]>=2)r.done=true;
+ }else{
+  r.scores[w]++;const target=(sport==='indoor'&&r.sets[0]+r.sets[1]===4)||(sport==='beach'&&r.sets[0]+r.sets[1]===2)?s.decider:s.target;
+  const isWin=r.scores[w]>=target&&(r.scores[w]-r.scores[loser]>=2||(sport==='badminton'&&r.scores[w]===30));
+  if(isWin){r.completed.push({points:[...r.scores]});r.sets[w]++;r.scores=[0,0];if(r.sets[w]>=Math.ceil(s.best/2))r.done=true}
+ }
+ }
+ if(sport==='tennis'||sport==='padel'){
+  const p=n=>n<=3?['0','15','30','40'][n]:'40';
+  if(r.tiebreak)r.format=`Тай-брейк ${r.tie[0]} : ${r.tie[1]}`;
+  else if(r.points[0]>=3&&r.points[1]>=3){if(r.points[0]===r.points[1])r.format='Ровно · 40 : 40';else r.format='Больше: '+(r.points[0]>r.points[1]?'наши':'соперник')}
+  else r.format=`${p(r.points[0])} : ${p(r.points[1])}`;
+ }else r.format=`${r.scores[0]} : ${r.scores[1]}`;
+ return r;
+}
+function skillLabel(k){return ACTION_NAMES[k]||k}
+function skillIsTarget(k){return !['receive','dig','block'].includes(k)}
+const skillIsPass=k=>k==='set';
+function scoreCard(m){let sc=matchScore(m.sport,m.rallies||[]);let sub=['tennis','padel'].includes(m.sport)?`${sc.games.join(' : ')} геймов · ${sc.format}`:`${sc.format} в партии`;
+ return `<div class="score"><div><small>${esc(m.team)}</small><div><b>${sc.sets[0]} сетов</b> <span>${sc.rallies[0]} выигранных розыгрышей</span></div></div><div style="text-align:center"><small>Счёт</small><b style="display:block">${sub}</b><small>${sc.done?'Матч завершён':'Счёт по отмеченным розыгрышам'}</small></div><div style="text-align:right"><small>${esc(m.opponent)}</small><div><b>${sc.sets[1]} сетов</b><span> ${sc.rallies[1]} розыгрышей</span></div></div></div>`}
+function teamSummary(m){let e=(m.events||[]).filter(x=>x.side!=='them');let a=e.filter(x=>x.action==='attack');let serv=e.filter(x=>x.action==='serve');let passes=e.filter(x=>x.action==='set'&&x.recipientId);return {events:e.length,attacks:a.length,kills:a.filter(x=>x.result==='point').length,attackErrors:a.filter(x=>x.result==='error').length,serves:serv.length,aces:serv.filter(x=>x.result==='point').length,passes:passes.length,points:m.rallies.filter(x=>x.winner==='us').length}}
+// Coordinates in court SVG are normalized 0-100 for the full court: opponent 0..50, own half 50..100.
+const courtPixels=p=>({x:30+clamp(p.x,0,100)*3.6,y:20+clamp(p.y,0,100)*4.8});
+function courtSVG({m=null,interactive=false,events=[],interactiveSide=null,which='target',showLineup=false,trace=[],chosen=null,mini=false,paths=false,clickLabel=''}={}){
+ const sport=m?.sport||ui.sport;const indoor=sport==='indoor',beach=sport==='beach';const volley=indoor||beach;
+ const themes=beach?['#fae9ca','#f3ddaf']:['#e2f0fa','#d9eaf7'];const court=`<rect x="30" y="20" width="360" height="480" fill="${volley?themes[0]:'#deebde'}" rx="5"/><rect x="30" y="260" width="360" height="240" fill="${themes[1]}"/>`;
+ let marks=`<rect x="30" y="20" width="360" height="480" rx="2" fill="none" stroke="white" stroke-width="4"/><line x1="30" y1="260" x2="390" y2="260" stroke="#193e55" stroke-width="7"/><text x="210" y="12" text-anchor="middle" font-size="13" fill="#738da0" font-weight="700">СОПЕРНИК</text><text x="210" y="519" text-anchor="middle" font-size="13" fill="#738da0" font-weight="700">НАША КОМАНДА</text>`;
+ if(indoor){marks+=`<line x1="30" y1="180" x2="390" y2="180" stroke="white" stroke-width="3" stroke-dasharray="8 5"/><line x1="30" y1="340" x2="390" y2="340" stroke="white" stroke-width="3" stroke-dasharray="8 5"/><text x="37" y="354" font-size="11" fill="#43647a">3 м</text>`}
+ if(sport==='tennis'){marks+=`<line x1="30" y1="136" x2="390" y2="136" stroke="white" stroke-width="2"/><line x1="30" y1="384" x2="390" y2="384" stroke="white" stroke-width="2"/><line x1="210" y1="136" x2="210" y2="384" stroke="white" stroke-width="2"/><line x1="53" y1="20" x2="53" y2="500" stroke="white" stroke-width="2"/><line x1="367" y1="20" x2="367" y2="500" stroke="white" stroke-width="2"/>`}
+ if(sport==='padel'){marks+=`<line x1="30" y1="145" x2="390" y2="145" stroke="white" stroke-width="2"/><line x1="30" y1="375" x2="390" y2="375" stroke="white" stroke-width="2"/><line x1="210" y1="145" x2="210" y2="375" stroke="white" stroke-width="2"/><rect x="26" y="16" width="368" height="488" fill="none" stroke="#537c7c" stroke-width="8" opacity=".7"/>`}
+ if(sport==='badminton'){marks+=`<line x1="30" y1="92" x2="390" y2="92" stroke="white" stroke-width="2"/><line x1="30" y1="428" x2="390" y2="428" stroke="white" stroke-width="2"/><line x1="30" y1="196" x2="390" y2="196" stroke="white" stroke-width="2"/><line x1="30" y1="324" x2="390" y2="324" stroke="white" stroke-width="2"/><line x1="210" y1="92" x2="210" y2="428" stroke="white" stroke-width="2"/><line x1="55" y1="20" x2="55" y2="500" stroke="white" stroke-width="2"/><line x1="365" y1="20" x2="365" y2="500" stroke="white" stroke-width="2"/>`}
+ if(interactiveSide){const y=interactiveSide==='own'?260:20;marks+=`<rect x="30" y="${y}" width="360" height="240" fill="#9fdb98" fill-opacity=".14"/><rect x="30" y="${interactiveSide==='own'?20:260}" width="360" height="240" fill="#223344" fill-opacity=".23"/>`}
+ if(indoor&&showLineup&&m){for(let pos of POS_ORDER){let pid=activeAt(m,pos),p=m.players.find(x=>x.id===pid),at=courtPixels(POS_XY[pos]);marks+=`<circle cx="${at.x}" cy="${at.y}" r="28" fill="${p?.role==='Либеро'?'#ffb864':'#216d9a'}" stroke="white" stroke-width="2"/><text x="${at.x}" y="${at.y-1}" text-anchor="middle" font-size="18" fill="white" font-weight="800">${esc(p?.number||'?')}</text><text x="${at.x}" y="${at.y+14}" text-anchor="middle" font-size="9" fill="white">зона ${pos}</text>`}}
+ if(volley&&!showLineup&&!mini){const posids=[['4',18,59],['3',50,59],['2',82,59],['5',18,83],['6',50,83],['1',82,83]];posids.forEach(([num,x,y])=>{let p=courtPixels({x,y});marks+=`<text x="${p.x}" y="${p.y}" text-anchor="middle" fill="#497d98" opacity=".44" font-size="24" font-weight="800">${num}</text>`})}
+ let dots='';if(paths){dots+=`<defs><marker id="arrow-pv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#dc8534"/></marker></defs>`;events.filter(e=>e.origin&&e.target).forEach(e=>{let a=courtPixels(e.origin),b=courtPixels(e.target);dots+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#dc8534" stroke-width="2.7" opacity=".67" marker-end="url(#arrow-pv)"/>`})}events.forEach((e,i)=>{const point=e[which];if(!point)return;let v=courtPixels(point),color=e.result==='point'?'#16956a':e.result==='error'?'#dc575f':'#3972cb';dots+=`<circle data-event="${esc(e.id)}" cx="${v.x}" cy="${v.y}" r="${mini?6:9}" fill="${color}" stroke="white" stroke-width="2" class="event-point"/><circle data-event="${esc(e.id)}" cx="${v.x}" cy="${v.y}" r="15" fill="transparent" class="event-tap"/>`});
+ if(chosen){let p=courtPixels(chosen);dots+=`<circle cx="${p.x}" cy="${p.y}" r="12" fill="#fea82d" stroke="white" stroke-width="3"/>`}
+ if(trace.length){const coords=trace.filter(x=>x).map(x=>courtPixels(x));dots+=`<polyline points="${coords.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="#d87b26" stroke-width="4" stroke-dasharray="11 7" stroke-linecap="round"/>`;coords.forEach((p,i)=>{dots+=`<circle cx="${p.x}" cy="${p.y}" r="${i===coords.length-1?8:5}" fill="${i===coords.length-1?'#ef8c23':'#273f5a'}" stroke="white" stroke-width="2"/>`})}
+ return `<svg viewBox="0 0 420 530" role="img" aria-label="${esc(clickLabel||'Схема площадки для отметки действий')}" class="court-svg ${interactive?'touch':''}" ${interactive?'data-court-tap="1"':''}><g>${court}${marks}${dots}</g><circle id="animation-ball" class="ball" cx="-30" cy="-30" r="9" fill="#ffb22a" stroke="#ffffff" stroke-width="3" style="display:none;"/><text x="210" y="264" text-anchor="middle" font-size="9" font-weight="900" fill="white">СЕТКА</text></svg>`
+}
+function makeNewMatch(){const m={id:id(),sport:ui.sport,team:ui.newTeam,opponent:ui.newOpponent,date:ui.newDate,players:ui.newPlayers.map(x=>({...x})),opponentPlayers:ui.newOpponentPlayers.map(x=>({...x})),lineup:{...ui.newLineup},opponentLineup:{...ui.newOpponentLineup},libero:null,opponentLibero:null,substitutions:[],events:[],rallies:[],rallyNo:1,rotationNo:1,opponentRotationNo:1,setStarts:{1:ui.newFirstServer},servingTeam:ui.newFirstServer,firstServer:ui.newFirstServer,pendingSetSetup:false,autoLibero:true,liberoPolicy:{},liberoLastChange:{},substitutionLimit:6,created:Date.now(),isDemo:false};if(m.sport==='indoor'){m.tactical={scheme:ui.newSchemeUs,setters:[],positions:{},memo:{}};m.opponentScheme=ui.newSchemeThem;autoInitialLibero(m)}return m}
+function autoInitialLibero(m){
+ if(m.sport!=='indoor'||m.autoLibero===false)return;
+ for(const side of ['us','them'])RALLY.syncLibero(m,side,0);
+}
+function rosterCard(m,editing=false){const on=onCourt(m);let regs=m.players.filter(p=>p.role==='Либеро');let saved=m.players.filter(p=>p.role!=='Либеро');return `<div class="between"><h3>Состав команды · ${m.players.length} игроков</h3><span class="pill">На площадке ${on.length} · в заявке ${m.players.length}</span></div><div class="surface-note">${m.sport==='indoor'?'На площадке шесть спортсменов. В заявке могут быть запасные и до двух либеро. На площадке одновременно может быть один либеро.':m.sport==='beach'?'В заявке пляжной пары ровно два игрока. Замен и либеро нет.':'Состав для текущего формата: '+SPORTS[m.sport].places+' игрок(а) на нашей стороне.'}</div><div class="mt">${m.players.map(p=>`<div class="entry"><div><b>№${esc(p.number)} · ${esc(p.name)}</b><br><small>${esc(p.role)}</small></div><span class="pill ${on.includes(p.id)?'green':''}">${m.sport==='indoor'?(on.includes(p.id)?'На площадке':'Запас'): 'В игре'}</span></div>`).join('')}</div>`}
+function nav(){let p=state.profile?.name;return `<div class="header"><div class="container head-inner"><div class="brand"><span class="brandmark">ПС</span><span>ПИТЕРСКИЙ СКАУТ<small>ПОНЯТНЫЙ РАЗБОР МАТЧЕЙ</small></span></div><div class="navrow"><button class="btn small white" data-action="home">Главная</button><button class="btn small" data-action="history">${p?'Мои матчи':'Мой кабинет'}</button></div></div></div>`}
+function homePage(){return `<div class="hero"><div><div class="eyebrow">ПИТЕРСКИЙ СКАУТ · ЕДИНАЯ СБОРКА</div><h1>Понятная аналитика<br>без таблиц и догадок.</h1><p class="lead">Посмотри, как команда принимает, пасует и атакует. Начни с учебного эпизода, затем попробуй свой матч. Кнопки покажут, что делать дальше.</p><div class="flex mt"><button class="btn" data-action="demo" data-sport="indoor">▶ Смотреть пример матча</button><button class="btn white" data-action="create">Создать свой матч</button></div><p class="tiny" style="color:#adc4d4;margin-top:17px">Демо полностью без регистрации · местные данные не отправляются на сервер</p></div><div class="hero-preview"><strong>ПРИЁМ → ПАС → АТАКА</strong><div class="mini-field"><span class="mdot" style="left:30%;top:80%"></span><span class="mdot" style="left:46%;top:58%"></span><span class="mdot" style="left:18%;top:45%"></span><span class="mdot" style="left:72%;top:18%"></span></div><p style="font-size:12px;color:#e6efef">Покажем движение мяча — а не только графики.</p></div></div><div class="mt"><div class="eyebrow">Один принцип — разные игровые правила</div><h2>Выбери свой спорт</h2><p class="muted">У каждого вида спорта своя площадка, события, состав и система счёта.</p></div><div class="sports">${Object.entries(SPORTS).map(([s,v])=>`<button class="sport-tile" data-action="demo" data-sport="${s}"><span class="sport-icon">${v.icon}</span><b>${v.name}</b><small>${s==='indoor'?'Шестёрка, запасные, либеро':s==='beach'?'Пара без замен':s==='tennis'?'15 / 30 / 40, тай-брейк':s==='padel'?'Игра пары и карта ударов':'Розыгрыши и удары'}</small><em>ОТКРЫТЬ ДЕМО →</em></button>`).join('')}</div><div class="grid3"><div class="panel"><h3>1. Смотри</h3><p class="muted tiny">Выбираешь спорт и видишь готовый розыгрыш: мяч, направление, игрок, результат.</p></div><div class="panel"><h3>2. Пробуй</h3><p class="muted tiny">Нажимаешь на площадку и получаешь готовую запись без специальных кодов.</p></div><div class="panel"><h3>3. Разбирай</h3><p class="muted tiny">Карты точками, статистика связующего, история и отчёт PNG/PDF.</p></div></div>`}
+function demoPage(){const m=DEMOS[ui.sport];const available=['indoor','beach'].includes(ui.sport);const tab=ui.demoTab;return `<div class="crumb"><button data-action="home">Главная</button> / ${esc(SPORTS[ui.sport].name)} / Демо</div><div class="between"><div><div class="eyebrow">ИНТЕРАКТИВНЫЙ УЧЕБНЫЙ МАТЧ · ДАННЫЕ ВЫМЫШЛЕНЫ</div><h1>${SPORTS[ui.sport].icon} ${SPORTS[ui.sport].name}</h1><p class="muted">Ничего заполнять не нужно. Сначала посмотри, как всё устроено.</p></div><button class="btn primary" data-action="create" data-sport="${ui.sport}">Создать свой матч →</button></div><div class="tabs">${[['tactics','🏐 Весь розыгрыш'],['episode','▶ Розыгрыш'],['roster','👥 Состав'],['map','📍 Карты'],['setter','↗ Передачи'],['practice','✋ Попробовать']].filter(([k])=>available||!['setter'].includes(k)).map(([k,l])=>`<button data-action="demo-tab" data-val="${k}" class="${tab===k?'active':''}">${l}</button>`).join('')}</div>${tab==='tactics'&&available?tacticalPage(m):tab==='episode'?demoEpisode(m):tab==='roster'?`<div class="panel">${rosterCard(m)}${m.sport==='indoor'?lineupView(m):''}</div>`:tab==='map'?mapPage(m,true):tab==='setter'?setterPage(m):practicePage(m)}`}
+function demoEpisode(m){let rally=m.events.filter(e=>e.rally===1);return `<div class="split"><div class="panel"><div class="between"><h3>Розыгрыш №1 · пример</h3><span class="pill green">Выигранное очко</span></div><div class="hintbox">Три действия: принял → пас связующего → атака. Нажми «Показать мяч» и посмотри путь.</div><div id="animation-stage" class="courtholder">${courtSVG({m,trace:[rally[0]?.origin,rally[0]?.target,rally[1]?.target,rally[2]?.target],clickLabel:'Схема движения мяча в учебном эпизоде'})}</div><div class="flex mt"><button class="btn primary" data-action="play" data-val="1">▶ Показать движение мяча</button><button class="btn secondary" data-action="stop-play">■ Остановить</button></div><p class="court-helper">Анимация показывает уже записанные касания; она не распознаёт видео автоматически.</p></div><div class="panel"><h3>Что происходило?</h3><div class="timeline">${rally.map((e,i)=>`<div class="entry"><div><b>${i+1}. ${skillLabel(e.action)} · ${esc(playerName(m,e.playerId))}</b><br><small>${e.action==='set'?'Кому: '+esc(playerName(m,e.recipientId)):e.action==='attack'?'Мяч попал в площадку соперника':e.action==='receive'?'Хороший приём':'Действие'} · ${timecode(e.videoTime)}</small></div><span class="pill ${e.result==='point'?'green':''}">${e.result==='point'?'Очко':'В игре'}</span></div>`).join('')}</div><div class="surface-note mt"><b>А почему это важно?</b><br>Тренер видит не только куда прилетела атака, но и путь мяча: кто принял, кому связующий отдал пас, кто завершил розыгрыш. Можно отдельно изучать передачи после хорошего или выбитого приёма.</div><div class="flex mt"><button class="btn" data-action="demo-tab" data-val="practice">Теперь попробую сам →</button><button class="btn ghost" data-action="demo-tab" data-val="map">Смотреть карты</button></div></div></div>`}
+function lineupView(m){if(m.sport!=='indoor')return '';let bench=m.players.filter(x=>!onCourt(m).includes(x.id));return `<div class="grid2 mt"><div><h3>Кто сейчас на площадке</h3><div class="courtholder">${courtSVG({m,showLineup:true})}</div><p class="court-helper">Верх — сетка, низ — задняя линия. Оранжевый игрок — либеро.</p></div><div><h3>Шестёрка и запас</h3><div class="positions">${POS_ORDER.map(p=>`<div class="position"><label>Зона ${p}</label><p>${p==='4'||p==='3'||p==='2'?'Передняя линия':'Задняя линия'}</p><b>${esc(playerName(m,activeAt(m,p)))}</b></div>`).join('')}</div><div class="mt"><b>Ожидают выхода:</b><div class="flex mt">${bench.length?bench.map(p=>`<span class="pill">№${esc(p.number)} ${esc(p.name)}</span>`).join(''):'<span class="tiny muted">Все заявленные игроки на площадке</span>'}</div></div>${m.libero?`<p class="surface-note mt">Либеро №${esc(m.players.find(p=>p.id===m.libero.id)?.number)} заменяет игрока в зоне ${m.libero.position}; заменённый спортсмен остаётся в заявке.</p>`:''}</div></div>`}
+function practicePage(m){return `<div class="split"><div class="panel"><h3>Тренажёр · это не настоящий матч</h3><div class="surface-note success">Можно нажимать любые кнопки: ты ничего не сломаешь, данные в «Мои матчи» не попадут.</div><div class="mt">${inputFlow(m,true)}</div></div><div class="panel"><h3>Как получается результат?</h3><div class="timeline"><div class="entry"><div><b>1. Выбери действие</b><br><small>Не нужно помнить коды и номера зон</small></div></div><div class="entry"><div><b>2. Выбери спортсмена</b><br><small>Нажми на фамилию в составе</small></div></div><div class="entry"><div><b>3. Нажми на площадку</b><br><small>Программа сама скажет, где нажать</small></div></div><div class="entry"><div><b>4. Отметь результат</b><br><small>Очко / в игре / ошибка</small></div></div></div><button class="btn primary mt" data-action="create" data-sport="${m.sport}">Готов создать свой матч →</button></div></div>`}
+function inputFlow(m,isPractice=false){let d=ui.draft;const config=SPORTS[m.sport];let step=ui.coachStep;const currentStages=['skill','player',...(d.action==='set'?['recipient','passtarget']:(d.action==='serve'?['target']:['origin',...(skillIsTarget(d.action)?['target']:[])])), 'result'];
+ if(step==='done')return `<div class="surface-note success"><b>Готово! Действие отмечено.</b><br>${isPractice?'Это учебная запись: она не изменила твои реальные матчи.':'Событие сохранено в матче. Теперь можно отметить следующее действие.'}</div><button class="btn primary block mt" data-action="again">+ Записать следующее действие</button>${isPractice?`<button class="btn ghost block mt" data-action="demo-tab" data-val="map">Посмотреть учебные карты</button>`:''}`;
+ let q=step==='skill'?'Что произошло с мячом?':step==='player'?'Кто выполнил действие?':step==='recipient'?'Кому отдали пас?':step==='passtarget'?'Куда связующий направил мяч?':step==='origin'?'Где игрок коснулся мяча?':step==='target'?(d.action==='serve'?'Куда прилетела подача?':'Куда полетел мяч?'):'Как завершилось действие?';
+ let progress=currentStages.indexOf(step)+1;let html=`<div class="step">${currentStages.map((x,i)=>`<span class="${i<progress-1?'done':i===progress-1?'on':''}">${i+1}. ${({'skill':'Действие','player':'Игрок','recipient':'Кому','passtarget':'Куда пас','origin':'Откуда','target':'Куда','result':'Итог'})[x]}</span>`).join('')}</div><p class="bigquestion">${q}</p>`;
+ if(step==='skill'){html+=`<div class="choices">${config.skills.map(([k,l])=>`<button class="choice" data-action="skill" data-val="${k}">${esc(l)} <small>${k==='set'?'Кому пасует связующий':k==='attack'?'Можно и с задней линии':k==='serve'?'Куда подал':k==='receive'?'Где принял': 'Отмечаем касание'}</small></button>`).join('')}</div>`}
+ else if(step==='player'||step==='recipient'){const pool=step==='recipient'?m.players.filter(p=>p.id!==d.playerId&&onCourt(m).includes(p.id)):availableActors(m,d.action);html+=`<div class="choices">${pool.map(p=>`<button class="choice" data-action="${step==='recipient'?'recipient':'player'}" data-val="${esc(p.id)}">№${esc(p.number)} <small>${esc(p.name)}</small></button>`).join('')}</div>`;if(!pool.length)html+='<p class="surface-note warn">На площадке нет доступного спортсмена. Проверь состав и шестёрку.</p>';if(step==='recipient')html+='<p class="tiny muted">Выбираешь получателя, затем отмечаешь точку передачи на своей площадке (необязательно).</p>'}
+ else if(step==='origin'||step==='target'||step==='passtarget'){
+    const side=(step==='origin'||step==='passtarget')?'own':'opponent';
+    let extra=step==='passtarget'?'Коснись места, куда летел пас — в зону 4, 3, 2 или за линию 3 метров. Можно пропустить, если точка неизвестна.':step==='origin'?(m.sport==='indoor'?`Можно нажать <b>за трёхметровой линией</b>, например для пайпа или атаки задней линии.`:'Нажми на свою половину площадки.'):'Укажи фактическое место попадания на стороне соперника. Если мяч ушёл в аут или сетку, выбери кнопку ниже.';
+    html+=`<div class="hintbox">${extra}</div><div class="courtholder">${courtSVG({m,interactive:true,interactiveSide:side,chosen:(step==='target'||step==='passtarget')?d.target:d.origin,clickLabel:q})}</div><div class="court-key"><span>⬆️ Соперник</span><span>➖ Сетка</span><span>⬇️ Наша половина</span></div>`;
+    if(step==='target')html+=`<div class="flex mt"><button class="btn secondary" data-action="no-target">Не попал в площадку · аут / сетка</button></div>`;
+    if(step==='origin')html+=`<div class="flex mt"><button class="btn ghost small" data-action="skip-origin">Место не знаю →</button></div>`;
+    if(step==='passtarget')html+=`<div class="flex mt"><button class="btn ghost small" data-action="skip-pass-target">Не знаю точную точку →</button></div>`;
+ }
+ else if(step==='result'){let posHint='';if(m.sport==='indoor'&&d.action==='attack'&&d.origin){posHint=`<p class="pro-note">${d.origin.y>=67?'Отмечена атака задней линии (включая пайп). Проверь отталкивание за линией 3 м.':'Отмечен удар из передней части площадки.'}</p>`}html+=`${posHint}${d.action==='set'?`<label class="fieldlabel">Какой был приём перед пасом? (необязательно)</label><select class="field" id="pass-quality">${['Не указано','Идеальный','Хороший','Выбитый'].map(q=>`<option value="${q}" ${d.quality===q?'selected':''}>${q}</option>`).join('')}</select><div class="mt"></div>`:''}<div class="choices">${[['point','✅ Очко','Мяч завершил розыгрыш в нашу пользу'],['good','🔵 В игре','Игра продолжается'],['error','❌ Ошибка','Сетка, аут, блок или другое']].map(([k,v,small])=>`<button class="choice ${d.result===k?'selected':''}" data-action="outcome" data-val="${k}">${v}<small>${small}</small></button>`).join('')}</div><div class="flex mt"><button class="btn primary" data-action="save" ${!d.result?'disabled':''}>${isPractice?'Посмотреть, как записалось →':'Сохранить действие →'}</button><button class="btn ghost small" data-action="back">Назад</button></div><p class="tiny muted">Очко в счёт матча добавится отдельно при завершении розыгрыша, чтобы не было двойного подсчёта.</p>`}
+ if(step!=='skill'&&step!=='result')html+=`<div class="flex mt"><button class="btn ghost small" data-action="back">← Назад</button><button class="btn ghost small" data-action="restart">Начать заново</button></div>`;
+ return html;
+}
+function selectedList(m){return m.events.filter(e=>e.side!=='them'&&(ui.filters.player==='all'||e.playerId===ui.filters.player)&&(ui.filters.set==='all'||String(e.set)===ui.filters.set))}
+function mapPage(m,isDemo=false){let skills=['indoor','beach'].includes(m.sport)?[['attack','Атаки'],['serve','Подачи'],['set','Передачи'],['receive','Приём']]:SPORTS[m.sport].skills;let chosen=skills.find(x=>x[0]===ui.mapAction);if(!chosen)ui.mapAction=skills[0][0];let e=selectedList(m).filter(x=>x.action===ui.mapAction);let side=ui.mapSide;if(ui.mapAction==='receive'||ui.mapAction==='dig'||ui.mapAction==='block')side='origin';let valid=e.filter(x=>side==='both'?(x.origin&&x.target):x[side]);let missing=e.length-valid.length;const pct=e.length?Math.round(e.filter(x=>x.result==='point').length/e.length*100):0;
+ return `<div class="split"><div class="panel"><div class="between"><div><h3>Карта · ${esc(ACTION_NAMES[ui.mapAction]||chosen?.[1])}</h3><p class="muted tiny">${e.length} действий, ${valid.length} точек показано. Каждая точка — одно действие.</p></div><span class="pill green">${pct}% завершились очком</span></div><div class="tabs">${skills.map(([k,l])=>`<button data-action="map-skill" data-val="${k}" class="${ui.mapAction===k?'active':''}">${esc(l)}</button>`).join('')}</div><div class="flex mb no-print">${ui.mapAction!=='serve'&&ui.mapAction!=='set'?`<button class="btn ${side==='origin'?'primary':'ghost'} small" data-action="side" data-val="origin">Откуда</button>`:''}<button class="btn ${side==='target'?'primary':'ghost'} small" data-action="side" data-val="target">Куда</button>${ui.mapAction==='attack'||(['forehand','backhand','smash'].includes(ui.mapAction))?`<button class="btn ${side==='both'?'primary':'ghost'} small" data-action="side" data-val="both">↗ Траектории</button>`:''}</div><div class="courtholder">${courtSVG({m,events:valid,which:side==='both'?'target':side,paths:side==='both',clickLabel:'Карта действий: каждая точка соответствует игровому событию'})}</div><p class="court-helper">🟢 Очко · 🔵 В игре · 🔴 Ошибка. Нажми на точку и увидишь игрока.</p>${missing?`<div class="surface-note mt">${missing} событий без координат для этого режима. Ошибки «аут / сетка» не получают выдуманную точку.</div>`:''}</div><div class="panel"><h3>Выбери, что посмотреть</h3><div class="formrow"><label><span class="fieldlabel">Игрок</span><select class="field" id="filter-player"><option value="all">Все игроки</option>${m.players.map(p=>`<option value="${p.id}" ${ui.filters.player===p.id?'selected':''}>№${esc(p.number)} ${esc(p.name)}</option>`).join('')}</select></label><label><span class="fieldlabel">Партия / сет</span><select class="field" id="filter-set"><option value="all">Все</option>${[1,2,3,4,5].map(i=>`<option value="${i}" ${ui.filters.set===String(i)?'selected':''}>${i}</option>`).join('')}</select></label></div><div class="grid3 mt"><div class="stat"><strong>${e.length}</strong><small>Действий</small></div><div class="stat"><strong>${e.filter(x=>x.result==='point').length}</strong><small>Очков</small></div><div class="stat"><strong>${e.filter(x=>x.result==='error').length}</strong><small>Ошибок</small></div></div>${ui.picked?(()=>{let x=e.find(z=>z.id===ui.picked);return x?`<div class="surface-note success mt"><b>${esc(skillLabel(x.action))} · ${esc(playerName(m,x.playerId))}</b><br>${x.recipientId?'Кому: '+esc(playerName(m,x.recipientId))+' · ':''}${x.result==='point'?'Очко':x.result==='error'?'Ошибка':'В игре'} · ${timecode(x.videoTime)}</div>`:''})():`<p class="muted tiny mt">Нажми на точку на карте для деталей.</p>`}<h3 class="mt">Последние записи</h3><div class="timeline">${e.slice(-6).reverse().map(x=>`<div class="entry"><div><b>${esc(playerName(m,x.playerId))}</b><br><small>${skillLabel(x.action)} · розыгрыш ${x.rally} · ${timecode(x.videoTime)}</small></div><span class="pill ${x.result==='point'?'green':x.result==='error'?'red':''}">${x.result==='point'?'Очко':x.result==='error'?'Ошибка':'В игре'}</span></div>`).join('')||'<div class="empty">Пока нет записанных действий</div>'}</div></div></div>`}
+function setterPage(m){let passes=selectedList(m).filter(e=>e.action==='set'&&e.recipientId&&(ui.filters.quality==='all'||(e.quality||'Не указано')===ui.filters.quality)&&(ui.filters.rotation==='all'||String(e.rotationNo||'')===ui.filters.rotation));let total=passes.length;let by={};passes.forEach(e=>{by[e.recipientId]=(by[e.recipientId]||0)+1});return `<div class="panel"><div class="between"><div><h2>Кому чаще отдают передачи?</h2><p class="muted">Каждый пас с указанным получателем попадает в статистику. Учитываются передачи и из передней, и из задней части площадки.</p></div><span class="pill">${total} передач</span></div><div class="formrow"><label><span class="fieldlabel">Чьи передачи</span><select id="filter-player" class="field"><option value="all">Все передающие</option>${m.players.filter(p=>passes.some(e=>e.playerId===p.id)||p.role==='Связующий').map(p=>`<option value="${p.id}" ${ui.filters.player===p.id?'selected':''}>${esc(playerName(m,p.id))}</option>`).join('')}</select></label><label><span class="fieldlabel">Партия</span><select id="filter-set" class="field"><option value="all">Все</option>${[1,2,3,4,5].map(n=>`<option value="${n}" ${ui.filters.set===String(n)?'selected':''}>${n}</option>`).join('')}</select></label><label><span class="fieldlabel">Расстановка</span><select id="filter-rotation" class="field"><option value="all">Любая P1–P6</option>${[1,2,3,4,5,6].map(n=>`<option value="${n}" ${ui.filters.rotation===String(n)?'selected':''}>P${n}</option>`).join('')}</select></label></div><label style="display:block;max-width:320px;margin-top:12px"><span class="fieldlabel">После какого приёма</span><select id="filter-quality" class="field">${[['all','Все'],['Идеальный','Идеальный'],['Хороший','Хороший'],['Выбитый','Выбитый'],['Не указано','Не указано']].map(([k,l])=>`<option value="${k}" ${ui.filters.quality===k?'selected':''}>${l}</option>`).join('')}</select></label><div class="mt">${Object.entries(by).sort((a,b)=>b[1]-a[1]).map(([pid,n])=>`<div class="srow"><div><div class="between"><b>${esc(playerName(m,pid))}</b><small>${n} · ${Math.round(n/(total||1)*100)}%</small></div><div class="chartbar"><span style="width:${n/(total||1)*100}%"></span></div></div><b>${n}</b></div>`).join('')||'<div class="empty">Запиши хотя бы одну передачу с получателем, чтобы увидеть распределение.</div>'}</div><div class="grid2 mt"><div><h3>Куда направлены передачи</h3><div class="courtholder">${courtSVG({m,events:passes.filter(x=>x.target),which:'target'})}</div><p class="tiny muted">Только реальные точки, которые тренер отметил.</p></div><div class="surface-note">${passes.filter(x=>x.target).length} из ${total} передач имеют координаты. Кому отдаётся пас, известно и без координат. Для профессионального отчёта по P1–P6 дополнительно потребуется проверять положение связующего относительно расстановки.</div></div></div>`}
+function accountPage(){return `<div class="crumb"><button data-action="home">Главная</button> / Мой кабинет</div><div class="panel" style="max-width:590px;margin:auto"><div class="eyebrow">ПОСЛЕ ДЕМО</div><h1>Теперь попробуем твой матч</h1><p class="lead">Для локального теста достаточно указать имя тренера. Это <b>не настоящая регистрация</b>: пароля, синхронизации или сервера аккаунтов здесь нет.</p><form id="profile-form"><label class="fieldlabel" for="coach-name">Как к тебе обращаться?</label><input class="field" id="coach-name" name="name" required minlength="2" placeholder="Например, Тренер команды" value="${esc(state.profile?.name||'')}"><button class="btn primary mt block" type="submit">Продолжить к созданию матча →</button></form><p class="tiny muted">Данные хранятся только в браузере. Для переноса используй резервную копию JSON.</p></div>`}
+function wizardPage(){const s=SPORTS[ui.sport],indoor=ui.sport==='indoor';
+ const schemes=[['5-1','5–1 · один связующий'],['4-2','4–2 · два связующих'],['6-2','6–2 · связующий из задней линии']];
+ const six=(list,lineup,side)=>`<div class="positions mt">${POS_ORDER.map(p=>`<div class="position"><label>${POSITION_LABELS[p]}</label><select class="field" data-starter="${p}" data-starter-side="${side}"><option value="">Выбери игрока</option>${list.filter(x=>x.role!=='Либеро').map(x=>`<option value="${x.id}" ${lineup[p]===x.id?'selected':''}>№${esc(x.number)} ${esc(x.name)} · ${esc(x.role)}</option>`).join('')}</select></div>`).join('')}</div>`;
+ return `<div class="crumb"><button data-action="home">Главная</button> / Подготовка матча / Шаг ${ui.wizardStep} из 3</div><div class="between"><div><div class="eyebrow">НОВЫЙ МАТЧ · ПОШАГОВАЯ НАСТРОЙКА</div><h1>${ui.wizardStep===1?'1. Выбери команды':ui.wizardStep===2?'2. Заполни обе заявки':'3. Расстановки и первая подача'}</h1><p class="muted">${ui.wizardStep===1?'Создай матч. Никаких чужих игроков автоматически не добавляем.':ui.wizardStep===2?'До матча заполни свою команду И соперника: основные, запасные и либеро.':'Выбери стартовые позиции обеих команд и того, кто подаёт в первой партии.'}</p></div><span class="pill green">${s.icon} ${s.short}</span></div>
+ ${ui.wizardStep===1?`<div class="panel" style="max-width:750px"><div class="formrow"><label><span class="fieldlabel">Вид спорта</span><select class="field" id="wizard-sport">${Object.entries(SPORTS).map(([k,v])=>`<option value="${k}" ${ui.sport===k?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label><label><span class="fieldlabel">Дата</span><input class="field" type="date" id="wizard-date" value="${ui.newDate}"></label><label><span class="fieldlabel">Наша команда</span><input class="field" id="wizard-team" placeholder="Например, Рубеж" value="${esc(ui.newTeam)}"></label><label><span class="fieldlabel">Соперник</span><input class="field" id="wizard-opponent" placeholder="Например, Команда Б" value="${esc(ui.newOpponent)}"></label></div><button class="btn primary mt" data-action="wizard-next">Далее: заявки обеих команд →</button></div>`:
+ ui.wizardStep===2?`<div class="grid2"><div class="panel"><div class="between"><h3>🔵 ${esc(ui.newTeam||'Наша команда')} · ${ui.newPlayers.length}</h3><button class="btn secondary small" data-action="add-player">+ Игрок</button></div><p class="tiny muted">Основные, запасные и либеро. Заполни номер, фамилию и амплуа.</p>${rosterEditor(ui.newPlayers,s,'us')}</div><div class="panel"><div class="between"><h3>🔴 ${esc(ui.newOpponent||'Соперник')} · ${ui.newOpponentPlayers.length}</h3><button class="btn secondary small" data-action="add-opponent-player">+ Игрок</button></div><p class="tiny muted">Внеси заявку соперника сейчас, чтобы не вводить его номера во время игры.</p>${rosterEditor(ui.newOpponentPlayers,s,'them')}</div></div><div class="flex mt"><button class="btn ghost" data-action="wizard-back">← Назад</button><button class="btn primary" data-action="wizard-next">${indoor?'Далее: стартовые шестёрки →':'Создать матч →'}</button></div>`:
+ `<div class="grid2"><div class="panel"><h3>🔵 ${esc(ui.newTeam)} · система игры</h3><select class="field" id="wizard-scheme-us">${schemes.map(([v,l])=>`<option value="${v}" ${ui.newSchemeUs===v?'selected':''}>${l}</option>`).join('')}</select>${six(ui.newPlayers,ui.newLineup,'us')}</div><div class="panel"><h3>🔴 ${esc(ui.newOpponent)} · система игры</h3><select class="field" id="wizard-scheme-them">${schemes.map(([v,l])=>`<option value="${v}" ${ui.newSchemeThem===v?'selected':''}>${l}</option>`).join('')}</select>${six(ui.newOpponentPlayers,ui.newOpponentLineup,'them')}</div></div><div class="panel mt"><div class="surface-note">Система 5–1: в шестёрке один связующий. Системы 4–2 и 6–2: два связующих по диагонали. Чтобы сменить амплуа, вернись к заявке.</div><h3>🏐 Кто начинает подавать в первой партии?</h3><div class="formrow"><label class="fieldlabel"><input type="radio" name="first-serve" value="us" ${ui.newFirstServer==='us'?'checked':''}> 🔵 ${esc(ui.newTeam)}</label><label class="fieldlabel"><input type="radio" name="first-serve" value="them" ${ui.newFirstServer==='them'?'checked':''}> 🔴 ${esc(ui.newOpponent)}</label></div><p class="tiny muted">В партиях 2–4 первая подача чередуется. Перед пятой партией проводится новая жеребьёвка. Переход только при выигрыше на приёме.</p><div class="surface-note mt">Либеро (если заявлен) автоматически выйдет вместо центрального игрока задней линии. Связующий будет показан синим, либеро — оранжевым.</div><div class="flex mt"><button class="btn ghost" data-action="wizard-back">← К составу</button><button class="btn primary" data-action="wizard-next">✓ Начать матч</button></div></div>`}`
+}
+function rosterEditor(players,s,side='us'){return `<div class="tiny muted" style="margin-bottom:7px">№ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Фамилия / имя &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Роль</div>${players.map((p,i)=>`<div class="rosteritem" data-player-row="${p.id}"><input class="field" aria-label="Номер игрока" data-roster-field="number" data-roster-side="${side}" data-id="${p.id}" value="${esc(p.number)}"><input class="field" aria-label="Имя игрока" data-roster-field="name" data-roster-side="${side}" data-id="${p.id}" value="${esc(p.name)}" placeholder="Фамилия"><select class="field" aria-label="Амплуа" data-roster-field="role" data-roster-side="${side}" data-id="${p.id}">${s.roles.map(role=>`<option value="${role}" ${p.role===role?'selected':''}>${role}</option>`).join('')}</select><button class="ghostx" title="Удалить из заявки" data-action="${side==='them'?'remove-opponent-player':'remove-player'}" data-val="${p.id}">×</button></div>`).join('')||'<div class="empty">Пока ни одного игрока. Нажми «Добавить игрока».</div>'}`}
+function rosterManage(m){return `<div class="grid2"><div class="panel"><div class="between"><h3>Заявка · ${m.players.length}</h3><button class="btn secondary small" data-action="match-add-player">+ Игрок</button></div><p class="tiny muted">На площадке шесть. В списке ниже могут быть запасные, которых легко выпустить на замену.</p>${rosterEditor(m.players,SPORTS[m.sport])}<div class="surface-note mt">Изменения фамилий и номеров сохраняются сразу после ввода. Игровые действия привязаны к внутреннему ID игрока, а не к номеру формы.</div></div><div class="panel"><h3>На площадке сейчас</h3>${m.sport==='indoor'?`${courtSVG({m,showLineup:true})}<div class="flex mt"><span class="pill">Переход по выигранной чужой подаче — автоматически</span><button class="btn ghost small" data-action="restore-libero" ${!m.libero?'disabled':''}>Вернуть заменённого либеро игрока</button></div><div class="surface-note mt">Переход выполняется автоматически при выигрыше на приёме. Либеро автоматически меняет центрального игрока задней линии и выходит перед передней линией (в рамках базовой модели). <button class="btn small ghost" data-action="toggle-auto-libero">${m.autoLibero===false?'Включить':'Отключить'} автозамену либеро</button></div><div class="subtle"></div><h3>Обычная замена</h3><div class="formrow"><label><span class="fieldlabel">Кого заменяем (зона)</span><select class="field" id="sub-zone">${POS_ORDER.map(p=>`<option value="${p}">Зона ${p}: ${esc(playerName(m,m.lineup?.[p]))}</option>`).join('')}</select></label><label><span class="fieldlabel">Кто выходит</span><select class="field" id="sub-player"><option value="">Выбери запасного</option>${m.players.filter(p=>p.role!=='Либеро'&&!inSix(m).includes(p.id)).map(p=>`<option value="${p.id}">${esc(playerName(m,p.id))}</option>`).join('')}</select></label></div><button class="btn primary small mt" data-action="substitute">↔ Сделать замену</button><div class="subtle"></div><h3>Либеро · только задняя линия</h3><div class="formrow"><label><span class="fieldlabel">Какой либеро выйдет</span><select id="libero-player" class="field"><option value="">Выбери либеро</option>${m.players.filter(p=>p.role==='Либеро').map(p=>`<option value="${p.id}">${esc(playerName(m,p.id))}</option>`).join('')}</select></label><label><span class="fieldlabel">Кого заменяет на задней линии</span><select id="libero-zone" class="field">${BACK.map(p=>`<option value="${p}">Зона ${p} · ${esc(playerName(m,m.lineup?.[p]))}</option>`).join('')}</select></label></div><button class="btn primary small mt" data-action="deploy-libero" ${m.libero?'disabled':''}>Выпустить либеро</button>${m.libero?`<div class="surface-note success mt">Либеро на площадке в зоне ${m.libero.position}, вместо ${esc(playerName(m,m.libero.replaced))}. Одновременно второго либеро выпустить нельзя.</div>`:''}<div class="subtle"></div><h3>Схема стартовой шестёрки</h3><div class="positions">${POS_ORDER.map(p=>`<div class="position"><label>Зона ${p}</label><select class="field" data-lineup-edit="${p}">${m.players.filter(pl=>pl.role!=='Либеро').map(pl=>`<option value="${pl.id}" ${m.lineup?.[p]===pl.id?'selected':''}>№${esc(pl.number)} ${esc(pl.name)}</option>`).join('')}</select></div>`).join('')}</div>`:`<div class="surface-note mt">${m.sport==='beach'?'Два игрока: либеро и замены не предусмотрены.':'Для выбранного спорта шестёрка и либеро не применяются.'}</div>`}</div></div>`}
+const oldRosterManage=rosterManage;
+rosterManage=function(m){let base=oldRosterManage(m);if(m.sport!=='indoor')return base;const players=m.opponentPlayers||[];return base+`<div class="panel mt"><div class="between"><h3>🔴 Заявка соперника · ${players.length}</h3><button class="btn secondary small" data-action="match-add-opponent-player">+ Игрок соперника</button></div>${rosterEditor(players,SPORTS[m.sport],'them')}<h3 class="mt">Расстановка соперника</h3><div class="positions">${POS_ORDER.map(p=>`<div class="position"><label>Зона ${p}</label><select class="field" data-opponent-lineup-edit="${p}"><option value="">— выбери —</option>${players.filter(x=>x.role!=='Либеро').map(x=>`<option value="${x.id}" ${m.opponentLineup?.[p]===x.id?'selected':''}>№${esc(x.number)} ${esc(x.name)}</option>`).join('')}</select></div>`).join('')}</div><p class="tiny muted">Соперник также выполняет автоматический переход при выигрыше подачи. Эти игроки будут видны на тактической площадке.</p></div>`};
+function videoBlock(){return `<div class="panel no-print"><div class="between"><div><h3>Видео матча <span class="pill">необязательно</span></h3><p class="muted tiny">Видео остаётся на устройстве. Время касания записывается при сохранении.</p></div><label class="btn secondary small filebtn">📼 Выбрать видео <input id="video-file" type="file" accept="video/*"></label></div>${ui.videoUrl?`<div class="videoarea"><video id="match-video" class="video" src="${ui.videoUrl}" controls playsinline preload="metadata"></video><div class="flex mt"><button class="btn secondary small" data-action="video-back">⟲ −5 сек</button><button class="btn secondary small" data-action="video-play">⏯ Пауза / пуск</button><button class="btn secondary small" data-action="video-forward">+5 сек ⟳</button><button class="btn ghost small" data-action="video-slow">0,5× скорость</button></div><p class="tiny muted">Пробел — пауза; ← и → — перемотка 5 секунд. Ввод действия сохраняет текущую секунду видео.</p><p class="tiny muted">${esc(ui.videoName||'')} · После перезагрузки видео нужно выбрать повторно.</p></div>`:''}</div>`}
+function newSetBanner(m){const n=matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1;const fifth=n===5;return `<div class="panel" style="border:2px solid #e8a54b"><h2>🏐 Подготовка ${n}-й партии</h2><p>${fifth?'Новая жеребьёвка: выбери, кто начинает подавать.':'Первой подаёт команда, которая не подавала первой в предыдущей партии.'} Перед подтверждением можешь исправить стартовые шестёрки на вкладке «Состав».</p><p><b>Первая подача:</b> ${fifth?`<label><input type="radio" name="next-set-server" value="us" ${m.nextSetServer==='us'?'checked':''}> ${esc(m.team)}</label> <label><input type="radio" name="next-set-server" value="them" ${m.nextSetServer==='them'?'checked':''}> ${esc(m.opponent)}</label>`:esc(m.nextSetServer==='us'?m.team:m.nextSetServer==='them'?m.opponent:'Нужно указать первую подачу')}</p><div class="flex"><button class="btn secondary small" data-action="work-tab" data-val="lineup">Проверить обе шестёрки</button><button class="btn primary" data-action="start-new-set">Подтвердить и начать партию →</button></div></div>`}
+function liveActor(m,side,zone){
+ const pid=RALLY.activeAtSide(m,side,zone),roster=side==='us'?m.players:m.opponentPlayers;
+ return (roster||[]).find(p=>p.id===pid)||null;
+}
+function liveSideName(m,side){return side==='us'?m.team:m.opponent}
+function livePlayers(m,side){
+ const select=ui.livePlayer;const zones=['4','3','2','5','6','1'];
+ return `<div class="live-six">${zones.map(z=>{
+ const p=liveActor(m,side,z),setter=p?.role==='Связующий',lib=p?.role==='Либеро';
+ return `<button class="live-player ${setter?'setter':lib?'libero':''} ${side===ui.liveSide&&p?.id===select?'chosen':''} ${side===ui.liveSide&&p?.id===ui.liveRecipient?'recipient':''}" data-action="live-player" data-side="${side}" data-val="${esc(p?.id||'')}" ${!p?'disabled':''}>
+ <span class="live-zone">Зона ${z}</span><b>№${esc(p?.number||'—')}</b><small>${esc(p?.name||'Игрок не назначен')}</small>${setter?'<em>СВ</em>':lib?'<em>ЛИБ</em>':''}</button>`}).join('')}</div>`;
+}
+function liveSubstitute(m,side,zone,pid){
+ if(m.sport!=='indoor'||m.pendingSetSetup||matchScore(m.sport,m.rallies).done)throw Error('Замены возможны только между розыгрышами текущей партии');
+ const key=side==='us'?'lineup':'opponentLineup',libKey=side==='us'?'libero':'opponentLibero';
+ const roster=side==='us'?m.players:m.opponentPlayers;
+ const current=m[key]?.[zone];
+ if(!current||!roster.some(p=>p.id===pid&&p.role!=='Либеро'))throw Error('Выбери зарегистрированного запасного игрока');
+ if(m[libKey]?.position===zone)throw Error('Сначала верни игрока, которого заменяет либеро');
+ if(['1','2','3','4','5','6'].some(z=>RALLY.activeAtSide(m,side,z)===pid))throw Error('Игрок уже на площадке');
+ const setNo=matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1;
+ const history=(m.substitutions||[]).filter(s=>s.kind==='sub'&&s.set===setNo&&(s.side||'us')===side);
+ if(history.length>=(m.substitutionLimit||6))throw Error('Лимит замен в партии исчерпан');
+ if(history.length&&history[history.length-1].rally===m.rallyNo)throw Error('Вторая отдельная заявка на замену в одной остановке не допускается');
+ const returnPair=history.find(h=>h.starter===pid&&h.reserve===current);
+ const root=returnPair?pid:current,reserve=returnPair?current:pid;
+ if(returnPair){
+   if(history.some(h=>h.kind==='sub'&&h.starter===root&&h.returned))throw Error('Основной игрок уже возвращался в этой партии');
+ }else{
+   if(history.some(h=>h.starter===current||h.reserve===pid||h.reserve===current||h.starter===pid))throw Error('Эта пара уже использовала замену в партии');
+ }
+ m[key][zone]=pid;
+ (m.substitutions||(m.substitutions=[])).push({kind:'sub',side,set:setNo,zone,out:current,in:pid,starter:root,reserve,returned:!!returnPair,rally:m.rallyNo,time:Date.now()});
+ return 'Замена зарегистрирована';
+}
+function livePage(m){
+ const sc=matchScore(m.sport,m.rallies),side=ui.liveSide||m.servingTeam||'us';
+ const currentActor=(side==='us'?m.players:m.opponentPlayers).find(p=>p.id===ui.livePlayer);
+ const servingActor=liveActor(m,m.servingTeam||'us','1');
+ const recent=(m.events||[]).slice(-5).reverse();
+ const auto=!!m.autoLibero;const pol=m.liberoPolicy||{};
+ const liberoSettings=(side)=>{const p=side==='us'?m.players:m.opponentPlayers;const libs=p.filter(x=>x.role==='Либеро');const c=pol[side]||{},fallback=RALLY.policyFor(m,side);return `<div class="live-config"><b>${esc(liveSideName(m,side))}</b><div class="live-policies"><label>На приёме<select class="field" data-lib-policy="receive" data-side="${side}">${libs.map(x=>`<option value="${esc(x.id)}" ${(c.receive||fallback.receive)===x.id?'selected':''}>№${esc(x.number)} ${esc(x.name)}</option>`).join('')}</select></label><label>На своей подаче<select class="field" data-lib-policy="serve" data-side="${side}">${libs.map(x=>`<option value="${esc(x.id)}" ${(c.serve||fallback.serve)===x.id?'selected':''}>№${esc(x.number)} ${esc(x.name)}</option>`).join('')}</select></label></div></div>`}
+ const court=`<svg data-live-court viewBox="0 0 320 364" role="img" aria-label="Нажми, чтобы отметить конечную точку последнего касания" style="width:min(100%,280px);touch-action:manipulation;cursor:crosshair"><rect x="18" y="18" width="284" height="324" rx="5" fill="#d9eafb"/><rect x="18" y="180" width="284" height="162" fill="#e9dfbc"/><rect x="18" y="18" width="284" height="324" fill="none" stroke="white" stroke-width="3"/><path d="M18 126H302 M18 180H302 M18 234H302" stroke="white" stroke-width="3"/><path d="M18 180H302" stroke="#183b50" stroke-width="6"/><text x="160" y="39" fill="#32516a" text-anchor="middle" font-size="12" font-weight="700">СОПЕРНИК</text><text x="160" y="330" fill="#32516a" text-anchor="middle" font-size="12" font-weight="700">НАШИ</text>${ui.liveLastPoint?`<circle cx="${18+ui.liveLastPoint.x*2.84}" cy="${18+ui.liveLastPoint.y*3.24}" r="9" fill="#f36f21" stroke="white" stroke-width="3"/>`:''}</svg>`;
+ return `<div class="live-root"><div class="live-top"><div><div class="eyebrow">⚡ БЫСТРЫЙ ПРОТОКОЛ МАТЧА</div><h2>Розыгрыш №${m.rallyNo} · Партия ${sc.sets[0]+sc.sets[1]+1}</h2><div class="live-sub">Подаёт: <strong>${esc(liveSideName(m,m.servingTeam||'us'))} · №${esc(servingActor?.number||'—')} ${esc(servingActor?.name||'')}</strong> · Системы: ${esc(m.tactical?.scheme||'5-1')} / ${esc(m.opponentScheme||'5-1')}</div></div><div class="live-giant-score"><span>${sc.scores[0]}</span><i>:</i><span>${sc.scores[1]}</span></div></div>
+ ${m.pendingSetSetup?'<p class="surface-note warn">Сначала подтверди стартовые шестёрки следующей партии выше.</p>':''}
+ <div class="live-fastserve"><strong>Подача №${esc(servingActor?.number||'—')} · ${esc(liveSideName(m,m.servingTeam||'us'))}</strong><div class="live-fastbuttons"><button data-action="live-serve-result" data-val="error">❌ В сетку / аут</button><button data-action="live-serve-result" data-val="point">✅ Эйс</button><button data-action="live-serve-result" data-val="good">🏐 В игре</button></div></div>
+ <div class="live-section"><div class="live-h"><h3>1. Кто выполнил действие?</h3><span>Нажми номер игрока — отобразится активная команда</span></div><div class="live-teams">
+ ${['us','them'].map(side=>`<div class="live-team ${side===ui.liveSide?'active':''}"><button class="live-teamname" data-action="live-side" data-val="${side}">${side===ui.liveSide?'● ':'○ '}${esc(liveSideName(m,side))}</button>${livePlayers(m,side)}</div>`).join('')}
+ </div></div>
+ <div class="live-section"><div class="live-h"><h3>2. Что произошло?</h3><span>Один тап по действию — запись. Результативное действие автоматически завершает розыгрыш.</span></div>
+ <div class="live-selected">Выбран: <b>${currentActor?`№${esc(currentActor.number)} ${esc(currentActor.name)}`:'Выбери игрока выше'}</b> · <span>${esc(liveSideName(m,side))}</span></div>
+ <div class="live-actions">
+ ${[['serve','🏐 Подача'],['receive','🛡️ Приём'],['set','↗ Передача'],['attack','💥 Атака'],['block','🧱 Блок'],['dig','🤲 Защита']].map(([a,label])=>`<button class="live-action ${ui.liveAction===a?'on':''}" data-action="live-skill" data-val="${a}">${label}</button>`).join('')}
+ </div>
+ ${(ui.liveAction==='set'||ui.liveAction==='attack'||ui.liveAction==='serve'||ui.liveAction==='block')?`<div class="live-extra"><label>Тип ${ui.liveAction==='set'?'передачи':ui.liveAction==='attack'?'атаки':ui.liveAction==='block'?'блока':'подачи'}<select class="field" id="live-subtype">${(ui.liveAction==='set'?['Высокая передача','Первый темп','Прострел','За голову','Пайп','Передача в доигровке']:ui.liveAction==='attack'?['Силовой удар','Накат','Скидка','Скидка связующего','Пайп','Атака из зоны 1','Обманный удар']:ui.liveAction==='block'?['Одиночный','Двойной','Тройной']:['Планер','Силовая в прыжке','Планирующая в прыжке','Укороченная']).map(v=>`<option ${ui.liveSubtype===v?'selected':''}>${v}</option>`).join('')}</select></label>${ui.liveAction==='set'?`<label>Кому передача<select class="field" id="live-recipient"><option value="">Выбери нападающего</option>${['4','3','2','5','6','1'].map(z=>{let p=liveActor(m,side,z);return p&&p.id!==ui.livePlayer?`<option value="${esc(p.id)}" ${ui.liveRecipient===p.id?'selected':''}>№${esc(p.number)} ${esc(p.name)} · зона ${z}</option>`:''}).join('')}</select></label>`:''}</div>`:''}
+ ${ui.liveAction==='block'?`<p class="muted tiny">Если блок двойной или тройной, отметь участников: <span>${esc((ui.liveBlockPlayers||[]).map(pid=>(side==='us'?m.players:m.opponentPlayers).find(p=>p.id===pid)?.number||'?').join(', ')||'Пока выбран основной блокирующий')}</span></p><div class="live-extra">${['4','3','2'].map(z=>{let p=liveActor(m,side,z);return p&&p.id!==ui.livePlayer?`<button class="btn secondary small" data-action="live-block-player" data-val="${esc(p.id)}">${ui.liveBlockPlayers.includes(p.id)?'☑':'☐'} №${esc(p.number)}</button>`:''}).join('')}</div>`:''}
+ <div class="live-outcomes">${[['point','✅ Очко'],['good','👍 В игре'],['error','❌ Ошибка']].map(([out,label])=>`<button data-action="live-record" data-val="${out}" class="live-out ${out}">${label}</button>`).join('')}</div>
+ <p class="muted tiny">Пример: выбери игрока №8 → «Подача» → «❌ Ошибка». Скаут начислит очко другой команде, сменит подачу, выполнит переход и проверит либеро.</p></div>
+ <div class="live-bottom"><div class="live-section"><div class="live-h"><h3>📍 Точки без лишних действий</h3><span>Необязательно во время живой игры</span></div><p class="muted tiny">Нажми площадку после действия — точка сохранится у последнего касания. Можно добавить после матча по видео.</p><div class="live-map">${court}</div><button class="btn secondary small" data-action="live-clear-point">Убрать последнюю точку</button></div>
+ <div class="live-section"><h3>↩ Исправления и итог</h3><div class="flex"><button class="btn secondary" data-action="live-undo-contact">Отменить касание</button><button class="btn ghost" data-action="live-undo-rally">↩ Отменить розыгрыш</button></div><p class="muted tiny mt">Если эпизод спорный, выбери, кому судья присудил очко. Это не нужно для эйса, ошибки подачи, результативной атаки и блока.</p><div class="live-manual"><button class="btn primary" data-action="end-rally" data-val="us" ${m.pendingSetSetup?'disabled':''}>Очко ${esc(m.team)}</button><button class="btn secondary" data-action="end-rally" data-val="them" ${m.pendingSetSetup?'disabled':''}>Очко ${esc(m.opponent)}</button></div><div class="live-recent">${recent.map(e=>`<div class="entry"><div><b>${esc(skillLabel(e.action))} · ${esc(e.side==='them'?liveSideName(m,'them'):playerName(m,e.playerId))}</b><small>№${e.rally} · ${esc(e.subtype||'')} · ${esc(e.result||'')} ${e.target?'📍':''}</small></div></div>`).join('')||'<div class="muted">Действий пока нет</div>'}</div></div></div>
+ <details class="live-options"><summary>⚙️ Либеро и правила турнира</summary><div class="panel"><p>В начале матча настраивается либеро на приёме и либеро на своей подаче. Автоматическая смена возможна только в допустимую остановку и не нарушает ограничения по одной действующей либеро.</p><label><input type="checkbox" id="live-auto-libero" ${auto?'checked':''}/> Автоматически предлагать и регистрировать выход либеро</label><div class="live-teams">${liberoSettings('us')}${liberoSettings('them')}</div><p class="muted tiny">Правила: FIVB 2025–2028. Не заменяет судейский протокол. Исключительные замены и санкции оформляются вручную.</p></div></details>
+ <details class="live-options"><summary>🔄 Обычные замены · обе команды</summary><div class="panel"><p class="muted tiny">Либеро не учитывается как обычная замена. Уточни регламент соревнования: стандартный лимит 6, в некоторых турнирах 2026 года тестировали 8.</p><div class="live-extra"><label>Команда<select class="field" id="live-sub-side"><option value="us" ${ui.liveSubSide==='us'?'selected':''}>${esc(m.team)}</option><option value="them" ${ui.liveSubSide==='them'?'selected':''}>${esc(m.opponent)}</option></select></label><label>Зона<select class="field" id="live-sub-zone">${['1','2','3','4','5','6'].map(z=>`<option value="${z}">Зона ${z} · №${esc(liveActor(m,ui.liveSubSide,z)?.number||'—')}</option>`).join('')}</select></label><label>Запасной<select class="field" id="live-sub-player">${(ui.liveSubSide==='us'?m.players:m.opponentPlayers).filter(p=>p.role!=='Либеро'&&!['1','2','3','4','5','6'].some(z=>RALLY.activeAtSide(m,ui.liveSubSide,z)===p.id)).map(p=>`<option value="${esc(p.id)}">№${esc(p.number)} ${esc(p.name)}</option>`).join('')}</select></label><label>Лимит по регламенту<select class="field" id="live-sub-limit"><option value="6" ${(m.substitutionLimit||6)===6?'selected':''}>6 (основные правила)</option><option value="8" ${m.substitutionLimit===8?'selected':''}>8 (при разрешении турнира)</option></select></label></div><button class="btn secondary mt" data-action="live-substitute">Провести замену</button></div></details>
+ <p class="live-hotkeys">Клавиатура: 1–6 — зоны текущей команды · S подача · R приём · E передача · A атака · B блок · D защита · Enter в игре · X ошибка · P очко · Z отмена.</p></div>`
+}
+function liveRecord(m,result){
+ if(!m||m.sport!=='indoor')return;
+ if(m.pendingSetSetup){toast('Подтверди следующую партию');return}
+ if(matchScore(m.sport,m.rallies).done){toast('Матч завершён');return}
+ const side=ui.liveSide,action=ui.liveAction;
+ let pid=ui.livePlayer;
+ if(action==='serve'&&(!pid||!RALLY.activeAtSide(m,side,'1')||pid!==RALLY.activeAtSide(m,side,'1'))){
+   toast('Для подачи выбери именно игрока зоны 1 подающей команды');return;
+ }
+ if(!pid){toast('Сначала выбери игрока на площадке');return}
+ const roster=side==='us'?m.players:m.opponentPlayers;
+ const p=roster.find(p=>p.id===pid);
+ if(!p){toast('Игрока нет в заявке');return}
+ const zone=['1','2','3','4','5','6'].find(z=>RALLY.activeAtSide(m,side,z)===pid);
+ if(!zone){toast('Игрок сейчас не на площадке');return}
+ if((action==='serve'&&side!==m.servingTeam)||(action==='block'&&['1','5','6'].includes(zone))||(p.role==='Либеро'&&['serve','block'].includes(action))){toast('Это действие недопустимо для выбранного игрока/подачи');return}
+ const recipient=ui.liveRecipient;
+ if(action==='set'&&(!recipient||!['1','2','3','4','5','6'].some(z=>RALLY.activeAtSide(m,side,z)===recipient)||recipient===pid)){toast('Выбери адресата передачи на площадке');return}
+ if(action==='block'&&(ui.liveBlockPlayers||[]).length){
+ const extra=ui.liveBlockPlayers.filter(id=>id!==pid);
+ if(extra.length>2||extra.some(id=>!['2','3','4'].some(z=>RALLY.activeAtSide(m,side,z)===id))){toast('Блок: максимум 3 игрока передней линии');return}
+ }
+ const win=RALLY.terminalWinner(action,result,side);
+ const ts=document.getElementById('match-video')?.currentTime||ui.videoTime||0;
+ const ev={id:id(),order:m.events.length+1,rally:m.rallyNo,set:matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1,side,action,subtype:document.getElementById('live-subtype')?.value||null,playerId:pid,recipientId:action==='set'?recipient:null,blockPlayers:action==='block'?[pid,...(ui.liveBlockPlayers||[]).filter(id=>id!==pid)]:null,origin:null,target:null,result,quality:action==='receive'?result==='good'?'Позитивный':result==='error'?'Ошибка':'Не указано':null,videoTime:ts,scoreBefore:matchScore(m.sport,m.rallies).scores.slice(),serveBefore:m.servingTeam,rotationNo:side==='us'?m.rotationNo:m.opponentRotationNo,lineupSnapshot:{us:{...m.lineup},them:{...m.opponentLineup},libero:m.libero?{...m.libero}:null,opponentLibero:m.opponentLibero?{...m.opponentLibero}:null},created:Date.now()};
+ m.events.push(ev);
+ if(win){try{RALLY.finishRally(m,win,matchScore)}catch(e){m.events.pop();toast(e.message);return}}
+ ui.liveLastPoint=null;
+ ui.liveBlockPlayers=[];
+ ui.liveRecipient=null;
+ // Predict the next contact only when known. The coach may override it instantly.
+ if(win){ui.liveSide=m.servingTeam||win;ui.livePlayer=RALLY.activeAtSide(m,ui.liveSide,'1');ui.liveAction='serve'}
+ else if(action==='serve'){ui.liveSide=side==='us'?'them':'us';ui.livePlayer=null;ui.liveAction='receive'}
+ else if(action==='receive'){ui.liveSide=side;ui.liveAction='set';const roster=side==='us'?m.players:m.opponentPlayers;const system=side==='us'?m.tactical?.scheme:m.opponentScheme;const setters=['4','3','2','5','6','1'].map(z=>({z,p:liveActor(m,side,z)})).filter(x=>x.p?.role==='Связующий');ui.livePlayer=(setters.find(x=>(system==='4-2'?['4','3','2']:system==='6-2'?['5','6','1']:['4','3','2','5','6','1']).includes(x.z))||setters[0])?.p?.id||null}
+ else if(action==='set'){ui.liveSide=side;ui.livePlayer=recipient;ui.liveAction='attack'}
+ else if(action==='attack'){ui.liveSide=side==='us'?'them':'us';ui.livePlayer=null;ui.liveAction='dig'}
+ 
+ persist();render();toast(win?`Очко ${liveSideName(m,win)}. ${m.pendingSetSetup?'Партия завершена.':'Переходы и либеро обновлены.'}`:'Действие добавлено в розыгрыш');
+}
+function livePlacePoint(e,court){const m=current();if(!m||!m.events.length)return toast('Сначала запиши действие');const box=court.getBoundingClientRect();const point={x:Math.round(Math.max(0,Math.min(100,(e.clientX-box.left)/box.width*100))*10)/10,y:Math.round(Math.max(0,Math.min(100,(e.clientY-box.top)/box.height*100))*10)/10};
+ const last=m.events[m.events.length-1];last.target=point;ui.liveLastPoint=point;persist();render();toast('Точка сохранена у последнего касания');}
+function liveUndoRally(m){if(!m?.rallies?.length){toast('Нет завершённых розыгрышей');return}const r=RALLY.undoRally(m);m.events=m.events.filter(e=>e.rally!==r.number);ui.liveSide=m.servingTeam;ui.livePlayer=RALLY.activeAtSide(m,m.servingTeam,'1');ui.liveLastPoint=null;persist();render();toast('Розыгрыш, счёт, ротация и либеро восстановлены');}
+function liveUndoContact(m){if(!m?.events?.length){toast('Нет действий');return}const last=m.events.at(-1);if(m.rallies.some(r=>r.number===last.rally))return liveUndoRally(m);m.events.pop();ui.liveLastPoint=null;persist();render();toast('Последнее касание удалено');}
+function workPage(){let m=current();if(!m)return historyPage();const tab=ui.workTab;const sc=matchScore(m.sport,m.rallies||[]);return `${m.pendingSetSetup?newSetBanner(m):''}<div class="crumb"><button data-action="home">Главная</button> / <button data-action="history">Мои матчи</button> / ${esc(m.team)}</div><div class="between"><div><div class="eyebrow">${SPORTS[m.sport].icon} ${esc(SPORTS[m.sport].name)} · ${esc(m.date)}</div><h1>${esc(m.team)} — ${esc(m.opponent)}</h1><p class="muted">${m.events.length} касаний · ${m.rallies.length} завершённых розыгрышей · ${m.players.length} игроков в заявке</p></div><button class="btn ghost" data-action="open-report">📄 Отчёт →</button></div>${scoreCard(m)}<div class="tabs">${[...(m.sport==='indoor'?[['live','⚡ LIVE']]:[]),['input','✋ Пошаговый ввод'],['lineup','👥 Состав'],['maps','📍 Карты'],...(m.sport==='indoor'||m.sport==='beach'?[['tactics','🧠 Тактика'],['setter','↗ Передачи']]:[]),['history','🕘 Действия']].map(([k,t])=>`<button data-action="work-tab" data-val="${k}" class="${tab===k?'active':''}">${t}</button>`).join('')}</div>${tab==='live'?livePage(m):tab==='input'?`<div class="split"><div><div class="panel"><div class="between"><h3>Розыгрыш №${m.rallyNo}</h3><span class="pill">Записано ${m.events.filter(e=>e.rally===m.rallyNo).length} действий</span></div><p class="surface-note success">Начни с действия — программа покажет следующий шаг. Счёт меняется только когда заканчиваешь розыгрыш.</p><div class="mt">${inputFlow(m)}</div></div><div class="panel"><h3>Завершить розыгрыш</h3><div class="surface-note ${!m.servingTeam?'':'success'}"><b>Кто подавал перед розыгрышем?</b><div class="mt"><b>${esc(m.servingTeam==='us'?m.team:m.opponent)}</b></div><small>${m.servingTeam?'Дальше подача рассчитывается автоматически после каждого очка.':'Выбери один раз перед началом партии. Без этого программа не будет гадать.'}</small></div><p class="muted tiny">Когда розыгрыш закончился на видео, укажи, кому присудили очко. Тогда приложение обновит счёт. Не нужно записывать очко для каждого касания.</p><div class="flex"><button class="btn primary" data-action="end-rally" data-val="us" ${sc.done||!m.servingTeam?'disabled':''}>🏐 Очко нам</button><button class="btn secondary" data-action="end-rally" data-val="them" ${sc.done||!m.servingTeam?'disabled':''}>Очко сопернику</button></div></div></div><div class="gap">${videoBlock()}<div class="panel"><h3>Последние события</h3>${m.events.slice(-6).reverse().map(e=>`<div class="entry"><div><b>${esc(skillLabel(e.action))} · ${esc(playerName(m,e.playerId))}</b><br><small>Розыгрыш №${e.rally} · ${timecode(e.videoTime)} ${e.recipientId?'· адресат: '+esc(playerName(m,e.recipientId)):''}</small></div><button class="btn small ghost" data-action="seek-video" data-val="${e.videoTime}" ${!ui.videoUrl?'disabled':''}>▶</button></div>`).join('')||'<div class="empty">Пока ни одного события. Попробуй записать подачу или атаку.</div>'}</div></div></div>`:tab==='lineup'?rosterManage(m):tab==='maps'?mapPage(m):tab==='setter'?setterPage(m):tab==='tactics'?tacticalPage(m):eventLog(m)}`}
+function eventLog(m){return `<div class="panel"><div class="between"><h2>История действий</h2><button class="btn secondary small" data-action="backup">Скачать резервную копию JSON</button></div><p class="muted tiny">Разбор по видео. Можешь удалить последнее действие или последнее завершённое очко.</p><div class="mt">${[...m.events].reverse().slice(0,60).map(e=>`<div class="entry"><div><b>${skillLabel(e.action)} · ${esc(playerName(m,e.playerId))}</b><br><small>Розыгрыш №${e.rally} · ${e.result==='point'?'очко':e.result==='error'?'ошибка':'в игре'} · ${timecode(e.videoTime)} ${e.recipientId?'· кому: '+esc(playerName(m,e.recipientId)):''}</small></div><button class="btn small danger" data-action="delete-event" data-val="${e.id}">Удалить</button></div>`).join('')||'<div class="empty">Пока пусто</div>'}</div><div class="subtle"></div><h3>Последний розыгрыш</h3>${m.rallies.length?`<p class="muted tiny">№${m.rallies.at(-1).number} · очко ${m.rallies.at(-1).winner==='us'?'нам':'сопернику'}</p><button class="btn danger small" data-action="undo-rally">↶ Отменить очко и вернуть расстановку</button>`:'<p class="muted tiny">Ещё нет завершённых розыгрышей</p>'}</div>`}
+function historyPage(){if(!state.profile)return accountPage();return `<div class="between"><div><div class="eyebrow">ЛОКАЛЬНЫЙ КАБИНЕТ · ${esc(state.profile.name)}</div><h1>Мои матчи</h1><p class="muted">Твои данные живут только в этом браузере. Демо здесь не появляется.</p></div><button class="btn primary" data-action="create">+ Новый матч</button></div><div class="panel mt"><div class="between"><h3>Резервные копии</h3><div class="flex"><button class="btn secondary small" data-action="backup">⬇ Экспорт JSON</button><label class="btn secondary small filebtn">⬆ Импорт JSON <input id="restore-file" type="file" accept="application/json,.json"></label></div></div><p class="tiny muted">Сделай экспорт после каждого серьёзного разбора. Облако и автоматическая синхронизация ещё не подключены.</p></div><div class="mt">${state.matches.map(m=>`<div class="historycard"><div><div class="eyebrow">${SPORTS[m.sport]?.icon} ${esc(SPORTS[m.sport]?.name||m.sport)} · ${esc(m.date)}</div><h3 style="margin:6px 0">${esc(m.team)} — ${esc(m.opponent)}</h3><span class="muted tiny">${m.players.length} игроков в заявке · ${m.events.length} касаний · ${m.rallies.length} розыгрышей</span></div><div class="flex"><button class="btn primary small" data-action="open-match" data-val="${m.id}">Открыть →</button><button class="btn danger small" data-action="delete-match" data-val="${m.id}">×</button></div></div>`).join('')||'<div class="empty mt"><h3>Здесь пока пусто</h3><p>Это хорошо: мы не добавляли чужую команду автоматически.</p><button class="btn primary" data-action="create">Создать первый матч</button></div>'}</div>`}
+function reportPage(){let m=ui.reportDemo?DEMOS[ui.sport]:current();if(!m)return historyPage();let st=teamSummary(m),r=matchScore(m.sport,m.rallies),serveMetrics=RALLY.insight(m.rallies);let a=m.events.filter(e=>e.action==='attack'&&e.side!=='them');let srv=m.events.filter(e=>e.action==='serve'&&e.side!=='them');let mapEvents=a.length?a: m.events.filter(e=>e.target);return `<div class="crumb no-print"><button data-action="${ui.reportDemo?'demo-home':'back-work'}">← Вернуться к разбору</button></div><div class="report-head"><div class="eyebrow" style="color:#c5e39c">ПИТЕРСКИЙ СКАУТ · АНАЛИТИЧЕСКИЙ ОТЧЁТ</div><h1>${esc(m.team)} — ${esc(m.opponent)}</h1><p style="color:#c4d7e4">${SPORTS[m.sport].name} · ${esc(m.date)} ${m.isDemo?'· учебные данные':''}</p></div><div class="grid3"><div class="stat"><strong>${st.events}</strong><small>Зафиксировано действий</small></div><div class="stat"><strong>${m.rallies.length}</strong><small>Завершено розыгрышей</small></div><div class="stat"><strong>${r.rallies[0]}</strong><small>Очков нашей команды</small></div></div><div class="panel mt"><h3>Розыгрыши и эффективность подачи</h3><div class="grid3"><div class="stat"><strong>${serveMetrics.sideoutPercent===null?'—':serveMetrics.sideoutPercent+'%'}</strong><small>Side-Out (${serveMetrics.so}/${serveMetrics.serveThem})</small></div><div class="stat"><strong>${serveMetrics.bpPercent===null?'—':serveMetrics.bpPercent+'%'}</strong><small>Break Point (${serveMetrics.bp}/${serveMetrics.serveUs})</small></div><div class="stat"><strong>${serveMetrics.unknown}</strong><small>Без данных о подаче</small></div></div><p class="muted tiny mt">Показатели считаются только по розыгрышам с известной подающей стороной. В импортированных старых матчах может не быть этих сведений.</p></div><div class="grid2 mt"><div class="panel"><h3>Карта направлений ${a.length?'атак':'ударов'}</h3><div class="courtholder">${courtSVG({m,events:mapEvents,which:'target',mini:true})}</div><p class="tiny muted">Каждая точка — реальная отмеченная координата. Аут и сетка без придуманной точки.</p></div><div class="panel"><h3>${m.sport==='indoor'||m.sport==='beach'?'Карта подач':'Действия и результаты'}</h3><div class="courtholder">${courtSVG({m,events:srv.length?srv:m.events.filter(e=>e.target),which:'target',mini:true})}</div><p class="tiny muted">${st.kills} выигранных атак · ${st.attackErrors} ошибок атаки · ${st.aces} подач навылет</p></div></div><div class="panel mt"><h3>Что можно заключить?</h3><p class="muted">Карты показывают только действия, которые тренер действительно отметил. Отсутствие записи — не ошибка игрока. Полная эффективность, side-out и точные статистические показатели будут корректны только после регистрации всех соответствующих событий.</p><div class="legend"><span><i style="background:#16956a"></i>Очко</span><span><i style="background:#3972cb"></i>В игре</span><span><i style="background:#dc575f"></i>Ошибка</span></div></div><div class="flex mt no-print"><button class="btn primary" data-action="report-png">⬇ Сохранить как PNG</button><button class="btn secondary" data-action="print">🖨 Печать / сохранить PDF</button><button class="btn ghost" data-action="backup">Экспорт JSON</button></div><p class="tiny muted mt no-print">Экспорт открыт для тестов. Подписки, платёжная система и серверная проверка прав ещё не реализованы.</p>`}
+/* TACTICAL WORKSPACE 4.0: integrated in existing closure, retains v3 data. */
+const TAC_SKILLS = [
+ ['serve','Подача'],['receive','Приём'],['set','Передача'],['attack','Атака'],['block','Блок'],['dig','Защита'],['free','Переброс']
+];
+const TAC_SUB = {
+ serve:['Планер','Силовая в прыжке','Планирующая в прыжке','Укороченная'],
+ receive:['Снизу','Сверху','Одной рукой'],
+ set:['Высокая в 4','Высокая в 2','Первый темп','Взлёт','Прострел','За голову','Пайп','Аварийная передача'],
+ attack:['Силовой удар','По линии','По диагонали','Пайп','Из зоны 1','Из зоны 6','Скидка','Накат','Обманный удар'],
+ block:['Одиночный','Двойной','Тройной'],
+ dig:['Снизу','Сверху','В падении'],
+ free:['Переброс','Бесплатный мяч','Технический перевод']
+};
+const TAC_SKILL_LABEL = Object.fromEntries(TAC_SKILLS);
+const TAC_BASE={'4':{x:18,y:61},'3':{x:50,y:61},'2':{x:82,y:61},'5':{x:18,y:84},'6':{x:50,y:84},'1':{x:82,y:84}};
+const TAC_EMOJI={serve:'🏐',receive:'👐',set:'↗',attack:'💥',block:'🧱',dig:'🛡️',free:'↪'};
+ui.tac={focus:null,phase:'after',target:'',skill:'serve',subtype:'Планер',side:'them',actor:'',opponentNo:'',opponentPlayerId:'',recipient:'',members:[],origin:null,targetPoint:null,result:'good',quality:'Не указано',mode:'position',review:'current',showPaths:true,playing:false,playEvent:0,positions:false};
+let tacDragged=null;
+function tacModel(m){
+ if(!m.tactical)m.tactical={scheme:'5-1',setters:[],positions:{},memo:{}};
+ const t=m.tactical;
+ if(!Array.isArray(t.setters))t.setters=[];
+ if(!t.positions)t.positions={};
+ if(!t.memo)t.memo={};
+ if(!t.scheme)t.scheme='5-1';
+ return t;
+}
+function tacRotation(m){const t=tacModel(m),first=t.setters?.[0];const zone=first&&m.sport==='indoor'?POS_ORDER.find(k=>m.lineup?.[k]===first):null;return zone?'P'+zone:'P'+(((m.rotationNo||1)-1)%6+1)}
+function tacBaseFor(m,personId){const pos=POS_ORDER.find(p=>activeAt(m,p)===personId);return pos?{...TAC_BASE[pos]}:null}
+function tacPositions(m){const t=tacModel(m),key=tacRotation(m);
+ if(m.isDemo&&m.sport==='indoor'&&!t.positions[key]){
+   const index={};m.players.forEach(p=>index[p.number]=p.id);
+   return {[index['3']]:{x:69,y:62},[index['1']]:{x:34,y:85},[index['7']]:{x:19,y:60},[index['5']]:{x:48,y:60},[index['9']]:{x:82,y:60},[index['11']]:{x:20,y:83}};
+ }
+ return t.positions[key]||{}
+}
+function tacAutoExit(m,pid){
+ const zone=RALLY.activeZone(m,pid),base=tacBaseFor(m,pid),t=tacModel(m);
+ if(!base||!zone)return base;
+ // Suggested coordinates after service. Each P1-P6 remains independently
+ // editable: user-defined positions override these starter templates.
+ const setter=tacActiveSetter(m);
+ if(pid===setter)return {x:74,y:59};
+ if(t.scheme==='5-1'&&['1','6','5'].includes(zone))return {...base};
+ if(['4','3','2'].includes(zone))return {...base};
+ return {...base};
+}
+function tacGetXY(m,pid){return tacPositions(m)[pid]||tacAutoExit(m,pid)}
+function tacActiveSetter(m){
+ const t=tacModel(m),ids=t.setters.filter(x=>onCourt(m).includes(x));
+ const p=x=>POS_ORDER.find(k=>activeAt(m,k)===x);
+ if(t.scheme==='5-1')return ids[0]||null;
+ if(t.scheme==='4-2')return ids.find(x=>['4','3','2'].includes(p(x)))||null;
+ if(t.scheme==='6-2')return ids.find(x=>['5','6','1'].includes(p(x)))||null;
+ return null;
+}
+function tacChosen(m){return (m.players||[]).filter(p=>onCourt(m).includes(p.id))}
+function tacDemoEvents(m){
+ const f=n=>m.players.find(p=>p.number===String(n))?.id;
+ return [
+ {id:'td1',rally:1,side:'them',action:'serve',subtype:'Силовая в прыжке',opponentNo:'12',origin:{x:77,y:5},target:{x:34,y:84},result:'good',videoTime:3},
+ {id:'td2',rally:1,side:'us',action:'receive',subtype:'Снизу',playerId:f(1),origin:{x:34,y:84},target:{x:68,y:64},result:'good',quality:'Хороший',videoTime:5},
+ {id:'td3',rally:1,side:'us',action:'set',subtype:'Высокая в 4',playerId:f(3),recipientId:f(7),origin:{x:68,y:64},target:{x:19,y:58},result:'good',videoTime:7},
+ {id:'td4',rally:1,side:'us',action:'attack',subtype:'Силовой удар',playerId:f(7),origin:{x:19,y:58},target:{x:24,y:47},result:'play',videoTime:9},
+ {id:'td5',rally:1,side:'them',action:'block',subtype:'Двойной',opponentNo:'3 + 8',origin:{x:24,y:47},target:{x:33,y:82},result:'play',videoTime:10},
+ {id:'td6',rally:1,side:'us',action:'dig',subtype:'Снизу',playerId:f(11),origin:{x:33,y:82},target:{x:67,y:65},result:'good',videoTime:12},
+ {id:'td7',rally:1,side:'us',action:'set',subtype:'За голову',playerId:f(3),recipientId:f(9),origin:{x:67,y:65},target:{x:81,y:60},result:'good',videoTime:13},
+ {id:'td8',rally:1,side:'us',action:'attack',subtype:'Скидка',playerId:f(9),origin:{x:81,y:60},target:{x:71,y:22},result:'point',videoTime:15}
+ ];
+}
+function tacEvents(m){
+ if(m.isDemo&&m.sport==='indoor')return tacDemoEvents(m);
+ const v=ui.tac.review;
+ const all=(m.events||[]).filter(e=>e.side==='them'||e.side==='us'||!e.side);
+ return all.filter(e=>e.rally===(v==='current'?m.rallyNo:Number(v)));
+}
+function tacStr(m,e){return e.side==='them'?'Соперник '+(e.opponentNo?'№'+e.opponentNo:''):(playerName(m,e.playerId)+(e.participants?.length>1?' + '+e.participants.slice(1).map(id=>playerName(m,id)).join(' + '):''))}
+function tacBoard(m,options={}){
+ const demo=!!m.isDemo,t=tacModel(m),ph=ui.tac.phase,editing=ui.tac.mode==='position',ev=tacEvents(m),boardMode=ui.tac.mode;
+ const active=m.sport==='indoor'?tacChosen(m):[];
+ const focused=ev.find(e=>e.id===ui.tac.focus)||(ui.tac.playing?ev[ui.tac.playEvent]:null);
+ const frame=focused?.courtPositions||null;
+ const line=(x,y,a,b)=>`<line x1="${x}" y1="${y}" x2="${a}" y2="${b}"/>`;
+ const X=x=>45+3.5*x, Y=y=>35+5.1*y;
+ let drawing=`<svg id="tac-board" class="tac-board" data-tactic-board="1" viewBox="0 0 440 590" role="img" aria-label="Тактическая площадка. Для записи коснись точки мяча. Для перемещения перетащи жетон игрока.">
+ <defs><marker id="tacArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6Z" fill="#f97316"/></marker></defs>
+ <rect x="45" y="35" width="350" height="510" rx="4" fill="#e2eef5"/><rect x="45" y="290" width="350" height="255" fill="#e4cda3"/>
+ <path d="M45 35 H395 V545 H45Z" fill="none" stroke="white" stroke-width="4"/><path d="M45 290 H395" stroke="#15344b" stroke-width="6"/>
+ <path d="M45 205 H395 M45 375 H395" stroke="#fff" stroke-width="3" stroke-dasharray="9 6"/>
+ <text x="220" y="23" text-anchor="middle" fill="currentColor" font-size="14" font-weight="800">СОПЕРНИК</text><text x="220" y="568" text-anchor="middle" fill="currentColor" font-size="14" font-weight="800">НАША КОМАНДА</text>
+ <text x="50" y="383" fill="#745c3a" font-size="10">3 м</text><text x="50" y="199" fill="#365875" font-size="10">3 м</text>`;
+ if(ev.length && ui.tac.showPaths){
+  ev.forEach((e,i)=>{
+   if(!e.origin||!e.target)return;
+   const a={x:X(e.origin.x),y:Y(e.origin.y)},b={x:X(e.target.x),y:Y(e.target.y)};
+   let color=e.side==='them'?'#d14f70':e.action==='set'?'#2866ac':e.action==='attack'?'#e96c24':e.action==='serve'?'#8c55c9':'#23a386';
+   drawing+=`<path d="M${a.x} ${a.y} L${b.x} ${b.y}" stroke="${color}" stroke-width="${ui.tac.playing&&i===ui.tac.playEvent?6:2.6}" stroke-linecap="round" stroke-dasharray="${e.action==='set'?'6 4':'none'}" opacity="${ui.tac.playing&&i!==ui.tac.playEvent?'.2':'.83'}" fill="none"/>`;
+   if(i===0||e.action==='set'||e.action==='attack'||e.action==='block')drawing+=`<circle cx="${X(e.origin.x)}" cy="${Y(e.origin.y)}" r="8" fill="${color}" stroke="white" stroke-width="2"/><text x="${X(e.origin.x)}" y="${Y(e.origin.y)+3}" text-anchor="middle" font-size="9" fill="white">${i+1}</text>`;
+  });
+ }
+ if(m.sport==='indoor')active.forEach(p=>{
+  let before=tacBaseFor(m,p.id),after=frame?.[p.id]||tacGetXY(m,p.id),pt=ph==='before'?before:after;if(!pt)return;
+  const role=p.role==='Либеро'?'L':p.role==='Связующий'?'S':p.role==='Центральный'?'M':p.role==='Диагональный'?'D':'H';
+  if(ph==='after'&&before&&after&&(Math.hypot(after.x-before.x,after.y-before.y)>2))drawing+=`<path d="M${X(before.x)} ${Y(before.y)} L${X(after.x)} ${Y(after.y)}" stroke="#f97316" stroke-width="2.6" stroke-dasharray="5 4" marker-end="url(#tacArrow)" opacity=".9"/>`;
+  const color=p.role==='Либеро'?'#ed8d37':p.role==='Связующий'?'#3a75d0':'#23495d';
+  drawing+=`<g class="tac-person" data-tac-actor="${esc(p.id)}" data-pos="${ph}" style="cursor:${editing?'grab':'pointer'}" aria-label="Игрок номер ${esc(p.number)} ${esc(p.name)}"><circle cx="${X(pt.x)}" cy="${Y(pt.y)}" r="19" fill="${color}" stroke="white" stroke-width="3"/><text x="${X(pt.x)}" y="${Y(pt.y)+2}" text-anchor="middle" font-size="14" fill="#fff" font-weight="900">${esc(p.number)}</text><text x="${X(pt.x)}" y="${Y(pt.y)+15}" text-anchor="middle" font-size="9" fill="#fff">${role}</text><text x="${X(pt.x)}" y="${Y(pt.y)+30}" text-anchor="middle" font-size="11" fill="#18364a" stroke="#fff" stroke-width="3.5" paint-order="stroke" font-weight="800">${esc(p.name.split(' ')[0].slice(0,10))}</text></g>`;
+ });
+ if(m.sport==='indoor'&&Array.isArray(m.opponentPlayers)&&m.opponentPlayers.length){
+ const opos=m.opponentLineup||{};const ol=m.opponentLibero;const oppSystem=m.opponentScheme||'5-1';
+ for(const zone of POS_ORDER){const pid=ol?.position===zone?ol.id:opos[zone];const pl=m.opponentPlayers.find(p=>p.id===pid);if(!pl)continue;
+ const near=['4','3','2'].includes(zone),centerX=TAC_BASE[zone]?.x??50;
+ const x=X(centerX),y=Y(near?39:14);
+ const col=pl.role==='Либеро'?'#ed8d37':pl.role==='Связующий'?'#8c58bc':'#9b435d';
+ drawing+=`<g aria-label="Соперник номер ${esc(pl.number)} ${esc(pl.name)}"><circle cx="${x}" cy="${y}" r="16" fill="${col}" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="12" fill="white" font-weight="800">${esc(pl.number)}</text><text x="${x}" y="${y+24}" text-anchor="middle" font-size="9" fill="#542b37">${esc(pl.name.slice(0,10))}</text></g>`;
+ }
+ }
+ if(ui.tac.origin)drawing+=`<circle cx="${X(ui.tac.origin.x)}" cy="${Y(ui.tac.origin.y)}" r="9" fill="#ffb650" stroke="white" stroke-width="3"/>`;
+ if(ui.tac.targetPoint)drawing+=`<circle cx="${X(ui.tac.targetPoint.x)}" cy="${Y(ui.tac.targetPoint.y)}" r="9" fill="#38b48b" stroke="white" stroke-width="3"/>`;
+ drawing+='</svg>';
+ return drawing;
+}
+function tacChoice(name,values,chosen,prop){return `<select class="field" data-tac-field="${prop}" aria-label="${name}">${values.map(([a,b])=>`<option value="${esc(a)}" ${String(chosen)===String(a)?'selected':''}>${esc(b)}</option>`).join('')}</select>`}
+function tacSetup(m){const t=tacModel(m),on=tacChosen(m),setters=on.filter(p=>p.role==='Связующий');
+ if(!t.setters.length){t.setters=setters.slice(0,t.scheme==='5-1'?1:2).map(p=>p.id)}
+ return `<div class="tac-box"><div class="tac-box-h"><b>Система игры и выход связующего</b><small>Настраивается один раз, потом можно поправить</small></div>
+ <div class="tac-fields"><label><span>Система нападения</span>${tacChoice('Система нападения',[['5-1','5–1 · один связующий'],['4-2','4–2 · два связующих'],['6-2','6–2 · два связующих (задняя линия)']],t.scheme,'scheme')}</label>
+ <label><span>${t.scheme==='5-1'?'Связующий':'Связующий 1'}</span>${tacChoice('Связующий 1',[['','Выберите игрока'],...on.map(p=>[p.id,`№${p.number} ${p.name}`])],t.setters[0]||'','setter1')}</label>
+ ${t.scheme!=='5-1'?`<label><span>Связующий 2</span>${tacChoice('Связующий 2',[['','Выберите игрока'],...on.map(p=>[p.id,`№${p.number} ${p.name}`])],t.setters[1]||'','setter2')}</label>`:''}</div>
+ <div class="tac-status">Текущая расстановка <strong>${tacRotation(m)}</strong> · ${tacActiveSetter(m)?'Пасующий: <strong>'+esc(playerName(m,tacActiveSetter(m)))+'</strong>':'⚠️ Укажи действующего связующего'}</div>
+ <p class="tac-muted">До подачи — зоны 1–6. После подачи — предлагаемый автоматический выход связующего по системе 5–1 / 4–2 / 6–2. Ты можешь перетащить любого игрока и сохранить свою схему для каждой расстановки P1–P6. Это шаблон, не автоматическое распознавание перемещений по видео.</p>
+ ${t.scheme==='4-2'&&t.setters.length===2&&(()=>{const a=POS_ORDER.find(p=>activeAt(m,p)===t.setters[0]),b=POS_ORDER.find(p=>activeAt(m,p)===t.setters[1]);return a&&b&&!({'1':'4','4':'1','2':'5','5':'2','3':'6','6':'3'}[a]===b)?'<div class="tac-note">⚠️ Для классического 4–2 связующие обычно стоят по диагонали друг от друга (1–4, 2–5 или 3–6). Сейчас выбранные позиции не образуют такую пару.</div>':''})()||''}</div>`;
+}
+function tacPanel(m){let tac=ui.tac,live=!m.isDemo,skills=m.sport==='beach'?TAC_SKILLS:TAC_SKILLS,on=tacChosen(m),actors=on.filter(p=>m.sport!=='indoor'||tac.side==='them'||(tac.skill!=='serve'&&tac.skill!=='block')||(tac.skill==='serve'?RALLY.activeZone(m,p.id)==='1'&&p.role!=='Либеро':!BACK.includes(RALLY.activeZone(m,p.id))&&p.role!=='Либеро')).map(p=>[p.id,`№${p.number} ${p.name} (${p.role})`]);
+ const validRoles=(skill,chosen)=>{const p=m.players.find(x=>x.id===chosen);if(!p)return'';if(p.role==='Либеро'&&['serve','block'].includes(skill))return 'Либеро не может выполнять это действие';if(p.role==='Либеро'&&skill==='attack')return 'Возможности атаки либеро ограничены правилами — проверь высоту мяча';return''};
+ return `<div class="tac-box"><div class="tac-box-h"><b>Записать контакт с мячом</b><small>${m.isDemo?'Демо: только просмотр, без сохранения':'Розыгрыш №'+m.rallyNo+' · сохраняется в текущем матче'}</small></div>
+ ${m.isDemo?`<div class="tac-note">Это учебный розыгрыш из восьми действий. Выбери «Повторить мяч» или открой «Попробовать», чтобы потренироваться на площадке.</div>`:''}
+ <div class="tac-side"><button class="tac-chip ${tac.side==='them'?'on':''}" data-action="tac-side" data-val="them">🔴 Соперник</button><button class="tac-chip ${tac.side==='us'?'on':''}" data-action="tac-side" data-val="us">🔵 Наша команда</button></div>
+ <div class="tac-skills">${skills.map(([k,l])=>`<button data-action="tac-skill" data-val="${k}" class="tac-chip ${tac.skill===k?'on':''}">${TAC_EMOJI[k]} ${l}</button>`).join('')}</div>
+ <div class="tac-fields"><label><span>Вид действия</span>${tacChoice('Вид действия',TAC_SUB[tac.skill].map(a=>[a,a]),tac.subtype,'subtype')}</label>
+ ${tac.side==='them'?(m.opponentPlayers?.length?`<label><span>Кто из соперников действовал?</span>${tacChoice('Игрок соперника',[['','Выбери игрока'],...m.opponentPlayers.filter(p=>Object.values(m.opponentLineup||{}).includes(p.id)||(m.opponentLibero?.id===p.id)).filter(p=>!m.opponentLibero||p.id!==m.opponentLibero.replaced).map(p=>[p.id,`№${p.number} ${p.name} (${p.role})`])],tac.opponentPlayerId||'','opponentPlayerId')}</label>`:`<label><span>Номер соперника (если известен)</span><input class="field" data-tac-field="opponentNo" placeholder="Например, 12" value="${esc(tac.opponentNo)}" ${m.isDemo?'disabled':''}></label>`):
+ `<label><span>Кто действовал?</span>${tacChoice('Игрок',[['','Выбери игрока'],...actors],tac.actor,'actor')}</label>`}
+ ${tac.skill==='set'&&tac.side==='us'?`<label><span>Кому передача?</span>${tacChoice('Кому пас',[['','Выбери адресата'],...actors.filter(x=>x[0]!==tac.actor)],tac.recipient,'recipient')}</label>`:''}
+ ${tac.skill==='receive'?`<label><span>Качество приёма</span>${tacChoice('Качество приёма',[['Не указано','Не указано'],['Идеальный','Идеальный'],['Хороший','Позитивный'],['Выбитый','Выбитый']],tac.quality,'quality')}</label>`:''}</div>
+ ${tac.skill==='block'&&tac.side==='us'?`<div class="tac-note"><b>Участники блока:</b> ${on.filter(p=>p.role!=='Либеро').map(p=>`<button class="tac-chip ${tac.members.includes(p.id)?'on':''}" data-action="tac-blocker" data-val="${esc(p.id)}">№${esc(p.number)}</button>`).join('')}<br><small>Можно выбрать 1–3 игроков. Тип блока определяется их количеством.</small></div>`:''}
+ <div class="tac-note">${tac.target==='origin'?'🟡 Сейчас коснись места, где был мяч в момент контакта.':tac.target==='target'?'🟢 Сейчас коснись места, куда направился мяч.':'Коснись начала и конца траектории подряд. Кнопки «Откуда» и «Куда» позволяют исправить точку. Ничего не подставляется автоматически.'}</div>
+ <div class="tac-side"><button class="btn ${tac.target==='origin'?'primary':'secondary'} small" data-action="tac-point" data-val="origin">① Откуда ${tac.origin?'✓':''}</button><button class="btn ${tac.target==='target'?'primary':'secondary'} small" data-action="tac-point" data-val="target">② Куда ${tac.targetPoint?'✓':''}</button><button class="btn ghost small" data-action="tac-skip">Нет точки</button></div>
+ <div class="tac-fields"><label><span>Итог действия</span>${tacChoice('Итог',[['good','В игре / качественно'],['point','Очко'],['error','Ошибка']],tac.result,'result')}</label></div>
+ <div class="tac-side"><button class="btn primary" data-action="tac-save" ${m.isDemo?'disabled':''}>✓ Сохранить касание</button><button class="btn ghost" data-action="tac-clear">Очистить</button></div>
+ ${tac.side==='us'&&validRoles(tac.skill,tac.actor)?`<div class="tac-note">⚠️ ${validRoles(tac.skill,tac.actor)}</div>`:''}
+ <small class="tac-muted">«Скидка» — тип атаки, а не передача. Для блока выбирай участников; их состав сохраняется вместе с событием.</small></div>`;
+}
+function tacRallyList(m){const ev=tacEvents(m),isDemo=m.isDemo;
+ return `<div class="tac-box"><div class="tac-box-h"><b>Весь путь мяча</b><small>Подача → приём → пас → атака → блок...</small></div>
+ ${!isDemo&&m.rallies.length?`<div class="tac-side"><button class="tac-chip ${ui.tac.review==='current'?'on':''}" data-action="tac-rally" data-val="current">Новый розыгрыш №${m.rallyNo}</button>${m.rallies.slice(-4).map(r=>`<button class="tac-chip ${String(ui.tac.review)===String(r.number)?'on':''}" data-action="tac-rally" data-val="${r.number}">№${r.number}</button>`).join('')}</div>`:''}
+ <div class="tac-side"><button class="btn secondary small" data-action="tac-play" ${ev.length?'':'disabled'}>▶ Повторить мяч</button><button class="btn ghost small" data-action="tac-stop">■ Стоп</button>
+ ${!isDemo?`<button class="btn ghost small" data-action="tac-undo">↶ Убрать последнее касание</button>`:''}</div>
+ <div class="tac-sequence">${ev.map((e,i)=>`<button data-action="tac-focus" data-val="${esc(e.id)}" class="tac-entry ${ui.tac.playing&&ui.tac.playEvent===i?'lit':''} ${ui.tac.focus===e.id?'lit':''}"><b>${i+1}. ${TAC_EMOJI[e.action]||'🏐'} ${esc(TAC_SKILL_LABEL[e.action]||e.action)} · ${esc(e.subtype||'')}</b><small>${esc(tacStr(m,e))} ${e.recipientId?'→ '+esc(playerName(m,e.recipientId)):''} · ${e.result==='point'?'очко':e.result==='error'?'ошибка':'в игре'}${e.videoTime!=null?' · '+timecode(e.videoTime):''}</small></button>`).join('')||'<div class="tac-muted">Пока ни одного касания. Начни с подачи.</div>'}</div>
+ ${!isDemo?`<div class="tac-note">✅ Очко на подаче, атаке или блоке завершает розыгрыш автоматически. Ошибку подачи или атаки тоже учитываем. Если причина спорная, заверши розыгрыш кнопкой ниже.</div>
+ <div class="tac-side"><button class="btn ${m.servingTeam==='us'?'primary':'ghost'} small" data-action="tac-server" data-val="us">Подаём мы</button><button class="btn ${m.servingTeam==='them'?'primary':'ghost'} small" data-action="tac-server" data-val="them">Подаёт соперник</button></div>
+ <div class="tac-side"><button class="btn primary" data-action="tac-end" data-val="us" ${!m.servingTeam?'disabled':''}>Очко нам</button><button class="btn secondary" data-action="tac-end" data-val="them" ${!m.servingTeam?'disabled':''}>Очко сопернику</button></div>`:''}</div>`;
+}
+function tacticalPage(m){const indoor=m.sport==='indoor',t=tacModel(m),demo=m.isDemo,active=tacChosen(m);
+ let events=tacEvents(m);let set=tacActiveSetter(m);let haslib=m.libero&&active.some(p=>p.id===m.libero.id);
+ return `<div class="tac-layout">
+ <div class="tac-box tac-welcome"><div class="tac-box-h"><b>Тактическая студия · ${demo?'учебный матч':'твой матч'}</b><span class="pill">${demo?'ДЕМО без записи':tacRotation(m)}</span></div>
+ <p>Здесь видно <b>кто играет, где стоит, как выходит под подачу и по какой цепочке движется мяч.</b> Номера — это игроки, цветной путь — касания мяча.</p>
+ ${indoor?`<div class="tac-side"><button class="tac-chip ${ui.tac.phase==='before'?'on':''}" data-action="tac-phase" data-val="before">1 · До подачи</button><button class="tac-chip ${ui.tac.phase==='after'?'on':''}" data-action="tac-phase" data-val="after">2 · После подачи (выход)</button></div>`:''}
+ ${indoor&&!demo?`<div class="tac-side"><button class="tac-chip ${ui.tac.mode==='position'?'on':''}" data-action="tac-mode" data-val="position">↔ Передвинуть игроков</button><button class="tac-chip ${ui.tac.mode==='ball'?'on':''}" data-action="tac-mode" data-val="ball">🏐 Указать путь мяча</button><button class="tac-chip" data-action="tac-example">Показать выход связующего</button><button class="tac-chip ${ui.tac.showPaths?'on':''}" data-action="tac-paths">${ui.tac.showPaths?'✓ ':''}Траектории</button></div>`:
+ `<div class="tac-side"><button class="tac-chip on" data-action="tac-mode" data-val="ball">Мяч и касания</button></div>`}
+ ${indoor?`<div class="tac-note">${ui.tac.phase==='before'?'Схема зон до подачи: 4–3–2 спереди, 5–6–1 сзади. Эти позиции — ориентир, а не автоматическая проверка правил расстановки.':demo?'Учебный пример выхода игроков после подачи. Пунктирные стрелки показывают перемещения, красные и оранжевые линии — мяч.':ui.tac.mode==='position'?'Зажми и перетащи кружок игрока после подачи. Пунктирная стрелка покажет его выход. Для каждой P1–P6 путь можно сохранить отдельно.':'Чтобы нарисовать реальную траекторию мяча, выбери контакт справа и нажми «Откуда» / «Куда».'}</div>`:''}
+ ${ui.tac.focus?`<div class="tac-note">Показано положение игроков в момент выбранного касания. <button class="tac-chip" data-action="tac-unfocus">Вернуться к текущей схеме</button></div>`:''}
+ <div class="tac-boardwrap">${tacBoard(m)}</div>
+ <div class="tac-legend"><span>🔵 Связующий нашей команды</span><span>🟠 Либеро обеих команд</span><span>🟣 Связующий соперника</span><span>🔴 Игроки соперника</span></div>
+ <div class="tac-legend"><span style="color:#d14f70">● Соперник</span><span style="color:#2866ac">● Передача</span><span style="color:#e96c24">● Атака</span></div>
+ ${indoor?`<div class="tac-box minor"><div class="tac-box-h"><b>Кто сейчас на площадке</b><small>Жетон = номер игрока</small></div><div class="tac-players">${active.map(p=>`<span class="tac-name ${p.role==='Либеро'?'lib':''}">№${esc(p.number)} ${esc(p.name)} <small>${esc(p.role)}</small></span>`).join('')}</div><p class="tac-muted">${haslib?'Либеро находится в зоне '+m.libero.position+' вместо '+esc(playerName(m,m.libero.replaced))+'.':'Либеро сейчас не выпущен.'} В разделе «Состав» есть замены и выход либеро.</p></div>`:''}</div>
+ <div class="tac-right">${indoor?(demo?`<div class="tac-box"><h3>Кто где и зачем?</h3><div class="tac-note">Это учебный пример системы <b>5–1</b>. №3 — связующий. До подачи он в зоне 1, после подачи выходит ближе к сетке для передачи. Оранжевый №1 — либеро на задней линии. Пунктиром показаны перемещения игроков.</div><p class="tac-muted">Здесь ничего заполнять не нужно. Нажми «Повторить мяч» — увидишь путь от подачи соперника до скидки в конце. Потом переходи во вкладку «✋ Попробовать».</p><button class="btn primary small" data-action="demo-tab" data-val="practice">✋ Попробовать самому →</button></div>`:tacSetup(m)):'<div class="tac-box"><b>Пляжный волейбол 2×2</b><p class="tac-muted">Нет шестёрки и либеро; мяч и действия записываются по обеим сторонам.</p></div>'}${demo?'':tacPanel(m)}${tacRallyList(m)}${!demo?videoBlock():''}</div></div>`;
+}
+function tacSave(m){if(m.isDemo)return;const d=ui.tac;
+ if(m.pendingSetSetup){toast('Сначала подготовь следующую партию');return}if(d.side==='us'&&!d.actor){toast('Сначала выбери своего игрока');return}if(d.side==='them'&&m.opponentPlayers?.length&&!d.opponentPlayerId){toast('Выбери игрока соперника из заявки');return}
+ if(d.skill==='block'&&d.side==='us'&&!d.members.length){toast('Выбери участника или участников блока');return}
+ if(d.skill==='set'&&d.side==='us'&&!d.recipient){toast('Кому адресована передача?');return}
+ if(d.side==='us'&&d.skill==='set'&&RALLY.validateActor(m,'set',d.recipient)){toast('Получатель передачи должен быть на площадке');return}
+ if(d.skill==='serve'){if(m.servingTeam&&m.servingTeam!==d.side){toast('Сейчас подаёт другая команда. Проверь сторону подачи.');return}}
+ if(matchScore(m.sport,m.rallies).done){toast('Матч завершён: новые касания нельзя добавлять.');return}if(!d.origin){toast('Отметь, где был мяч при контакте. Если не видно, используй другой режим записи.');return}
+ if(!d.targetPoint&&d.result!=='error'){toast('Укажи направление мяча — «Куда». Для аута или сетки можно оставить пустым.');return}
+ if(d.side==='us'){for(const pid of (d.skill==='block'?d.members:[d.actor])){let err=RALLY.validateActor(m,d.skill,pid);if(err){toast(err);return}}}
+ if(d.skill==='serve'&&!m.servingTeam)RALLY.setServer(m,d.side);
+ const players=d.skill==='block'&&d.side==='us'?[...d.members]:d.actor?[d.actor]:[];
+ const player=(d.skill==='block'&&d.side==='us'&&d.members.length)?d.members[0]:d.actor;
+ const sc=matchScore(m.sport,m.rallies);
+ let subtype=d.skill==='block'&&d.side==='us'?['','Одиночный','Двойной','Тройной'][Math.min(d.members.length,3)]:d.subtype;
+ m.events.push({id:id(),rally:m.rallyNo,order:m.events.length+1,set:sc.sets[0]+sc.sets[1]+1,action:d.skill,subtype,side:d.side,playerId:d.side==='us'?player:null,opponentNo:d.side==='them'?(m.opponentPlayers?.find(x=>x.id===d.opponentPlayerId)?.number||d.opponentNo):null,opponentPlayerId:d.side==='them'?d.opponentPlayerId||null:null,participants:players,recipientId:d.skill==='set'&&d.side==='us'?d.recipient:null,origin:{...d.origin},target:d.targetPoint?{...d.targetPoint}:null,result:d.result,quality:d.quality,rotationNo:(m.rotationNo-1)%6+1,line:d.skill==='attack'&&d.origin.y>=69?'back':'front',lineupSnapshot:{...m.lineup},courtPositions:Object.fromEntries(tacChosen(m).map(p=>[p.id,{...tacGetXY(m,p.id)}])),liberoSnapshot:m.libero?{...m.libero}:null,videoTime:document.querySelector('#match-video')?.currentTime||ui.videoTime||0,created:Date.now()});
+ const won=((d.result==='point'&&['serve','attack','block'].includes(d.skill))||(d.result==='error'&&['serve','attack'].includes(d.skill)))?(d.result==='point'?d.side:d.side==='us'?'them':'us'):null;
+ let ended=false;if(won&&m.servingTeam){try{RALLY.finishRally(m,won,matchScore);ended=true}catch(err){toast(err.message)}}
+ persist();d.origin=null;d.targetPoint=null;d.target='';d.result='good';d.members=[];d.actor='';d.opponentPlayerId='';d.recipient='';ui.tac.review=ended?String(m.rallyNo-1):'current';ui.tac.side=m.servingTeam||ui.tac.side;ui.tac.focus=null;render();toast(ended?'Розыгрыш закончился. Очко начислено автоматически. При ошибке используй «Отменить очко».':'Контакт записан. Если розыгрыш завершился, укажи победителя.');
+}
+function tacPoint(m,e){let svg=e.target.closest('svg[data-tactic-board]');if(!svg||m.isDemo||(ui.tac.mode!=='ball'&&!ui.tac.target))return;
+ const c=svg.createSVGPoint();c.x=e.clientX;c.y=e.clientY;let q;try{q=c.matrixTransform(svg.getScreenCTM().inverse())}catch{return};
+ let x=Math.max(0,Math.min(100,Math.round((q.x-45)/350*1000)/10)),y=Math.max(0,Math.min(100,Math.round((q.y-35)/510*1000)/10));
+ if(ui.tac.target==='origin'||!ui.tac.origin){ui.tac.origin={x,y};ui.tac.target='target'}else{ui.tac.targetPoint={x,y};ui.tac.target=''}ui.tac.mode='ball';render();
+}
+function tacTweak(m,field,value){let t=tacModel(m);if(field==='scheme'){t.scheme=value;t.setters=[];ui.tac.members=[]}else if(field==='setter1'){t.setters[0]=value}else if(field==='setter2'){t.setters[1]=value}else ui.tac[field]=value;
+ if(m.isDemo){render();return}persist();render()}
+function tacHandle(a,val,m,el){if(!m||!['indoor','beach'].includes(m.sport))return;
+ const d=ui.tac, t=tacModel(m);
+ if(a==='tac-phase'){d.phase=val;d.mode='position';d.focus=null}
+ else if(a==='tac-mode'){d.mode=val;if(val==='position'){d.target='';d.focus=null}}
+ else if(a==='tac-paths')d.showPaths=!d.showPaths;
+ else if(a==='tac-focus'){d.focus=val;d.phase='after';d.mode='ball'}
+ else if(a==='tac-unfocus'){d.focus=null;d.mode='position'}
+ else if(a==='tac-skill'){d.skill=val;d.subtype=TAC_SUB[val][0];d.members=[];d.actor='';d.recipient='';d.origin=null;d.targetPoint=null;d.target='';d.mode='ball'}
+ else if(a==='tac-side'){d.side=val;d.actor='';d.opponentPlayerId='';d.origin=null;d.targetPoint=null;d.mode='ball'}
+ else if(a==='tac-blocker'){let at=d.members.indexOf(val);if(at>=0)d.members.splice(at,1);else if(d.members.length<3)d.members.push(val);else{toast('На один блок можно выбрать максимум трёх игроков');return}d.actor=d.members[0]||''}
+ else if(a==='tac-point'){d.target=val;d.mode='ball'}
+ else if(a==='tac-skip'){if(d.target==='origin')d.origin=null;else d.targetPoint=null;d.target='';toast('Точка не указана — статистика не будет её придумывать.')}
+ else if(a==='tac-clear'){Object.assign(d,{origin:null,targetPoint:null,target:'',actor:'',recipient:'',members:[],result:'good'});}
+ else if(a==='tac-save'){tacSave(m);return}
+ else if(a==='tac-undo'){let i=m.events.map((e,i)=>[e,i]).filter(([e])=>e.rally===m.rallyNo&&e.side).at(-1)?.[1];if(i==null){toast('В этом розыгрыше пока нет контактов');return}m.events.splice(i,1);persist();toast('Последний контакт удалён')}
+ else if(a==='tac-server'){if(m.events.some(e=>e.rally===m.rallyNo)){toast('Нельзя менять подающую команду посреди записанного розыгрыша. Сначала убери ошибочное касание.');return}RALLY.setServer(m,val);persist()}
+ else if(a==='tac-end'){endRally(val);return}
+ else if(a==='tac-play'){tacStartPlay(m);return}
+ else if(a==='tac-stop'){ui.tac.playing=false;ui.tac.playEvent=0;ui.playId++;}
+ else if(a==='tac-rally'){d.review=val;d.playing=false;d.focus=null;}
+ else if(a==='tac-example'){tacExampleExit(m);return}
+ else return;
+ render();
+}
+function tacExampleExit(m){const t=tacModel(m);const s=tacActiveSetter(m);const key=tacRotation(m);if(!s){toast('Сначала выбери действующего связующего');return}
+ if(m.isDemo){toast('В демонстрации перемещения условные. Создай матч для сохранения своей схемы.');return}
+ if(!t.positions[key])t.positions[key]={};t.positions[key][s]={x:73,y:57};persist();ui.tac.phase='after';ui.tac.mode='position';render();toast('Показан пример выхода связующего. Перетащи игроков так, как они двигаются в твоей команде.');
+}
+function tacStartPlay(m){
+ const es=tacEvents(m);if(!es.length)return;
+ ui.tac.playing=true;ui.tac.playEvent=0;ui.tac.focus=null;const run=++ui.playId;
+ const X=x=>45+3.5*x,Y=y=>35+5.1*y;
+ function begin(i){
+  if(run!==ui.playId||i>=es.length){if(run===ui.playId){ui.tac.playing=false;render()}return}
+  ui.tac.playEvent=i;render();const svg=document.getElementById('tac-board');const evt=es[i];
+  if(!svg||!evt.origin||!evt.target){setTimeout(()=>begin(i+1),260);return}
+  const ball=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  ball.setAttribute('r','9');ball.setAttribute('fill','#e6fc80');ball.setAttribute('stroke','#1c4660');ball.setAttribute('stroke-width','3');
+  ball.setAttribute('style','filter:drop-shadow(0 0 5px #192e44)');ball.id='tac-playing-ball';svg.appendChild(ball);
+  let beginTime=null,duration=730;
+  const a=evt.origin,b=evt.target;
+  function tick(timestamp){if(run!==ui.playId)return;
+   if(beginTime===null)beginTime=timestamp;const p=Math.max(0,Math.min(1,(timestamp-beginTime)/duration));const ease=p*p*(3-2*p);
+   ball.setAttribute('cx',String(X(a.x+(b.x-a.x)*ease)));ball.setAttribute('cy',String(Y(a.y+(b.y-a.y)*ease)));
+   if(p<1)requestAnimationFrame(tick);else setTimeout(()=>begin(i+1),110);
+  }
+  requestAnimationFrame(tick)
+ }
+ begin(0);
+}
+function tacDragStart(e){const g=e.target.closest?.('[data-tac-actor]');if(!g||ui.tac.mode!=='position'||ui.tac.phase!=='after'||ui.screen!=='work')return;const m=current();if(!m||m.sport!=='indoor')return;tacDragged={pid:g.dataset.tacActor,x:e.clientX,y:e.clientY};e.preventDefault()}
+function tacDragEnd(e){if(!tacDragged)return;const d=tacDragged;tacDragged=null;if(Math.hypot(e.clientX-d.x,e.clientY-d.y)<4)return;const m=current(),board=document.getElementById('tac-board');if(!m||!board)return;
+ const r=board.getBoundingClientRect(),qx=(e.clientX-r.left)*440/r.width,qy=(e.clientY-r.top)*590/r.height;
+ const x=Math.round(clamp((qx-45)/350*100,0,100)*10)/10;const y=Math.round(clamp((qy-35)/510*100,50,100)*10)/10;
+ const t=tacModel(m),key=tacRotation(m);if(!t.positions[key])t.positions[key]={};t.positions[key][d.pid]={x,y};persist();render();toast('Позиция игрока после подачи сохранена для '+key);
+}
+
+function render(){let el=document.getElementById('app');if(!el)return;let oldVideo=document.getElementById('match-video');if(oldVideo){ui.videoTime=oldVideo.currentTime||ui.videoTime||0;ui.videoRate=oldVideo.playbackRate||1}let body=ui.screen==='home'?homePage():ui.screen==='demo'?demoPage():ui.screen==='account'?accountPage():ui.screen==='wizard'?wizardPage():ui.screen==='history'?historyPage():ui.screen==='work'?workPage():ui.screen==='report'?reportPage():homePage();el.innerHTML=nav()+`<main class="container main">${body}</main><footer class="foot no-print">ПИТЕРСКИЙ СКАУТ · локальный прототип · данные не передаются в облако · © 2026</footer>`;if(ui.videoUrl&&ui.screen==='work'){let video=document.getElementById('match-video');if(video){video.addEventListener('loadedmetadata',()=>{if(Number.isFinite(ui.videoTime)&&ui.videoTime>0)video.currentTime=Math.min(ui.videoTime,video.duration||ui.videoTime);video.playbackRate=ui.videoRate||1},{once:true});video.addEventListener('timeupdate',()=>ui.videoTime=video.currentTime)}}}
+function getWorkingMatch(){return ui.screen==='demo'?DEMOS[ui.sport]:current()}
+function selectSkill(x){let m=getWorkingMatch();if(!m||!SPORTS[m.sport].skills.some(a=>a[0]===x))return;ui.draft.action=x;ui.draft.playerId=null;ui.draft.recipientId=null;ui.draft.origin=null;ui.draft.target=null;ui.draft.result='good';ui.coachStep='player';render();focusGuide()}
+function selectActor(x){const m=getWorkingMatch();if(!m||!availableActors(m,ui.draft.action).some(p=>p.id===x))return;ui.draft.playerId=x;ui.coachStep=skillIsPass(ui.draft.action)?'recipient':ui.draft.action==='serve'?'target':'origin';render();focusGuide()}
+function selectRecipient(x){const m=getWorkingMatch();if(!m||!onCourt(m).includes(x)||x===ui.draft.playerId)return;ui.draft.recipientId=x;ui.coachStep='passtarget';render();focusGuide()}
+function draftBack(){let st=ui.coachStep,a=ui.draft.action;if(st==='player')ui.coachStep='skill';else if(st==='recipient')ui.coachStep='player';else if(st==='passtarget')ui.coachStep='recipient';else if(st==='origin')ui.coachStep='player';else if(st==='target')ui.coachStep=a==='serve'?'player':'origin';else if(st==='result')ui.coachStep=a==='set'?'passtarget':a==='serve'?'target':skillIsTarget(a)?'target':'origin';render()}
+function handleCourt(svg,e){if(!['origin','target','passtarget'].includes(ui.coachStep))return;let m=getWorkingMatch();if(!m)return;let point=svg.createSVGPoint();point.x=e.clientX;point.y=e.clientY;let coords;try{coords=point.matrixTransform(svg.getScreenCTM().inverse())}catch{return}let pos={x:Math.round(clamp((coords.x-30)/360*100,0,100)*10)/10,y:Math.round(clamp((coords.y-20)/480*100,0,100)*10)/10};const neededSide=(ui.coachStep==='origin'||ui.coachStep==='passtarget')?'own':'opponent';if(neededSide==='own'&&pos.y<50){toast('Нажми на нижнюю половину — это наша сторона');return}if(neededSide==='opponent'&&pos.y>50){toast('Нажми на верхнюю половину — это площадка соперника');return}if(ui.coachStep==='origin'){ui.draft.origin=pos;ui.coachStep=skillIsTarget(ui.draft.action)?'target':'result'}else{ui.draft.target=pos;ui.coachStep='result'}render();focusGuide()}
+function saveAction(){const m=getWorkingMatch();const d=ui.draft;if(!m||!d.action||!d.playerId||!d.result)return;if(d.action==='set'&&!d.recipientId){toast('Выбери, кому был пас');return}if(!m.isDemo){if(d.action==='serve'&&!m.servingTeam)RALLY.setServer(m,'us');const bad=RALLY.validateActor(m,d.action,d.playerId);if(bad){toast(bad);return}if(d.action==='set'&&RALLY.validateActor(m,'set',d.recipientId)){toast('Получатель передачи должен находиться на площадке');return}const ev={id:id(),order:m.events.length+1,rally:m.rallyNo,set:matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1,action:d.action,playerId:d.playerId,recipientId:d.recipientId,origin:d.origin,target:d.target,result:d.result,quality:d.quality,videoTime:document.querySelector('#match-video')?.currentTime||ui.videoTime||0,rotationNo:((m.rotationNo||1)-1)%6+1,scoreBefore:(()=>{const s=matchScore(m.sport,m.rallies);return {sets:[...s.sets],points:[...s.scores]}})(),line:d.action==='attack'&&d.origin?(d.origin.y>=67?'back':'front'):null,lineupSnapshot:m.sport==='indoor'?{...m.lineup}:null,serveBefore:m.servingTeam||null,created:Date.now()};m.events.push(ev);
+   const winner=RALLY.terminalWinner(ev.action,ev.result,'us');
+   if(winner&&m.sport==='indoor'){
+     try{RALLY.finishRally(m,winner,matchScore);stageReset();persist();render();toast('Очко и переход рассчитаны автоматически');return}
+     catch(err){m.events.pop();toast(err.message);return}
+   }
+   persist()}else{ui.practiceResult={...d}}
+ ui.coachStep='done';render();toast(m.isDemo?'Отлично! Ты попробовал механизм записи.':'Действие сохранено. Отмечай следующее или заканчивай розыгрыш.')}
+function addPlayer(wizard=false,side='us'){let sport=wizard?ui.sport:current()?.sport;if(!sport)return;let m=wizard?null:current();let target=wizard?(side==='them'?ui.newOpponentPlayers:ui.newPlayers):(side==='them'?m.opponentPlayers:m.players);let count=target.length;if(count>=24){toast('В тестовой версии максимум 24 спортсмена в списке');return}if(sport==='beach'&&count>=2){toast('В пляжной паре строго два игрока');return}if(sport==='tennis'||sport==='badminton'){if(count>=1){toast('В тестовом режиме этого спорта поддержана одиночная игра');return}}if(sport==='padel'&&count>=2){toast('В паре два игрока');return}let numbers=target.map(p=>Number(p.number)).filter(Number.isFinite);let next=1;while(numbers.includes(next))next++;target.push(rosterTemplate(next,'',sport==='indoor'?(['Связующий','Доигровщик','Центральный','Диагональный','Доигровщик','Центральный','Либеро'][count]||'Универсальный'):SPORTS[sport].roles[0]));if(!wizard)persist();render()}
+function removePlayer(pid,wizard=false,side='us'){const m=current(),list=wizard?(side==='them'?ui.newOpponentPlayers:ui.newPlayers):(side==='them'?m.opponentPlayers:m.players),idx=list.findIndex(p=>p.id===pid);if(idx<0)return;if(!wizard){if(m.events.some(e=>e.playerId===pid||e.recipientId===pid||e.opponentPlayerId===pid)){toast('Нельзя удалить игрока с записанными действиями. Можно переименовать.');return}if(m.sport==='indoor'&&(side==='them'?Object.values(m.opponentLineup||{}):inSix(m)).includes(pid)){toast('Сначала выведи игрока из шестёрки.');return}if((side==='them'?m.opponentLibero:m.libero)?.id===pid){toast('Сначала верни либеро со смены.');return}}list.splice(idx,1);if(!wizard)persist();render()}
+function checkRoster(players,sport){const s=SPORTS[sport];if(players.length<s.rosterMin)return `Добавь минимум ${s.rosterMin} игроков.`;if(sport==='beach'&&players.length!==2)return 'Для пляжного матча нужны ровно два игрока.';if(sport==='padel'&&players.length!==2)return 'Для падела нужны два игрока пары.';if(sport==='indoor'&&players.filter(x=>x.role==='Либеро').length>2)return 'Либеро может быть не более двух.';if(sport==='indoor'&&players.filter(x=>x.role!=='Либеро').length<6)return 'Для стартовой шестёрки нужны минимум шесть игроков, не являющихся либеро.';for(let x of players){if(!String(x.number).trim()||!String(x.name).trim())return 'Заполни номер и имя каждого игрока.';}if(new Set(players.map(x=>String(x.number).trim())).size!==players.length)return 'Номера игроков должны быть уникальными.';return null}
+function validateLineup(lineup,players){let ids=POS_ORDER.map(p=>lineup[p]);if(ids.some(x=>!x))return 'Заполни все шесть позиций.';if(new Set(ids).size!==6)return 'Один игрок не может занимать две позиции одновременно.';if(ids.some(x=>!players.some(p=>p.id===x&&p.role!=='Либеро')))return 'Либеро нельзя ставить в стартовую шестёрку вместо основного игрока.';return null}
+function nextWizard(){
+ if(ui.wizardStep===1){if(!ui.newTeam.trim()||!ui.newOpponent.trim()){toast('Назови обе команды.');return}ui.wizardStep=2;render();return}
+ if(ui.wizardStep===2){for(const [players,label] of [[ui.newPlayers,'нашей команды'],[ui.newOpponentPlayers,'соперника']]){const err=checkRoster(players,ui.sport);if(err){toast('Проверь заявку '+label+': '+err);return}}
+  if(ui.sport==='indoor'){for(const [players,lineup] of [[ui.newPlayers,ui.newLineup],[ui.newOpponentPlayers,ui.newOpponentLineup]]){const mains=players.filter(p=>p.role!=='Либеро');POS_ORDER.forEach((pos,i)=>{if(!mains.some(p=>p.id===lineup[pos]))lineup[pos]=(mains.find(p=>p.role===({'1':'Связующий','4':'Диагональный','2':'Доигровщик','5':'Доигровщик','3':'Центральный','6':'Центральный'}[pos])&&!Object.values(lineup).includes(p.id))||mains.find(p=>!Object.values(lineup).includes(p.id)))?.id||''})}ui.wizardStep=3;render();return}createMatch();return}
+ for(const [lineup,players,name,scheme] of [[ui.newLineup,ui.newPlayers,'нашей команды',ui.newSchemeUs],[ui.newOpponentLineup,ui.newOpponentPlayers,'соперника',ui.newSchemeThem]]){const err=validateLineup(lineup,players);if(err){toast('Расстановка '+name+': '+err);return}const setters=Object.entries(lineup).filter(([z,id])=>players.some(p=>p.id===id&&p.role==='Связующий')).map(([z])=>z);const required=scheme==='5-1'?1:2;if(setters.length!==required){toast('Система '+scheme+' '+name+': в шестёрке должно быть '+required+' связующих. Вернись к заявке и назначь амплуа.');return}if(required===2&&!({'1':'4','2':'5','3':'6','4':'1','5':'2','6':'3'}[setters[0]]===setters[1])){toast('Для '+scheme+' связующие должны стоять по диагонали друг от друга.');return}}
+ createMatch();
+}
+function createMatch(){let m=makeNewMatch();ui.liveSide=m.servingTeam||'us';ui.livePlayer=RALLY.activeAtSide(m,ui.liveSide,'1');state.matches.unshift(m);state.selected=m.id;ui.tac.side=m.servingTeam||'us';persist();ui.workTab=m.sport==='indoor'?'live':(['indoor','beach'].includes(m.sport)?'tactics':'input');stageReset();ui.videoUrl=null;ui.videoTime=0;show('work');toast('Матч создан. Он пустой — ни одного действия ещё не записано.')}
+function rotate(m){if(m.rallies?.length){toast('После начала матча переход выполняется автоматически по результату розыгрыша. Для исправления воспользуйся отменой очка.');return}if(m.libero){m.libero=null}let old={...m.lineup};m.lineup={'1':old['2'],'6':old['1'],'5':old['6'],'4':old['5'],'3':old['4'],'2':old['3']};m.rotationNo=(m.rotationNo||1)+1;m.substitutions.push({kind:'rotation',time:Date.now()});persist();render();toast('Шестёрка повернулась по часовой стрелке')}
+function substitute(m){if(m.sport!=='indoor')return;let zone=document.getElementById('sub-zone')?.value,pid=document.getElementById('sub-player')?.value;if(!zone||!pid){toast('Выбери запасного');return}if(m.libero?.position===zone){toast('Сначала верни игрока вместо либеро');return}if(m.players.find(x=>x.id===pid)?.role==='Либеро'||inSix(m).includes(pid)){toast('Для обычной замены нужен запасной игрок (не либеро)');return}const setNo=matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1;const used=m.substitutions.filter(s=>s.kind==='sub'&&s.set===setNo).length;if(used>=6){toast('Лимит 6 обычных замен в партии достигнут. Исключительные замены требуют отдельного протокола.');return}let old=m.lineup[zone];m.lineup[zone]=pid;m.substitutions.push({kind:'sub',set:setNo,zone,out:old,in:pid,time:Date.now()});persist();render();toast('Замена выполнена')}
+function deployLibero(m){if(m.sport!=='indoor'||m.libero){toast('Либеро уже находится на площадке');return}let pid=document.getElementById('libero-player')?.value,pos=document.getElementById('libero-zone')?.value;let p=m.players.find(p=>p.id===pid);if(!p||p.role!=='Либеро'){toast('Выбери игрока с амплуа «Либеро»');return}if(!BACK.includes(pos)){toast('Либеро может заменить только заднего игрока');return}m.libero={id:pid,position:pos,replaced:m.lineup[pos]};m.substitutions.push({kind:'libero-in',pid,pos,time:Date.now()});persist();render();toast(`Либеро выпущен в зону ${pos}`)}
+function returnLibero(m){if(!m.libero)return;let out=m.libero;m.libero=null;m.substitutions.push({kind:'libero-out',pid:out.id,pos:out.position,time:Date.now()});persist();render();toast('Основной игрок вернулся на площадку')}
+function endRally(winner){let m=current();if(!m||matchScore(m.sport,m.rallies).done)return;try{const result=RALLY.finishRally(m,winner,matchScore);ui.liveSide=m.servingTeam||winner;ui.livePlayer=RALLY.activeAtSide(m,ui.liveSide,'1');persist();stageReset();render();toast(result.setEnded?'Партия закончена. Подтверди составы и подачу следующей партии.':`Очко ${winner==='us'?'нам':'сопернику'}.${result.rotated?' Переход выполняет '+(result.rotatedSide==='us'?'наша команда.':'соперник.'):''}`)}catch(err){toast(err.message)}}
+function goReport(isDemo=false){ui.reportDemo=isDemo;show('report')}
+function exportJSON(){const data={app:'PITERSKIY_SCOUT',schema:4,exported:new Date().toISOString(),profile:state.profile,matches:state.matches};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),'PITERSKIY_SCOUT_копия.json');toast('Резервная копия сформирована')}
+function downloadBlob(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+async function importJSON(file){if(!file)return;try{if(file.size>15_000_000)throw Error('Файл слишком большой');let obj=JSON.parse(await file.text());if(obj.app!=='PITERSKIY_SCOUT'||![3,4].includes(obj.schema)||!Array.isArray(obj.matches))throw Error('Поддерживаются резервные копии Питерского Скаута 3.0 и единой сборки');let count=0;for(const m of obj.matches){if(!m.id||!SPORTS[m.sport]||!Array.isArray(m.players)||!Array.isArray(m.events)||!Array.isArray(m.rallies)||state.matches.some(x=>x.id===m.id))continue;state.matches.push(m);count++}persist();render();toast(`Импортировано новых матчей: ${count}`)}catch(err){toast('Ошибка импорта: '+err.message)}}
+function pngReport(){let m=ui.reportDemo?DEMOS[ui.sport]:current();if(!m)return;let canvas=document.createElement('canvas');canvas.width=1100;canvas.height=1600;let ctx=canvas.getContext('2d');ctx.fillStyle='#f5f8fb';ctx.fillRect(0,0,1100,1600);ctx.fillStyle='#193449';ctx.fillRect(0,0,1100,220);ctx.fillStyle='#d8f79a';ctx.font='bold 31px Arial';ctx.fillText('ПИТЕРСКИЙ СКАУТ',56,76);ctx.fillStyle='#fff';ctx.font='bold 39px Arial';ctx.fillText((m.team+' — '+m.opponent).slice(0,45),56,136,1000);ctx.font='20px Arial';ctx.fillStyle='#bfd5e4';ctx.fillText(SPORTS[m.sport].name+' · '+m.date+(m.isDemo?' · ДЕМО':''),56,184);let st=teamSummary(m);[['ДЕЙСТВИЙ',st.events],['РОЗЫГРЫШЕЙ',m.rallies.length],['АТАК С ОЧКОМ',st.kills]].forEach(([lab,val],i)=>{let x=52+i*345;ctx.fillStyle='#fff';ctx.fillRect(x,255,320,128);ctx.fillStyle='#172d41';ctx.font='bold 52px Arial';ctx.fillText(String(val),x+22,328);ctx.font='18px Arial';ctx.fillStyle='#72849a';ctx.fillText(lab,x+22,360)});
+ const drawMap=(events,x,y,label)=>{ctx.font='bold 27px Arial';ctx.fillStyle='#183148';ctx.fillText(label,x,y-22);ctx.fillStyle='#e1f0fb';ctx.fillRect(x,y,430,480);ctx.fillStyle='#d8ebfa';ctx.fillRect(x,y+240,430,240);ctx.strokeStyle='#7399b9';ctx.lineWidth=4;ctx.strokeRect(x,y,430,480);ctx.strokeStyle='#2c4557';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,y+240);ctx.lineTo(x+430,y+240);ctx.stroke();if(m.sport==='indoor'){ctx.strokeStyle='#fff';ctx.setLineDash([10,8]);ctx.lineWidth=2;for(let a of [y+160,y+320]){ctx.beginPath();ctx.moveTo(x,a);ctx.lineTo(x+430,a);ctx.stroke()}ctx.setLineDash([])}events.filter(e=>e.target).forEach(e=>{let col=e.result==='point'?'#16956a':e.result==='error'?'#dc575f':'#3972cb';ctx.beginPath();ctx.arc(x+e.target.x*4.3,y+e.target.y*4.8,7,0,2*Math.PI);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke()})};let attacks=m.events.filter(e=>e.action==='attack');drawMap(attacks.length?attacks:m.events.filter(e=>e.target),65,490,'НАПРАВЛЕНИЯ УДАРОВ');drawMap(m.events.filter(e=>e.action==='serve'),610,490,'ПОДАЧИ');ctx.fillStyle='#334f68';ctx.font='22px Arial';ctx.fillText('● Зелёный — очко    ● Синий — игра    ● Красный — ошибка',70,1050);ctx.font='19px Arial';ctx.fillStyle='#687f92';ctx.fillText('Точки отражают только действия, зарегистрированные тренером.',70,1100);ctx.fillText('Ошибки без точки приземления не рисуются.',70,1133);if(m.isDemo)ctx.fillText('Учебные данные, результаты вымышлены.',70,1180);ctx.fillStyle='#173249';ctx.font='bold 27px Arial';ctx.fillText('Сводка',70,1270);ctx.font='23px Arial';ctx.fillText(`Игроков в заявке: ${m.players.length}`,70,1313);ctx.fillText(`Подач навылет: ${st.aces}`,70,1352);ctx.fillText(`Атак с очком: ${st.kills}`,70,1391);ctx.fillStyle='#8fa1ae';ctx.font='17px Arial';ctx.fillText('ПРОТОТИП · сформировано локально в браузере · без платной подписки',70,1533);canvas.toBlob(b=>{if(b)downloadBlob(b,'PITERSKIY_SCOUT_отчет.png')},'image/png')}
+function playRally(number){let m=DEMOS[ui.sport];let events=m.events.filter(e=>e.rally===number);if(!events.length)return;ui.playId++;let run=ui.playId;let svg=document.querySelector('#animation-stage svg'),ball=svg?.querySelector('#animation-ball');if(!svg||!ball)return;ball.style.display='';const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;let chain=[];for(let i=0;i<events.length;i++){let e=events[i],start=e.origin||events[i-1]?.target||{x:50,y:86},end=e.target||events[i+1]?.origin||start;chain.push({start,end,action:e.action,playerId:e.playerId})}
+ let label=document.getElementById('demo-live-label');if(!label){label=document.createElement('div');label.id='demo-live-label';label.className='surface-note success mt';document.getElementById('animation-stage').after(label)}
+ const frame=(ms,a,b)=>new Promise(resolve=>{if(reduced){ball.setAttribute('cx',courtPixels(b).x);ball.setAttribute('cy',courtPixels(b).y);resolve();return}let from=courtPixels(a),to=courtPixels(b),start=null;const tick=t=>{if(run!==ui.playId){resolve();return}if(start===null)start=t;let k=Math.min(1,(t-start)/ms);let smooth=k*k*(3-2*k);ball.setAttribute('cx',String(from.x+(to.x-from.x)*smooth));ball.setAttribute('cy',String(from.y+(to.y-from.y)*smooth));if(k<1)requestAnimationFrame(tick);else resolve()};requestAnimationFrame(tick)});
+ (async()=>{for(let i=0;i<chain.length;i++){if(run!==ui.playId)break;let c=chain[i];label.textContent=`${i+1}/${chain.length} · ${skillLabel(c.action)} · ${playerName(m,c.playerId)}`;await frame(800,c.start,c.end);await new Promise(res=>setTimeout(res,200))}if(run===ui.playId){label.textContent='Розыгрыш завершён. Анимация отражает сохранённые точки касаний.';ball.style.display='none'}})()}
+function chooseAction(btn){const act=btn.dataset.action, val=btn.dataset.val;
+ if(act&&act.startsWith('tac-')){tacHandle(act,val,ui.screen==='demo'?DEMOS[ui.sport]:current(),btn);return}
+ switch(act){
+ case'live-substitute':{const m=current();if(!m)break;try{const side=ui.liveSubSide,zone=document.getElementById('live-sub-zone')?.value,pid=document.getElementById('live-sub-player')?.value;const msg=liveSubstitute(m,side,zone,pid);persist();render();toast(msg)}catch(err){toast(err.message)}break}
+ case'live-serve-result':{const m=current();if(m){ui.liveSide=m.servingTeam;ui.livePlayer=RALLY.activeAtSide(m,m.servingTeam,'1');ui.liveAction='serve';liveRecord(m,val)}break}
+ case'live-block-player':{const idx=ui.liveBlockPlayers.indexOf(val);if(idx>=0)ui.liveBlockPlayers.splice(idx,1);else ui.liveBlockPlayers.push(val);render();break}
+ case'live-side':{const m=current();ui.liveSide=val;ui.livePlayer=RALLY.activeAtSide(m,val,'1');ui.liveRecipient=null;render();break}
+ case'live-player':{
+ const m=current(),side=btn.dataset.side;
+ if(ui.liveAction==='set'&&ui.liveSide===side&&ui.livePlayer&&val!==ui.livePlayer&&(side==='us'?m.players:m.opponentPlayers).find(p=>p.id===ui.livePlayer)?.role==='Связующий')ui.liveRecipient=val;
+ else {ui.liveSide=side;ui.livePlayer=val;ui.liveRecipient=null}
+ render();break} 
+ case'live-skill':ui.liveAction=val;ui.liveSubtype='';ui.liveRecipient=null;ui.liveBlockPlayers=[];render();break;
+ case'live-record':liveRecord(current(),val);break;
+ case'live-undo-contact':liveUndoContact(current());break;
+ case'live-undo-rally':liveUndoRally(current());break;
+ case'live-clear-point':{let m=current();if(m?.events?.length){m.events[m.events.length-1].target=null;ui.liveLastPoint=null;persist();render()}break}
+ case'home':show('home');break;
+ case'demo':ui.mapAction='attack';ui.filters={player:'all',set:'all',quality:'all',rotation:'all'};ui.reportDemo=true;startDemo(btn.dataset.sport||ui.sport);break;
+ case'demo-tab':ui.demoTab=val;if(val==='practice')stageReset();render();break;
+ case'create':ui.reportDemo=false;startNew(btn.dataset.sport||ui.sport);break;
+ case'history':show(state.profile?'history':'account');break;
+ case'back-work':show('work');break;
+ case'demo-home':show('demo');break;
+ case'work-tab':ui.workTab=val;ui.picked=null;render();break;
+ case'play':playRally(Number(val));break;
+ case'stop-play':ui.playId++;document.getElementById('animation-ball')?.setAttribute('style','display:none');break;
+ case'skill':selectSkill(val);break;
+ case'player':selectActor(val);break;
+ case'recipient':selectRecipient(val);break;
+ case'outcome':ui.draft.result=val;render();break;
+ case'save':saveAction();break;
+ case'again':case'restart':stageReset();render();break;
+ case'back':draftBack();break;
+ case'no-target':ui.draft.target=null;ui.draft.result='error';ui.coachStep='result';render();break;
+ case'skip-pass-target':ui.draft.target=null;ui.coachStep='result';render();break;
+ case'skip-origin':ui.draft.origin=null;ui.coachStep=skillIsTarget(ui.draft.action)?'target':'result';render();break;
+ case'open-match':{const m=state.matches.find(x=>x.id===val);if(!m)return;ui.liveSide=m.servingTeam||'us';ui.livePlayer=RALLY.activeAtSide(m,ui.liveSide,'1');state.selected=m.id;ui.sport=m.sport;ui.workTab=m.sport==='indoor'?'live':(['indoor','beach'].includes(m.sport)?'tactics':'input');ui.videoUrl=null;ui.videoTime=0;stageReset();persist();show('work');break}
+ case'open-report':goReport(false);break;
+ case'report-demo':goReport(true);break;
+ case'report-png':pngReport();break;
+ case'print':window.print();break;
+ case'backup':exportJSON();break;
+ case'wizard-back':ui.wizardStep=Math.max(1,ui.wizardStep-1);render();break;
+ case'wizard-next':nextWizard();break;
+ case'add-player':addPlayer(true);break;
+  case'add-opponent-player':addPlayer(true,'them');break;
+ case'match-add-player':addPlayer(false);break;
+  case'match-add-opponent-player':addPlayer(false,'them');break;
+ case'remove-player':removePlayer(val,ui.screen==='wizard');break;
+  case'remove-opponent-player':removePlayer(val,ui.screen==='wizard','them');break;
+ case'substitute':substitute(current());break;
+ case'deploy-libero':deployLibero(current());break;
+ case'restore-libero':returnLibero(current());break;
+ case'rotate':rotate(current());break;
+  case'toggle-auto-libero':{let m=current();if(m){m.autoLibero=m.autoLibero===false;persist();render();toast(m.autoLibero===false?'Автозамена либеро отключена':'Автозамена либеро включена')}break}
+ case'map-skill':ui.mapAction=val;ui.mapSide='target';ui.picked=null;render();break;
+ case'side':ui.mapSide=val;ui.picked=null;render();break;
+ case'set-server':{let m=current();if(m){if(m.pendingSetSetup){toast('Сначала заверши подготовку новой партии');break}if(m.events.some(e=>e.rally===m.rallyNo)){toast('Нельзя менять подающую команду после записи касаний');break}if(m.sport==='indoor'&&matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)>0){toast('Первую подачу этой партии определяют правила, а не ручное переключение');break}RALLY.setServer(m,val);persist();render()}break}
+  case'end-rally':endRally(val);break;
+  case'start-new-set':{let m=current();if(!m?.pendingSetSetup)break;const n=matchScore(m.sport,m.rallies).sets.reduce((a,b)=>a+b,0)+1;for(const [line,roster,label] of [[m.lineup,m.players,'нашей команды'],[m.opponentLineup,m.opponentPlayers,'соперника']]){const err=validateLineup(line,roster||[]);if(err){toast('Стартовая шестёрка '+label+': '+err);return}}if(!['us','them'].includes(m.nextSetServer)){toast('Выбери первую подачу после жеребьёвки');break}m.servingTeam=m.nextSetServer;m.setStarts=m.setStarts||{};m.setStarts[n]=m.nextSetServer;m.pendingSetSetup=false;m.nextSetServer=null;m.rotationNo=1;m.opponentRotationNo=1;m.libero=null;m.opponentLibero=null;autoInitialLibero(m);persist();render();toast('Новая партия началась, составы проверены');break}
+  case'video-back':case'video-forward':case'video-play':case'video-slow':{let v=document.getElementById('match-video');if(!v)break;if(act==='video-back')v.currentTime=Math.max(0,v.currentTime-5);if(act==='video-forward')v.currentTime=Math.min(v.duration||Infinity,v.currentTime+5);if(act==='video-play'){v.paused?v.play().catch(()=>{}):v.pause()}if(act==='video-slow'){v.playbackRate=v.playbackRate===0.5?1:0.5;toast('Скорость видео: '+v.playbackRate+'×')}break}
+ case'seek-video':{let video=document.getElementById('match-video');if(video){video.currentTime=Number(val)||0;video.play().catch(()=>{})}break}
+ case'undo-rally':{let m=current();if(m?.rallies.length&&confirm('Отменить последний розыгрыш и восстановить подачу / расстановку?')){RALLY.undoRally(m);persist();render()}break}
+ case'delete-event':{let m=current();if(m&&confirm('Удалить эту запись?')){m.events=m.events.filter(x=>x.id!==val);persist();render()}break}
+ case'delete-match':{let m=state.matches.find(x=>x.id===val);if(m&&confirm('Удалить этот матч без возможности восстановления?')){state.matches=state.matches.filter(x=>x.id!==val);if(state.selected===val)state.selected=null;persist();render()}break}
+ }
+}
+document.addEventListener('click',e=>{const button=e.target.closest('button[data-action]');if(button){e.preventDefault();chooseAction(button);return}const liveCourt=e.target.closest('svg[data-live-court]');if(liveCourt){livePlacePoint(e,liveCourt);return}const point=e.target.closest('[data-event]');if(point){ui.picked=point.getAttribute('data-event');render();return}const tac=e.target.closest('svg[data-tactic-board]');if(tac){tacPoint(ui.screen==='demo'?DEMOS[ui.sport]:current(),e);return}const court=e.target.closest('svg[data-court-tap]');if(court)handleCourt(court,e)});
+document.addEventListener('input',e=>{let el=e.target;if(el.id==='wizard-team')ui.newTeam=el.value;else if(el.id==='wizard-opponent')ui.newOpponent=el.value;else if(el.id==='wizard-date')ui.newDate=el.value;else if(el.dataset.rosterField){let pool=el.dataset.rosterSide==='them'?(ui.screen==='wizard'?ui.newOpponentPlayers:current()?.opponentPlayers||[]):(ui.screen==='wizard'?ui.newPlayers:current()?.players||[]);let p=pool.find(x=>x.id===el.dataset.id);if(p){p[el.dataset.rosterField]=el.value;if(ui.screen!=='wizard')persist()}}});
+document.addEventListener('change',async e=>{let el=e.target;if(el.id==='wizard-sport'){ui.sport=el.value;ui.newPlayers=[];ui.newOpponentPlayers=[];ui.newLineup={};ui.newOpponentLineup={};render()}else if(el.dataset.starter){(el.dataset.starterSide==='them'?ui.newOpponentLineup:ui.newLineup)[el.dataset.starter]=el.value}else if(el.id==='wizard-scheme-us'){ui.newSchemeUs=el.value}else if(el.id==='wizard-scheme-them'){ui.newSchemeThem=el.value}else if(el.dataset.opponentLineupEdit){let m=current(),pos=el.dataset.opponentLineupEdit,pid=el.value;if(!m)return;if(m.events.some(x=>x.rally===m.rallyNo)){toast('Сначала закончи текущий розыгрыш');render();return}if(Object.entries(m.opponentLineup||{}).some(([z,id])=>z!==pos&&id===pid)){toast('Игрок соперника уже находится в другой зоне');render();return}m.opponentLineup[pos]=pid;persist();render()}else if(el.dataset.libPolicy){const m=current();if(m){m.liberoPolicy=m.liberoPolicy||{};m.liberoPolicy[el.dataset.side]=m.liberoPolicy[el.dataset.side]||{};m.liberoPolicy[el.dataset.side][el.dataset.libPolicy]=el.value;persist();render();toast('Настройка либеро сохранена для следующих розыгрышей')}}else if(el.id==='live-sub-side'){ui.liveSubSide=el.value;render()}else if(el.id==='live-sub-limit'){const m=current();if(m){m.substitutionLimit=Number(el.value);persist()}}else if(el.id==='live-recipient'){ui.liveRecipient=el.value}else if(el.id==='live-subtype'){ui.liveSubtype=el.value}else if(el.id==='live-auto-libero'){const m=current();if(m){m.autoLibero=el.checked;persist();render()}}else if(el.id==='filter-player'){ui.filters.player=el.value;ui.picked=null;render()}else if(el.id==='filter-set'){ui.filters.set=el.value;ui.picked=null;render()}else if(el.id==='filter-quality'){ui.filters.quality=el.value;render()}else if(el.id==='filter-rotation'){ui.filters.rotation=el.value;render()}else if(el.id==='pass-quality'){ui.draft.quality=el.value}else if(el.dataset.lineupEdit){let m=current(),pos=el.dataset.lineupEdit,pid=el.value;if(m.libero){toast('Верни либеро перед изменением стартовой шестёрки');render();return}if(Object.entries(m.lineup).some(([zone,x])=>zone!==pos&&x===pid)){toast('Этот игрок уже стоит в другой зоне');render();return}if(!m.players.some(p=>p.id===pid&&p.role!=='Либеро')){toast('Нельзя поставить либеро в стартовую шестёрку');render();return}m.lineup[pos]=pid;persist();render()}else if(el.dataset.rosterField){let m=current();if(!m)return;let valid=checkRoster(m.players,m.sport);if(m.sport==='indoor'&&el.dataset.rosterField==='role'&&inSix(m).includes(el.dataset.id)&&m.players.find(p=>p.id===el.dataset.id)?.role==='Либеро'){m.players.find(p=>p.id===el.dataset.id).role='Универсальный';toast('Сначала убери игрока из шестёрки, потом назначай либеро');render();return}if(valid)toast(valid);persist()}else if(el.id==='video-file'){let file=el.files?.[0];if(!file)return;if(!file.type.startsWith('video/')&&!/\.(mp4|mov|m4v|webm)$/i.test(file.name)){toast('Выбери видеофайл');return}if(ui.videoUrl)URL.revokeObjectURL(ui.videoUrl);ui.videoUrl=URL.createObjectURL(file);ui.videoName=file.name;ui.videoTime=0;render();toast('Видео открыто только на твоём устройстве')}else if(el.id==='restore-file'){await importJSON(el.files?.[0]);el.value=''}});
+document.addEventListener('change',e=>{if(e.target.matches('input[name=first-serve]'))ui.newFirstServer=e.target.value;if(e.target.matches('input[name=next-set-server]')){let m=current();if(m){m.nextSetServer=e.target.value;persist()}}});
+document.addEventListener('keydown',e=>{
+ if(ui.screen!=='work'||ui.workTab!=='live'||e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName))return;
+ const m=current();if(!m)return;
+ const skill={s:'serve',r:'receive',e:'set',a:'attack',b:'block',d:'dig'};
+ const k=e.key.toLowerCase();
+ if('123456'.includes(k)&&k.length===1){ui.livePlayer=RALLY.activeAtSide(m,ui.liveSide,k);render();e.preventDefault();return}
+ if(skill[k]){ui.liveAction=skill[k];ui.liveRecipient=null;ui.liveSubtype='';render();e.preventDefault();return}
+ if(k==='enter'||k==='x'||k==='p'){liveRecord(m,k==='enter'?'good':k==='x'?'error':'point');e.preventDefault();return}
+ if(k==='z'){liveUndoContact(m);e.preventDefault();return}
+});
+document.addEventListener('keydown',e=>{if(ui.screen!=='work'||ui.workTab!=='input'||['INPUT','TEXTAREA','SELECT','BUTTON'].includes(document.activeElement?.tagName)||e.ctrlKey||e.metaKey||e.altKey)return;let v=document.getElementById('match-video');if(!v)return;if(e.code==='Space'){e.preventDefault();v.paused?v.play().catch(()=>{}):v.pause()}else if(e.key==='ArrowLeft'){e.preventDefault();v.currentTime=Math.max(0,v.currentTime-5)}else if(e.key==='ArrowRight'){e.preventDefault();v.currentTime=Math.min(v.duration||Infinity,v.currentTime+5)}});
+document.addEventListener('submit',e=>{if(e.target.id==='profile-form'){e.preventDefault();let name=(new FormData(e.target).get('name')||'').toString().trim();if(name.length<2){toast('Введи имя из двух или более символов');return}state.profile={name,local:true};persist();if(ui.newTeam||ui.newPlayers.length){show('wizard')}else startNew(ui.sport)}});
+document.addEventListener('change',e=>{const el=e.target;if(!el.matches('[data-tac-field]'))return;const m=ui.screen==='demo'?DEMOS[ui.sport]:current();if(!m)return;tacTweak(m,el.dataset.tacField,el.value)});
+document.addEventListener('input',e=>{const el=e.target;if(el.matches('[data-tac-field="opponentNo"]'))ui.tac.opponentNo=el.value});
+document.addEventListener('pointerdown',tacDragStart);
+document.addEventListener('pointerup',tacDragEnd);
+window.PV_SCOUT_TEST={SPORTS,matchScore,validateLineup,checkRoster,DEMO:DEMOS,RALLY,TAC:{tacModel,tacActiveSetter,tacDemoEvents}};
+
+render();
+})();
+</script><script>if('serviceWorker' in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));}</script></body></html>
