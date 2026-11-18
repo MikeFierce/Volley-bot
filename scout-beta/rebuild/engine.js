@@ -33,6 +33,19 @@ function applySub(m,s,e){
  if(!legalPlayer(m,side,inId)||liberoIds(m,side).includes(inId))throw Error('Invalid substitute');
  const z=zones.find(z=>s.lineups[side][z]===outId);if(!z)throw Error('Outgoing player not on court');
  if(Object.values(s.lineups[side]).includes(inId))throw Error('Substitute already on court');
+ if(s.substitutions[side].length>=6)throw Error('Six substitutions per set exceeded');
+ const starters=new Set(Object.values(m.initial.lineups[side]));
+ const pairs=s.substitutionPairs[side];
+ if(starters.has(outId)){
+  if(pairs[outId])throw Error('Starting player cannot be replaced twice');
+  if(starters.has(inId)||Object.values(pairs).includes(inId))throw Error('Invalid incoming substitute');
+  pairs[outId]=inId;
+ }else{
+  const original=Object.keys(pairs).find(k=>pairs[k]===outId);
+  if(!original||inId!==original)throw Error('Substitute may only be replaced by original starter');
+  if(s.returnedStarters[side].includes(original))throw Error('Starter already returned');
+  s.returnedStarters[side].push(original);
+ }
  if(s.liberos[side]?.zone===z)throw Error('Release libero before substitution');
  s.lineups[side][z]=inId;s.substitutions[side].push({outId,inId,zone:z});
 }
@@ -40,16 +53,18 @@ function validateContacts(m,s,contacts){
  const allowed=new Set(['serve','receive','set','attack','block','dig','Подача','Приём','Передача','Атака','Блок','Защита']);
  for(const c of contacts){
   if(!c||typeof c!=='object'||!allowed.has(c.skill))throw Error('Invalid contact skill');
-  if(c.playerId===undefined)continue; // legacy partial records, not yet certified
+  if(c.playerId===undefined)continue; // legacy partial records: compatibility mode; not certified
   if(!['a','b'].includes(c.side))throw Error('Invalid contact side');
   const court=onCourt(s,c.side);
   if(!Object.values(court).includes(c.playerId))throw Error('Contact player not on court');
   const lib=liberoIds(m,c.side).includes(c.playerId);
   if(lib&&['serve','Подача','block','Блок'].includes(c.skill))throw Error('Illegal libero action');
   if(['serve','Подача'].includes(c.skill)&&(c.side!==s.serving||c.playerId!==court['1']))throw Error('Wrong server');
+  if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');
+  if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','стык 1/6','стык 5/6'].includes(c.zone))throw Error('Invalid zone');
  }
 }
-function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
+function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]},substitutionPairs:{a:{},b:{}},returnedStarters:{a:[],b:[]}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
 if(e.type==='substitution'){if(s.finished)throw Error('Set already finished');applySub(m,s,e);continue}
 if(e.type!=='rally')throw Error('Unsupported event');if(s.finished)throw Error('Set already finished');if(!['a','b'].includes(e.winner))throw Error('Invalid winner');if(!Array.isArray(e.contacts))throw Error('Contacts must be array');
 if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);
