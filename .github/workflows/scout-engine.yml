@@ -19,4 +19,4 @@ jobs:
         with:
           node-version: '22'
       - name: Run scout regression suite
-        run: node --test scout-beta/rebuild/engine.test.js
+        run: node --test scout-beta/rebuild/engine.test.js scout-beta/rebuild/match.test.js
