@@ -16,11 +16,12 @@ function applyLibero(m,s,e){
  if(action==='enter'){
   if(active)throw Error('Libero already on court');
   if(!ids.includes(e.liberoId))throw Error('Unregistered libero');
-  if(!back.has(e.zone))throw Error('Libero must enter back row');if(e.zone==='1')throw Error('Libero cannot serve');
+  if(!['5','6'].includes(e.zone))throw Error('Libero must enter in zone 5 or 6 (zone 1 is server)');
   if(s.lineups[side][e.zone]!==e.replacedId)throw Error('Replacement player not in zone');
   s.liberos[side]={id:e.liberoId,replacedId:e.replacedId,zone:e.zone};
  }else if(action==='exit'){
   if(!active||active.id!==e.liberoId)throw Error('Libero not on court');
+  if(e.replacedId!==undefined&&e.replacedId!==active.replacedId)throw Error('Only replaced player may return');
   s.liberos[side]=null;
  }else if(action==='switch'){
   if(!active||active.id!==e.outId)throw Error('Outgoing libero not on court');
