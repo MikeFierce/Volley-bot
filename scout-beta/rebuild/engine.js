@@ -36,10 +36,23 @@ function applySub(m,s,e){
  if(s.liberos[side]?.zone===z)throw Error('Release libero before substitution');
  s.lineups[side][z]=inId;s.substitutions[side].push({outId,inId,zone:z});
 }
+function validateContacts(m,s,contacts){
+ const allowed=new Set(['serve','receive','set','attack','block','dig','Подача','Приём','Передача','Атака','Блок','Защита']);
+ for(const c of contacts){
+  if(!c||typeof c!=='object'||!allowed.has(c.skill))throw Error('Invalid contact skill');
+  if(c.playerId===undefined)continue; // legacy partial records, not yet certified
+  if(!['a','b'].includes(c.side))throw Error('Invalid contact side');
+  const court=onCourt(s,c.side);
+  if(!Object.values(court).includes(c.playerId))throw Error('Contact player not on court');
+  const lib=liberoIds(m,c.side).includes(c.playerId);
+  if(lib&&['serve','Подача','block','Блок'].includes(c.skill))throw Error('Illegal libero action');
+  if(['serve','Подача'].includes(c.skill)&&(c.side!==s.serving||c.playerId!==court['1']))throw Error('Wrong server');
+ }
+}
 function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
 if(e.type==='substitution'){if(s.finished)throw Error('Set already finished');applySub(m,s,e);continue}
 if(e.type!=='rally')throw Error('Unsupported event');if(s.finished)throw Error('Set already finished');if(!['a','b'].includes(e.winner))throw Error('Invalid winner');if(!Array.isArray(e.contacts))throw Error('Contacts must be array');
-if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');
+if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);
 const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}};s.score[e.winner]++;if(e.winner!==s.serving){
  const active=s.liberos[e.winner];
  if(active){const next=zones[(zones.indexOf(active.zone)+1)%zones.length];if(!back.has(next))throw Error('Libero must exit before front-row rotation');if(next==='1')throw Error('Libero cannot rotate into serving position');}
@@ -51,6 +64,7 @@ function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.id===id
 function removeRally(m,id){const n=copy(m),i=n.events.findIndex(e=>e.id===id);if(i<0)throw Error('Rally not found');n.events.splice(i,1);derive(n);return n}
 function appendLineupEvent(m,event){if(!['libero','substitution'].includes(event.type))throw Error('Unsupported lineup event');const n=copy(m);n.events.push(copy(event));derive(n);return n}
 function editEvent(m,eventIndex,patch){const n=copy(m);if(!n.events[eventIndex])throw Error('Event not found');n.events[eventIndex]={...n.events[eventIndex],...copy(patch)};derive(n);return n}
+function editContact(m,rallyId,index,patch){const e=m.events.find(e=>e.type==='rally'&&e.id===rallyId);if(!e)throw Error('Rally not found');if(!Number.isInteger(index)||index<0||index>=e.contacts.length)throw Error('Contact not found');const contacts=copy(e.contacts);contacts[index]={...contacts[index],...copy(patch)};return editRally(m,rallyId,{contacts})}
 function addContact(m,id,contact){const e=m.events.find(e=>e.id===id);if(!e)throw Error('Rally not found');return editRally(m,id,{contacts:[...e.contacts,copy(contact)]})}
-return {newMatch,derive,appendRally,editRally,removeRally,addContact,appendLineupEvent,editEvent,onCourt,rotate};
+return {newMatch,derive,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,editEvent,onCourt,rotate};
 });
