@@ -3,7 +3,7 @@ const L={a:{'1':'A1','6':'A6','5':'A5','4':'A4','3':'A3','2':'A2'},b:{'1':'B1','
 test('sideout rotates receiver',()=>{const s=E.derive(E.appendRally(start(),{id:'1',winner:'b'}));assert.equal(s.serving,'b');assert.equal(s.lineups.b['1'],'B2');assert.equal(s.lineups.a['1'],'A1')});
 test('serving winner stays',()=>{const s=E.derive(E.appendRally(start(),{id:'1',winner:'a'}));assert.equal(s.serving,'a');assert.deepEqual(s.lineups,L)});
 test('historical correction replays future rotation',()=>{let m=E.appendRally(start(),{id:'1',winner:'a'});m=E.appendRally(m,{id:'2',winner:'b'});const s=E.derive(E.editRally(m,'1',{winner:'b'}));assert.equal(s.rallies[1].before.server,'B2');assert.equal(s.score.b,2)});
-test('append contact',()=>{let m=E.appendRally(start(),{id:'1',winner:'a',contacts:[{skill:'serve'}]});m=E.addContact(m,'1',{skill:'receive'});assert.equal(m.events[0].contacts.length,2)});
+test('append contact',()=>{let m=E.appendRally(start(),{id:'1',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'serve'}]});m=E.addContact(m,'1',{side:'b',playerId:'B6',skill:'receive'});assert.equal(m.events[0].contacts.length,2)});
 test('remove rally',()=>{let m=E.removeRally(E.appendRally(start(),{id:'1',winner:'b'}),'1');assert.deepEqual(E.derive(m).score,{a:0,b:0})});
 test('set end prevents next rally',()=>{let m=E.newMatch({lineups:L,target:2});m=E.appendRally(m,{id:'1',winner:'a'});m=E.appendRally(m,{id:'2',winner:'a'});assert.throws(()=>E.appendRally(m,{id:'3',winner:'b'}),/finished/)});
 test('duplicate rally rejected',()=>{const m=E.appendRally(start(),{id:'1',winner:'a'});assert.throws(()=>E.appendRally(m,{id:'1',winner:'b'}))});
@@ -33,3 +33,6 @@ test('standard substitution return to starter is allowed',()=>{let m=E.appendLin
 test('substitute cannot replace another starter after first pair',()=>{let m=E.appendLineupEvent(match(),{type:'substitution',side:'a',outId:'A5',inId:'A7'});m=E.appendLineupEvent(m,{type:'substitution',side:'a',outId:'A7',inId:'A5'});assert.throws(()=>E.appendLineupEvent(m,{type:'substitution',side:'a',outId:'A6',inId:'A7'}),/Invalid incoming substitute/)});
 test('starter cannot leave court twice in one set',()=>{let m=E.appendLineupEvent(match(),{type:'substitution',side:'a',outId:'A5',inId:'A7'});m=E.appendLineupEvent(m,{type:'substitution',side:'a',outId:'A7',inId:'A5'});assert.throws(()=>E.appendLineupEvent(m,{type:'substitution',side:'a',outId:'A5',inId:'A7'}),/cannot be replaced twice/)});
 test('reject invalid contact quality and zone',()=>{assert.throws(()=>E.appendRally(match(),{id:'q',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'invalid'}]}),/Invalid quality/);assert.throws(()=>E.appendRally(match(),{id:'z',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',zone:'999'}]}),/Invalid zone/)});
+
+test('contact without player is rejected',()=>{assert.throws(()=>E.appendRally(match(),{id:'no-player',winner:'a',contacts:[{skill:'serve'}]}),/player required/)});
+test('wrong serving player is rejected even if same side',()=>{assert.throws(()=>E.appendRally(match(),{id:'server',winner:'a',contacts:[{side:'a',playerId:'A2',skill:'serve'}]}),/Wrong server/)});
