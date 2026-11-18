@@ -74,6 +74,20 @@ const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving][
  s.lineups[e.winner]=rotate(s.lineups[e.winner]);s.serving=e.winner
 }for(const side of ['a','b']){const l=s.liberos[side];if(l){const newZone=zones.find(z=>s.lineups[side][z]===l.replacedId);if(!newZone||!back.has(newZone))throw Error('Libero replacement must be recorded explicitly');else l.zone=newZone}}
 s.finished=Math.max(s.score.a,s.score.b)>=target&&Math.abs(s.score.a-s.score.b)>=2;s.rallies.push({id:e.id,contacts:copy(e.contacts),winner:e.winner,before,after:{score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}}})}return s}
+function statistics(m){
+ const state=derive(m),players={},teams={a:{ralliesWon:0,contacts:0},b:{ralliesWon:0,contacts:0}};
+ for(const rally of state.rallies){
+  teams[rally.winner].ralliesWon++;
+  for(const c of rally.contacts){
+   const k=c.side+':'+c.playerId;
+   if(!players[k])players[k]={side:c.side,playerId:c.playerId,total:0,skills:{},qualities:{}};
+   const p=players[k];p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;
+   if(c.quality!==undefined)p.qualities[c.quality]=(p.qualities[c.quality]||0)+1;
+   teams[c.side].contacts++;
+  }
+ }
+ return {score:copy(state.score),teams,players,rallies:state.rallies.length};
+}
 function appendRally(m,{id,winner,contacts=[]}){if(!id)throw Error('Rally ID required');if(m.events.some(e=>e.id===id))throw Error('Duplicate rally ID');const n=copy(m);n.events.push({type:'rally',id,winner,contacts:copy(contacts)});derive(n);return n}
 function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.id===id);if(i<0)throw Error('Rally not found');if(patch.winner!==undefined)n.events[i].winner=patch.winner;if(patch.contacts!==undefined)n.events[i].contacts=copy(patch.contacts);derive(n);return n}
 function removeRally(m,id){const n=copy(m),i=n.events.findIndex(e=>e.id===id);if(i<0)throw Error('Rally not found');n.events.splice(i,1);derive(n);return n}
@@ -81,5 +95,5 @@ function appendLineupEvent(m,event){if(!['libero','substitution'].includes(event
 function editEvent(m,eventIndex,patch){const n=copy(m);if(!n.events[eventIndex])throw Error('Event not found');n.events[eventIndex]={...n.events[eventIndex],...copy(patch)};derive(n);return n}
 function editContact(m,rallyId,index,patch){const e=m.events.find(e=>e.type==='rally'&&e.id===rallyId);if(!e)throw Error('Rally not found');if(!Number.isInteger(index)||index<0||index>=e.contacts.length)throw Error('Contact not found');const contacts=copy(e.contacts);contacts[index]={...contacts[index],...copy(patch)};return editRally(m,rallyId,{contacts})}
 function addContact(m,id,contact){const e=m.events.find(e=>e.id===id);if(!e)throw Error('Rally not found');return editRally(m,id,{contacts:[...e.contacts,copy(contact)]})}
-return {newMatch,derive,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,editEvent,onCourt,rotate};
+return {newMatch,derive,statistics,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,editEvent,onCourt,rotate};
 });
