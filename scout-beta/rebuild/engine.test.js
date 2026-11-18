@@ -36,3 +36,6 @@ test('reject invalid contact quality and zone',()=>{assert.throws(()=>E.appendRa
 
 test('contact without player is rejected',()=>{assert.throws(()=>E.appendRally(match(),{id:'no-player',winner:'a',contacts:[{skill:'serve'}]}),/player required/)});
 test('wrong serving player is rejected even if same side',()=>{assert.throws(()=>E.appendRally(match(),{id:'server',winner:'a',contacts:[{side:'a',playerId:'A2',skill:'serve'}]}),/Wrong server/)});
+
+test('statistics aggregate player touches and team rally wins',()=>{let m=E.appendRally(match(),{id:'one',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'++'},{side:'b',playerId:'B6',skill:'Приём',quality:'-'}]});m=E.appendRally(m,{id:'two',winner:'b',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'+'}]});const t=E.statistics(m);assert.equal(t.teams.a.ralliesWon,1);assert.equal(t.teams.b.ralliesWon,1);assert.equal(t.players['a:A1'].total,2);assert.equal(t.players['a:A1'].qualities['++'],1)});
+test('historical contact correction changes statistics',()=>{let m=E.appendRally(match(),{id:'one',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'+'}]});m=E.editContact(m,'one',0,{quality:'-'});const t=E.statistics(m);assert.equal(t.players['a:A1'].qualities['-'],1);assert.equal(t.players['a:A1'].qualities['+']||0,0)});
