@@ -5,7 +5,7 @@ const zones=['1','6','5','4','3','2'],back=new Set(['1','6','5']),copy=x=>JSON.p
 function validateLineup(l){if(!l||zones.some(z=>!l[z]))throw Error('Missing lineup zone');if(new Set(zones.map(z=>l[z])).size!==6)throw Error('Duplicate player')}
 function rotate(l){const out={};for(let i=0;i<zones.length;i++)out[zones[(i+1)%6]]=l[zones[i]];return out}
 function newMatch({lineups,rosters=null,firstServer='a',target=25}={}){if(!['a','b'].includes(firstServer))throw Error('Invalid first server');if(!lineups)throw Error('Lineups required');if(!Number.isInteger(target)||target<2)throw Error('Invalid target');validateLineup(lineups.a);validateLineup(lineups.b);
-if(rosters)for(const side of ['a','b']){const rs=rosters[side];if(!Array.isArray(rs)||new Set(rs.map(p=>p.id)).size!==rs.length)throw Error('Invalid roster');for(const id of Object.values(lineups[side])){const p=rs.find(p=>p.id===id);if(!p||p.role==='libero')throw Error('Invalid starting six')}}return {schema:1,initial:{lineups:copy(lineups),rosters:copy(rosters),firstServer,target},events:[]}}
+if(rosters){if(!rosters.a||!rosters.b)throw Error('Invalid roster');const allIds=new Set();for(const side of ['a','b']){const rs=rosters[side];if(!Array.isArray(rs)||rs.some(p=>!p||typeof p.id!=='string'||!p.id||!['field','libero'].includes(p.role))||new Set(rs.map(p=>p.id)).size!==rs.length)throw Error('Invalid roster');for(const p of rs){if(allIds.has(p.id))throw Error('Duplicate cross-team player ID');allIds.add(p.id)}for(const id of Object.values(lineups[side])){const p=rs.find(p=>p.id===id);if(!p||p.role==='libero')throw Error('Invalid starting six')}}}return {schema:1,initial:{lineups:copy(lineups),rosters:copy(rosters),firstServer,target},events:[]}}
 function rosterOf(m,side){return m.initial.rosters?.[side]||null}
 function legalPlayer(m,side,id){const roster=rosterOf(m,side);return !roster||roster.some(p=>p.id===id)}
 function liberoIds(m,side){return (rosterOf(m,side)||[]).filter(p=>p.role==='libero').map(p=>p.id)}
@@ -16,7 +16,7 @@ function applyLibero(m,s,e){
  if(action==='enter'){
   if(active)throw Error('Libero already on court');
   if(!ids.includes(e.liberoId))throw Error('Unregistered libero');
-  if(!back.has(e.zone))throw Error('Libero must enter back row');if(s.serving===side&&e.zone==='1')throw Error('Libero cannot serve');
+  if(!back.has(e.zone))throw Error('Libero must enter back row');if(e.zone==='1')throw Error('Libero cannot serve');
   if(s.lineups[side][e.zone]!==e.replacedId)throw Error('Replacement player not in zone');
   s.liberos[side]={id:e.liberoId,replacedId:e.replacedId,zone:e.zone};
  }else if(action==='exit'){
@@ -89,10 +89,10 @@ function statistics(m){
  for(const p of Object.values(players))for(const by of Object.values(p.bySkill)){by.positive=(by.qualities['++']||0)+(by.qualities['+']||0);by.negative=(by.qualities['-']||0)+(by.qualities['=']||0);by.positivePct=by.graded?Math.round(by.positive/by.graded*1000)/10:null;}return {score:copy(state.score),teams,players,rallies:state.rallies.length};
 }
 function appendRally(m,{id,winner,contacts=[]}){if(!id)throw Error('Rally ID required');if(m.events.some(e=>e.id===id))throw Error('Duplicate rally ID');const n=copy(m);n.events.push({type:'rally',id,winner,contacts:copy(contacts)});derive(n);return n}
-function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.id===id);if(i<0)throw Error('Rally not found');if(patch.winner!==undefined)n.events[i].winner=patch.winner;if(patch.contacts!==undefined)n.events[i].contacts=copy(patch.contacts);derive(n);return n}
-function removeRally(m,id){const n=copy(m),i=n.events.findIndex(e=>e.id===id);if(i<0)throw Error('Rally not found');n.events.splice(i,1);derive(n);return n}
+function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.type==='rally'&&e.id===id);if(i<0)throw Error('Rally not found');if(patch.winner!==undefined)n.events[i].winner=patch.winner;if(patch.contacts!==undefined)n.events[i].contacts=copy(patch.contacts);derive(n);return n}
+function removeRally(m,id){const n=copy(m),i=n.events.findIndex(e=>e.type==='rally'&&e.id===id);if(i<0)throw Error('Rally not found');n.events.splice(i,1);derive(n);return n}
 function appendLineupEvent(m,event){if(!['libero','substitution'].includes(event.type))throw Error('Unsupported lineup event');const n=copy(m);n.events.push(copy(event));derive(n);return n}
-function editEvent(m,eventIndex,patch){const n=copy(m);if(!n.events[eventIndex])throw Error('Event not found');n.events[eventIndex]={...n.events[eventIndex],...copy(patch)};derive(n);return n}
+function editEvent(m,eventIndex,patch){const n=copy(m);if(!Number.isInteger(eventIndex)||eventIndex<0||!n.events[eventIndex])throw Error('Event not found');if(!patch||typeof patch!=='object'||Array.isArray(patch)||'type' in patch||'id' in patch)throw Error('Event identity cannot be edited');n.events[eventIndex]={...n.events[eventIndex],...copy(patch)};derive(n);return n}
 function editContact(m,rallyId,index,patch){const e=m.events.find(e=>e.type==='rally'&&e.id===rallyId);if(!e)throw Error('Rally not found');if(!Number.isInteger(index)||index<0||index>=e.contacts.length)throw Error('Contact not found');const contacts=copy(e.contacts);contacts[index]={...contacts[index],...copy(patch)};return editRally(m,rallyId,{contacts})}
 function addContact(m,id,contact){const e=m.events.find(e=>e.id===id);if(!e)throw Error('Rally not found');return editRally(m,id,{contacts:[...e.contacts,copy(contact)]})}
 return {newMatch,derive,statistics,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,editEvent,onCourt,rotate};
