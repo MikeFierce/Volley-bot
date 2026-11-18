@@ -42,3 +42,9 @@ test('historical contact correction changes statistics',()=>{let m=E.appendRally
 
 test('skill breakdown uses graded denominator, not all touches',()=>{let m=E.appendRally(match(),{id:'one',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'++'},{side:'a',playerId:'A1',skill:'Подача',quality:'-'},{side:'a',playerId:'A1',skill:'Подача'}]});const x=E.statistics(m).players['a:A1'].bySkill['Подача'];assert.equal(x.total,3);assert.equal(x.graded,2);assert.equal(x.positivePct,50)});
 test('ungraded skill has null positive percentage',()=>{const m=E.appendRally(match(),{id:'one',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача'}]});assert.equal(E.statistics(m).players['a:A1'].bySkill['Подача'].positivePct,null)});
+
+test('reject same roster player ID on opposing teams',()=>{const bad=JSON.parse(JSON.stringify(roster));bad.b.push({id:'A7',role:'field'});assert.throws(()=>E.newMatch({lineups:L,rosters:bad}),/cross-team/)});
+test('reject malformed roster entries',()=>{const bad=JSON.parse(JSON.stringify(roster));bad.a.push({id:'A8',role:'unknown'});assert.throws(()=>E.newMatch({lineups:L,rosters:bad}),/Invalid roster/)});
+test('libero cannot enter zone one even when receiving',()=>{assert.throws(()=>E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B1',zone:'1'}),/cannot serve/)});
+test('event identity cannot be rewritten',()=>{const m=E.appendRally(match(),{id:'r',winner:'a'});assert.throws(()=>E.editEvent(m,0,{type:'substitution'}),/identity/);assert.throws(()=>E.editEvent(m,0,{id:'changed'}),/identity/)});
+test('negative event index is rejected',()=>{const m=E.appendRally(match(),{id:'r',winner:'a'});assert.throws(()=>E.editEvent(m,-1,{winner:'b'}),/not found/)});
