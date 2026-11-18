@@ -1,0 +1,9 @@
+const assert=require('node:assert/strict'),test=require('node:test'),E=require('./engine.js');
+const L={a:{'1':'A1','6':'A6','5':'A5','4':'A4','3':'A3','2':'A2'},b:{'1':'B1','6':'B6','5':'B5','4':'B4','3':'B3','2':'B2'}},start=()=>E.newMatch({lineups:L,firstServer:'a'});
+test('sideout rotates receiver',()=>{const s=E.derive(E.appendRally(start(),{id:'1',winner:'b'}));assert.equal(s.serving,'b');assert.equal(s.lineups.b['1'],'B2');assert.equal(s.lineups.a['1'],'A1')});
+test('serving winner stays',()=>{const s=E.derive(E.appendRally(start(),{id:'1',winner:'a'}));assert.equal(s.serving,'a');assert.deepEqual(s.lineups,L)});
+test('historical correction replays future rotation',()=>{let m=E.appendRally(start(),{id:'1',winner:'a'});m=E.appendRally(m,{id:'2',winner:'b'});const s=E.derive(E.editRally(m,'1',{winner:'b'}));assert.equal(s.rallies[1].before.server,'B2');assert.equal(s.score.b,2)});
+test('append contact',()=>{let m=E.appendRally(start(),{id:'1',winner:'a',contacts:[{skill:'serve'}]});m=E.addContact(m,'1',{skill:'receive'});assert.equal(m.events[0].contacts.length,2)});
+test('remove rally',()=>{let m=E.removeRally(E.appendRally(start(),{id:'1',winner:'b'}),'1');assert.deepEqual(E.derive(m).score,{a:0,b:0})});
+test('set end prevents next rally',()=>{let m=E.newMatch({lineups:L,target:2});m=E.appendRally(m,{id:'1',winner:'a'});m=E.appendRally(m,{id:'2',winner:'a'});assert.throws(()=>E.appendRally(m,{id:'3',winner:'b'}),/finished/)});
+test('duplicate rally rejected',()=>{const m=E.appendRally(start(),{id:'1',winner:'a'});assert.throws(()=>E.appendRally(m,{id:'1',winner:'b'}))});
