@@ -53,7 +53,7 @@ function validateContacts(m,s,contacts){
  const allowed=new Set(['serve','receive','set','attack','block','dig','Подача','Приём','Передача','Атака','Блок','Защита']);
  for(const c of contacts){
   if(!c||typeof c!=='object'||!allowed.has(c.skill))throw Error('Invalid contact skill');
-  if(c.playerId===undefined)continue; // legacy partial records: compatibility mode; not certified
+  if(typeof c.playerId!=='string'||!c.playerId)throw Error('Contact player required');
   if(!['a','b'].includes(c.side))throw Error('Invalid contact side');
   const court=onCourt(s,c.side);
   if(!Object.values(court).includes(c.playerId))throw Error('Contact player not on court');
