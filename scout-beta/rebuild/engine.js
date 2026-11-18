@@ -70,7 +70,7 @@ if(e.type!=='rally')throw Error('Unsupported event');if(s.finished)throw Error('
 if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);
 const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}};s.score[e.winner]++;if(e.winner!==s.serving){
  const active=s.liberos[e.winner];
- if(active){const next=zones[(zones.indexOf(active.zone)+1)%zones.length];if(!back.has(next))throw Error('Libero must exit before front-row rotation');if(next==='1')throw Error('Libero cannot rotate into serving position');}
+ if(active){const next=zones[(zones.indexOf(active.zone)+1)%zones.length];if(!back.has(next)||next==='1'){s.liberos[e.winner]=null;}}
  s.lineups[e.winner]=rotate(s.lineups[e.winner]);s.serving=e.winner
 }for(const side of ['a','b']){const l=s.liberos[side];if(l){const newZone=zones.find(z=>s.lineups[side][z]===l.replacedId);if(!newZone||!back.has(newZone))throw Error('Libero replacement must be recorded explicitly');else l.zone=newZone}}
 s.finished=Math.max(s.score.a,s.score.b)>=target&&Math.abs(s.score.a-s.score.b)>=2;s.rallies.push({id:e.id,contacts:copy(e.contacts),winner:e.winner,before,after:{score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}}})}return s}
