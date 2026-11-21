@@ -48,3 +48,24 @@ test('reject malformed roster entries',()=>{const bad=JSON.parse(JSON.stringify(
 test('libero cannot enter zone one even when receiving',()=>{assert.throws(()=>E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B1',zone:'1'}),/cannot serve/)});
 test('event identity cannot be rewritten',()=>{const m=E.appendRally(match(),{id:'r',winner:'a'});assert.throws(()=>E.editEvent(m,0,{type:'substitution'}),/identity/);assert.throws(()=>E.editEvent(m,0,{id:'changed'}),/identity/)});
 test('negative event index is rejected',()=>{const m=E.appendRally(match(),{id:'r',winner:'a'});assert.throws(()=>E.editEvent(m,-1,{winner:'b'}),/not found/)});
+
+test('journal annotation persists between rallies without changing score',()=>{
+ let m=E.appendRally(start(),{id:'r1',winner:'a'});
+ m=E.appendAnnotation(m,{kind:'yellow',side:'b',playerId:'B1',note:'Предупреждение'});
+ m=E.appendRally(m,{id:'r2',winner:'b'});
+ const state=E.derive(m);
+ assert.deepEqual(state.score,{a:1,b:1});
+ assert.equal(m.events[1].type,'annotation');
+ assert.equal(m.events[1].note,'Предупреждение');
+});
+test('journal rejects invalid kind and side',()=>{
+ assert.throws(()=>E.appendAnnotation(start(),{kind:'invalid',side:'a'}),/journal/);
+ assert.throws(()=>E.appendAnnotation(start(),{kind:'yellow',side:'c'}),/journal/);
+});
+test('last completed rally contact can be removed without losing point',()=>{
+ let m=E.appendRally(start(),{id:'r1',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'+'},{side:'b',playerId:'B6',skill:'Приём',quality:'-'}]});
+ m=E.editRally(m,'r1',{contacts:m.events[0].contacts.slice(0,-1)});
+ assert.equal(E.derive(m).score.a,1);
+ assert.equal(E.statistics(m).players['a:A1'].total,1);
+ assert.equal(E.statistics(m).players['b:B6'],undefined);
+});
