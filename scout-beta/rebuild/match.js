@@ -35,6 +35,7 @@ function updateCurrentSet(m,fn){
 }
 function appendRally(m,rally){return updateCurrentSet(m,s=>E.appendRally(s,rally))}
 function appendLineupEvent(m,event){return updateCurrentSet(m,s=>E.appendLineupEvent(s,event))}
+function appendAnnotation(m,event){return updateCurrentSet(m,s=>E.appendAnnotation(s,event))}
 function statistics(m){const state=derive(m);return {match:state,sets:m.sets.map((set,i)=>({number:i+1,statistics:E.statistics(set)}))}}
-return {newMatch,derive,startSet,updateCurrentSet,appendRally,appendLineupEvent,statistics};
+return {newMatch,derive,startSet,updateCurrentSet,appendRally,appendLineupEvent,appendAnnotation,statistics};
 });
