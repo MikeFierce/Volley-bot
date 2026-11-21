@@ -1,0 +1,35 @@
+const {test,expect}=require('@playwright/test');
+const path=require('node:path');
+const url='file://'+path.resolve(__dirname,'index.html');
+test('coach enters rosters, starts match, records touch and journal',async({page})=>{
+ await page.goto(url);
+ await page.locator('#teamA').fill('Рубеж');
+ await page.locator('#teamB').fill('Гости');
+ const roster=(prefix)=>Array.from({length:7},(_,i)=>`${i+1}, ${prefix} ${i+1}, ${i===0?'связующий':i===6?'либеро':'игрок'}`).join('\n');
+ await page.locator('#rosterA').fill(roster('А'));
+ await page.locator('#rosterB').fill(roster('Б'));
+ await page.locator('#prepareLineup').click();
+ await expect(page.locator('#lineup-a-1')).toBeVisible();
+ page.once('dialog',d=>d.accept());
+ await page.locator('#createMatch').click();
+ await expect(page.locator('#message')).toContainText('сохранены');
+ await page.locator('#courts .court').first().locator('.player').last().click();
+ await page.locator('#add').click();
+ await expect(page.locator('#draft')).toContainText('1');
+ await page.locator('#winA').click();
+ await expect(page.locator('#score')).toContainText('1 : 0');
+ await page.locator('#undoLastRecordedTouch').click();
+ await expect(page.locator('#score')).toContainText('1 : 0');
+ await page.locator('#journalKind').selectOption('yellow');
+ await page.locator('#journalAdd').click();
+ await expect(page.locator('#history')).toContainText('Жёлтая карточка');
+ await page.locator('#allSetsStats').check();
+ await expect(page.locator('#stats')).toBeVisible();
+});
+test('rejects serve by player outside serving zone 1',async({page})=>{
+ await page.goto(url);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.locator('#add').click();
+ await expect(page.locator('#message')).toContainText('зоны 1');
+ await expect(page.locator('#draft')).toContainText('0');
+});
