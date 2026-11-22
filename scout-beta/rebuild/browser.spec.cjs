@@ -301,3 +301,36 @@ test('coach corrects past winner with automatic score and service replay',async(
  await expect(page.locator('#score')).toHaveText('0 : 1');
  await expect(page.locator('#server')).toContainText('Гости');
 });
+
+
+test('setter report links real reception, setter and attacker in same rally',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').last().click();
+ await page.locator('#add').click();
+ await page.locator('#courts .court').nth(1).locator('.player').nth(3).click();
+ await page.getByRole('button',{name:'2. Приём'}).click();
+ await page.locator('#add').click();
+ await page.locator('#courts .court').nth(1).locator('.player').last().click();
+ await page.getByRole('button',{name:'3. Передача'}).click();
+ await page.locator('#add').click();
+ await page.locator('#courts .court').nth(1).locator('.player').first().click();
+ await page.getByRole('button',{name:'4. Атака'}).click();
+ await page.locator('#touchResult').selectOption('point');
+ await page.locator('#add').click();
+ await page.locator('#winB').click();
+ await expect(page.locator('#score')).toHaveText('0 : 1');
+ await expect(page.locator('#setterStats')).toContainText('Игрок Б 1');
+ await expect(page.locator('#setterStats')).toContainText('Игрок Б 4');
+ const pending=page.waitForEvent('download');await page.locator('#exportSetterCsv').click();const file=await pending;
+ expect(fs.readFileSync(await file.path(),'utf8')).toContain('Игрок Б 4');
+});
+test('video marker is stored with contact but not the video file',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#videoFile').setInputFiles({name:'sample.webm',mimeType:'video/webm',buffer:Buffer.from('test')});
+ await page.locator('#courts .court').first().locator('.player').last().click();
+ await page.locator('#add').click();
+ await page.locator('#winA').click();
+ const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')));
+ expect(saved.sets[0].events[0].contacts[0].videoTimeSec).toBe(0);
+ expect(JSON.stringify(saved)).not.toContain('sample.webm');
+});
