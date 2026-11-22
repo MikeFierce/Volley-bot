@@ -235,7 +235,7 @@ test('LIVE validates contact before draft and keyboard follows same path',async(
  await newCoachMatch(page);
  await page.locator('#courts .court').first().locator('.player').first().click();
  await page.keyboard.press('1');
- await expect(page.locator('#message')).toContainText('Wrong server');
+ await expect(page.locator('#message')).toContainText('зоны 1');
  await expect(page.locator('#draft')).toContainText('0');
  await page.locator('#courts .court').first().locator('.player').last().click();
  await page.keyboard.press('1');
@@ -274,7 +274,7 @@ test('cannot request a third timeout for same team in a set',async({page})=>{
  await page.locator('#journalKind').selectOption('timeout');
  for(let i=0;i<2;i++){await page.locator('#journalAdd').click();await expect(page.locator('#message')).toContainText('записано')}
  await page.locator('#journalAdd').click();
- await expect(page.locator('#message')).toContainText('Only two timeouts');
+ await expect(page.locator('#message')).toContainText('двух тайм-аутов');
 });
 
 
@@ -357,6 +357,7 @@ test('real x/y court positions are stored and map shows only actual measured mar
  await page.locator('#mapPlot').selectOption('routes');
  await expect(page.locator('#mapPoints line')).toHaveCount(1);
  await page.reload();
+ await page.locator('#mapPlot').selectOption('routes');
  await expect(page.locator('#mapPoints circle')).toHaveCount(2);
 });
 test('no made-up coordinates from zone-only events',async({page})=>{
