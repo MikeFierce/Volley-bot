@@ -112,7 +112,7 @@ function tactics(m){
   for(let i=0;i<cs.length;i++){const c=cs[i];if(!isSet(c))continue;
    const key=c.side+':'+c.playerId,entry=setters[key]||(setters[key]={side:c.side,playerId:c.playerId,sets:0,linked:0,byAttacker:{}});
    entry.sets++;
-   let reception=null;for(let j=i-1;j>=0;j--){if(isReceive(cs[j])&&cs[j].side===c.side){reception=cs[j];break}}
+   let reception=null;for(let j=i-1;j>=0;j--){if(cs[j].side!==c.side||['Защита','dig'].includes(cs[j].skill))break;if(isReceive(cs[j])){reception=cs[j];break}}
    let attacker=null;for(let j=i+1;j<cs.length;j++){if(cs[j].side!==c.side||isSet(cs[j]))break;if(isAttack(cs[j])){attacker=cs[j];break}}
    const position=Object.entries(rally.before.lineups[c.side]).find(([,id])=>id===c.playerId)?.[0]||null;
    const link={rallyId:rally.id,side:c.side,setterId:c.playerId,attackerId:attacker?.playerId||null,rotation:position,receptionQuality:reception?.quality??null,passType:c.passType||null,combination:c.combination||null,attackResult:attacker?.result||null,videoTimeSec:c.videoTimeSec??null};
