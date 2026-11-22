@@ -12,7 +12,7 @@ function liberoIds(m,side){return (rosterOf(m,side)||[]).filter(p=>p.role==='lib
 function onCourt(s,side){const l=s.lineups[side],x=s.liberos[side];return Object.fromEntries(zones.map(z=>[z,x&&x.zone===z?x.id:l[z]]))}
 function applyLibero(m,s,e){
  const {side,action}=e;if(!['a','b'].includes(side))throw Error('Invalid side');
- const active=s.liberos[side],ids=liberoIds(m,side);
+ const active=s.liberos[side],ids=liberoIds(m,side);if(s.liberoActionAt[side]===s.rallies.length)throw Error('Completed rally required between Libero replacements');
  if(action==='enter'){
   if(active)throw Error('Libero already on court');
   if(!ids.includes(e.liberoId))throw Error('Unregistered libero');
@@ -28,6 +28,7 @@ function applyLibero(m,s,e){
   if(!ids.includes(e.inId)||e.inId===e.outId)throw Error('Invalid incoming libero');
   s.liberos[side]={...active,id:e.inId};
  }else throw Error('Unknown libero action');
+ s.liberoActionAt[side]=s.rallies.length;
 }
 function applySub(m,s,e){
  const {side,outId,inId}=e;if(!['a','b'].includes(side))throw Error('Invalid side');
@@ -65,9 +66,9 @@ function validateContacts(m,s,contacts){
   if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','7','8','9','стык 1/6','стык 5/6','стык 2/3','стык 3/4','стык 4/7','стык 3/8','стык 2/9','стык 7/8','стык 8/9'].includes(c.zone))throw Error('Invalid zone');if(c.passType!==undefined&&c.passType!==null&&!['быстро','высоко','иное','узко','широко'].includes(c.passType))throw Error('Invalid pass type');if(c.combination!==undefined&&c.combination!==null&&!['','вход в зону','забегание за голову'].includes(c.combination))throw Error('Invalid combination');if((c.passType!==undefined||c.combination!==undefined)&&!['set','Передача'].includes(c.skill))throw Error('Pass details require setting action');
  }
 }
-function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]},substitutionPairs:{a:{},b:{}},returnedStarters:{a:[],b:[]}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
+function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]},substitutionPairs:{a:{},b:{}},returnedStarters:{a:[],b:[]},liberoActionAt:{a:null,b:null},timeouts:{a:0,b:0}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
 if(e.type==='substitution'){if(s.finished)throw Error('Set already finished');applySub(m,s,e);continue}
-if(e.type==='annotation'){if(s.finished)throw Error('Set already finished');if(!['yellow','red','expulsion','disqualification','fault','timeout','note'].includes(e.kind)||!['a','b'].includes(e.side)||typeof e.note!=='string'||e.note.length>500)throw Error('Invalid journal event');continue}
+if(e.type==='annotation'){if(s.finished)throw Error('Set already finished');if(!['yellow','red','expulsion','disqualification','fault','timeout','note'].includes(e.kind)||!['a','b'].includes(e.side)||typeof e.note!=='string'||e.note.length>500)throw Error('Invalid journal event');if(e.kind==='timeout'&&++s.timeouts[e.side]>2)throw Error('Only two timeouts per team per set');continue}
 if(e.type!=='rally')throw Error('Unsupported event');if(s.finished)throw Error('Set already finished');if(!['a','b'].includes(e.winner))throw Error('Invalid winner');if(!Array.isArray(e.contacts))throw Error('Contacts must be array');
 if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);for(const c of e.contacts){if(c.result==='point'&&c.side!==e.winner)throw Error('Point outcome conflicts with winner');if(c.result==='error'&&c.side===e.winner)throw Error('Error outcome conflicts with winner')}
 const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}};s.score[e.winner]++;if(e.winner!==s.serving){
