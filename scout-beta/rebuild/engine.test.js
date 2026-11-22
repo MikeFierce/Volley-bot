@@ -12,16 +12,16 @@ const match=()=>E.newMatch({lineups:L,rosters:roster,firstServer:'a'});
 test('libero enters back row and appears on court',()=>{const m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});assert.equal(E.onCourt(E.derive(m),'a')['5'],'LA')});
 test('libero cannot enter front row',()=>{assert.throws(()=>E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A4',zone:'4'}),/back row/)});
 test('two liberos cannot enter simultaneously',()=>{const m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});assert.throws(()=>E.appendLineupEvent(m,{type:'libero',side:'a',action:'enter',liberoId:'LA2',replacedId:'A6',zone:'6'}),/already/)});
-test('switch between registered liberos',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});m=E.appendLineupEvent(m,{type:'libero',side:'a',action:'switch',outId:'LA',inId:'LA2'});assert.equal(E.onCourt(E.derive(m),'a')['5'],'LA2')});
+test('switch between registered liberos',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});m=E.appendRally(m,{id:'between',winner:'a'});m=E.appendLineupEvent(m,{type:'libero',side:'a',action:'switch',outId:'LA',inId:'LA2'});assert.equal(E.onCourt(E.derive(m),'a')['5'],'LA2')});
 test('field substitution changes on-court player',()=>{const m=E.appendLineupEvent(match(),{type:'substitution',side:'a',outId:'A5',inId:'A7'});assert.equal(E.onCourt(E.derive(m),'a')['5'],'A7')});
 test('substitution cannot remove player covered by libero',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});assert.throws(()=>E.appendLineupEvent(m,{type:'substitution',side:'a',outId:'A5',inId:'A7'}),/Release libero/)});
 test('editing earlier libero event replays state',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});m=E.appendRally(m,{id:'r1',winner:'a'});m=E.editEvent(m,0,{liberoId:'LA2'});assert.equal(E.derive(m).rallies[0].before.onCourt.a['5'],'LA2')});
 
 test('libero cannot enter serving zone 1',()=>{assert.throws(()=>E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A1',zone:'1'}),/cannot serve/)});
 test('side-out records point and automatically releases libero before front-row rotation',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B5',zone:'5'});m=E.appendRally(m,{id:'r',winner:'b'});const s=E.derive(m);assert.equal(s.score.b,1);assert.equal(s.serving,'b');assert.equal(s.liberos.b,null);assert.equal(s.lineups.b['4'],'B5')});
-test('explicit libero exit allows side-out',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B5',zone:'5'});m=E.appendLineupEvent(m,{type:'libero',side:'b',action:'exit',liberoId:'LB'});m=E.appendRally(m,{id:'r',winner:'b'});assert.equal(E.derive(m).serving,'b')});
+test('explicit libero exit allows side-out',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B5',zone:'5'});m=E.appendRally(m,{id:'between',winner:'a'});m=E.appendLineupEvent(m,{type:'libero',side:'b',action:'exit',liberoId:'LB'});m=E.appendRally(m,{id:'r',winner:'b'});assert.equal(E.derive(m).serving,'b')});
 test('reject libero in starting six',()=>{const bad=JSON.parse(JSON.stringify(L));bad.a['1']='LA';assert.throws(()=>E.newMatch({lineups:bad,rosters:roster}),/starting six/)});
-test('invalid historical edit is rejected',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B5',zone:'5'});m=E.appendLineupEvent(m,{type:'libero',side:'b',action:'exit',liberoId:'LB'});m=E.appendRally(m,{id:'r',winner:'b'});assert.throws(()=>E.editEvent(m,1,{action:'switch',outId:'LB',inId:'LB'}))});
+test('invalid historical edit is rejected',()=>{let m=E.appendLineupEvent(match(),{type:'libero',side:'b',action:'enter',liberoId:'LB',replacedId:'B5',zone:'5'});m=E.appendRally(m,{id:'between',winner:'a'});m=E.appendLineupEvent(m,{type:'libero',side:'b',action:'exit',liberoId:'LB'});m=E.appendRally(m,{id:'r',winner:'b'});assert.throws(()=>E.editEvent(m,2,{action:'switch',outId:'LB',inId:'LB'}))});
 
 test('reject off-court contact',()=>{assert.throws(()=>E.appendRally(match(),{id:'off',winner:'a',contacts:[{side:'a',playerId:'A7',skill:'Атака'}]}),/not on court/)});
 test('reject wrong server',()=>{assert.throws(()=>E.appendRally(match(),{id:'wrong',winner:'a',contacts:[{side:'b',playerId:'B1',skill:'Подача'}]}),/Wrong server/)});
@@ -118,4 +118,20 @@ test('draft contact validator rejects off-court and wrong server before score',(
  const m=match();assert.throws(()=>E.validateDraft(m,[{side:'a',playerId:'A7',skill:'Атака'}]),/not on court/);
  assert.throws(()=>E.validateDraft(m,[{side:'a',playerId:'A5',skill:'Подача'}]),/Wrong server/);
  assert.equal(E.validateDraft(m,[{side:'a',playerId:'A1',skill:'Подача'}]),true);
+});
+
+test('two libero replacements in one interruption are rejected',()=>{
+ let m=E.appendLineupEvent(match(),{type:'libero',side:'a',action:'enter',liberoId:'LA',replacedId:'A5',zone:'5'});
+ assert.throws(()=>E.appendLineupEvent(m,{type:'libero',side:'a',action:'exit',liberoId:'LA'}),/Completed rally/);
+ assert.throws(()=>E.appendLineupEvent(m,{type:'libero',side:'a',action:'switch',outId:'LA',inId:'LA2'}),/Completed rally/);
+ m=E.appendRally(m,{id:'r',winner:'a'});
+ m=E.appendLineupEvent(m,{type:'libero',side:'a',action:'exit',liberoId:'LA'});
+ assert.equal(E.onCourt(E.derive(m),'a')['5'],'A5');
+});
+test('team cannot request third timeout in same set',()=>{
+ let m=match();
+ m=E.appendAnnotation(m,{kind:'timeout',side:'a'});
+ m=E.appendAnnotation(m,{kind:'timeout',side:'a'});
+ assert.throws(()=>E.appendAnnotation(m,{kind:'timeout',side:'a'}),/two timeouts/);
+ assert.equal(E.derive(m).timeouts.a,2);
 });
