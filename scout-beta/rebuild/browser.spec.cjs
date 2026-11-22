@@ -372,3 +372,33 @@ test('no made-up coordinates from zone-only events',async({page})=>{
  expect(contact.target).toBeUndefined();
  await expect(page.locator('#mapInfo')).toContainText('точек 0');
 });
+
+
+test('existing match is archived before reset and can be fully restored',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#winA').click();
+ await expect(page.locator('#score')).toHaveText('1 : 0');
+ page.once('dialog',d=>d.accept());
+ await page.locator('#reset').click();
+ await expect(page.locator('#score')).toHaveText('0 : 0');
+ await expect(page.locator('#archiveInfo')).toContainText('1 матч');
+ const archived=await page.locator('#archiveSelect option').evaluateAll(xs=>xs.filter(x=>x.value).map(x=>x.value));
+ expect(archived).toHaveLength(1);
+ await page.locator('#archiveSelect').selectOption(archived[0]);
+ page.once('dialog',d=>d.accept());
+ await page.locator('#archiveLoad').click();
+ await expect(page.locator('#score')).toHaveText('1 : 0');
+ await expect(page.locator('#teamB')).toHaveValue('Гости');
+ await page.reload();
+ await expect(page.locator('#score')).toHaveText('1 : 0');
+});
+test('confirming a replacement archives the prior match automatically',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#winA').click();
+ await page.locator('#toggleSetup').click();
+ await page.locator('#teamA').fill('Новый матч');
+ page.once('dialog',d=>d.accept());
+ await page.locator('#createMatch').click();
+ await expect(page.locator('#score')).toHaveText('0 : 0');
+ await expect(page.locator('#archiveInfo')).toContainText('1 матч');
+});
