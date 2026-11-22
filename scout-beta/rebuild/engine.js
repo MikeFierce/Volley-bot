@@ -61,7 +61,7 @@ function validateContacts(m,s,contacts){
   const lib=liberoIds(m,c.side).includes(c.playerId);
   if(lib&&['serve','Подача','block','Блок'].includes(c.skill))throw Error('Illegal libero action');
   if(['serve','Подача'].includes(c.skill)&&(c.side!==s.serving||c.playerId!==court['1']))throw Error('Wrong server');
-  if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');
+  if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');if(c.result!==undefined&&c.result!==null){if(!['point','error','inplay'].includes(c.result)||!['serve','attack','block','Подача','Атака','Блок'].includes(c.skill))throw Error('Invalid skill outcome')}
   if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','7','8','9','стык 1/6','стык 5/6','стык 2/3','стык 3/4','стык 4/7','стык 3/8','стык 2/9','стык 7/8','стык 8/9'].includes(c.zone))throw Error('Invalid zone');if(c.passType!==undefined&&c.passType!==null&&!['быстро','высоко','иное','узко','широко'].includes(c.passType))throw Error('Invalid pass type');if(c.combination!==undefined&&c.combination!==null&&!['','вход в зону','забегание за голову'].includes(c.combination))throw Error('Invalid combination');if((c.passType!==undefined||c.combination!==undefined)&&!['set','Передача'].includes(c.skill))throw Error('Pass details require setting action');
  }
 }
@@ -69,7 +69,7 @@ function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{
 if(e.type==='substitution'){if(s.finished)throw Error('Set already finished');applySub(m,s,e);continue}
 if(e.type==='annotation'){if(s.finished)throw Error('Set already finished');if(!['yellow','red','expulsion','disqualification','fault','timeout','note'].includes(e.kind)||!['a','b'].includes(e.side)||typeof e.note!=='string'||e.note.length>500)throw Error('Invalid journal event');continue}
 if(e.type!=='rally')throw Error('Unsupported event');if(s.finished)throw Error('Set already finished');if(!['a','b'].includes(e.winner))throw Error('Invalid winner');if(!Array.isArray(e.contacts))throw Error('Contacts must be array');
-if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);
+if(s.liberos[s.serving]?.zone==='1')throw Error('Libero cannot serve');validateContacts(m,s,e.contacts);for(const c of e.contacts){if(c.result==='point'&&c.side!==e.winner)throw Error('Point outcome conflicts with winner');if(c.result==='error'&&c.side===e.winner)throw Error('Error outcome conflicts with winner')}
 const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}};s.score[e.winner]++;if(e.winner!==s.serving){
  const active=s.liberos[e.winner];
  if(active){const next=zones[(zones.indexOf(active.zone)+1)%zones.length];if(!back.has(next)||next==='1'){s.liberos[e.winner]=null;}}
@@ -78,7 +78,7 @@ const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving][
 s.finished=Math.max(s.score.a,s.score.b)>=target&&Math.abs(s.score.a-s.score.b)>=2;s.rallies.push({id:e.id,contacts:copy(e.contacts),winner:e.winner,before,after:{score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}}})}return s}
 function statistics(m){
  const state=derive(m),players={},newTeam=()=>({ralliesWon:0,receivingRallies:0,sideOuts:0,servingRallies:0,breakPoints:0,sideOutPct:null,breakPointPct:null,contacts:0,bySkill:{},qualities:{},annotations:{},substitutions:0,liberoActions:0}),teams={a:newTeam(),b:newTeam()};
- const addGrade=(v,q)=>{v.total++;if(q!==undefined){v.graded++;v.qualities[q]=(v.qualities[q]||0)+1}};
+ const addGrade=(v,q,result)=>{v.total++;if(q!==undefined){v.graded++;v.qualities[q]=(v.qualities[q]||0)+1}if(result){v.outcomes[result]=(v.outcomes[result]||0)+1;v.outcomesTagged++}};
  for(const e of m.events){
   if(e.type==='annotation')teams[e.side].annotations[e.kind]=(teams[e.side].annotations[e.kind]||0)+1;
   if(e.type==='substitution')teams[e.side].substitutions++;
@@ -91,13 +91,13 @@ function statistics(m){
    const k=c.side+':'+c.playerId;
    if(!players[k])players[k]={side:c.side,playerId:c.playerId,total:0,skills:{},qualities:{},bySkill:{},passTypes:{},combinations:{}};
    const p=players[k],t=teams[c.side];if(c.passType)p.passTypes[c.passType]=(p.passTypes[c.passType]||0)+1;if(c.combination)p.combinations[c.combination]=(p.combinations[c.combination]||0)+1;p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;
-   const by=p.bySkill[c.skill]||(p.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(by,c.quality);
-   const teamBy=t.bySkill[c.skill]||(t.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(teamBy,c.quality);
+   const by=p.bySkill[c.skill]||(p.bySkill[c.skill]={total:0,graded:0,qualities:{},outcomes:{},outcomesTagged:0});addGrade(by,c.quality,c.result);
+   const teamBy=t.bySkill[c.skill]||(t.bySkill[c.skill]={total:0,graded:0,qualities:{},outcomes:{},outcomesTagged:0});addGrade(teamBy,c.quality,c.result);
    if(c.quality!==undefined){p.qualities[c.quality]=(p.qualities[c.quality]||0)+1;t.qualities[c.quality]=(t.qualities[c.quality]||0)+1;}
    t.contacts++;
   }
  }
- const summarize=by=>{by.positive=(by.qualities['++']||0)+(by.qualities['+']||0);by.negative=(by.qualities['-']||0)+(by.qualities['=']||0);by.positivePct=by.graded?Math.round(by.positive/by.graded*1000)/10:null;by.errorPct=by.graded?Math.round((by.qualities['=']||0)/by.graded*1000)/10:null};
+ const summarize=by=>{by.positive=(by.qualities['++']||0)+(by.qualities['+']||0);by.negative=(by.qualities['-']||0)+(by.qualities['=']||0);by.positivePct=by.graded?Math.round(by.positive/by.graded*1000)/10:null;by.errorPct=by.graded?Math.round((by.qualities['=']||0)/by.graded*1000)/10:null;by.points=by.outcomes.point||0;by.errors=by.outcomes.error||0;by.efficiencyPct=by.outcomesTagged===by.total&&by.total?Math.round((by.points-by.errors)/by.total*1000)/10:null};
  for(const p of Object.values(players))for(const by of Object.values(p.bySkill))summarize(by);
  for(const t of Object.values(teams)){for(const by of Object.values(t.bySkill))summarize(by);t.sideOutPct=t.receivingRallies?Math.round(t.sideOuts/t.receivingRallies*1000)/10:null;t.breakPointPct=t.servingRallies?Math.round(t.breakPoints/t.servingRallies*1000)/10:null}
  return {score:copy(state.score),teams,players,rallies:state.rallies.length};
@@ -110,5 +110,6 @@ function appendAnnotation(m,{kind,side,playerId=null,note=''}){const n=copy(m);n
 function editEvent(m,eventIndex,patch){const n=copy(m);if(!Number.isInteger(eventIndex)||eventIndex<0||!n.events[eventIndex])throw Error('Event not found');if(!patch||typeof patch!=='object'||Array.isArray(patch)||'type' in patch||'id' in patch)throw Error('Event identity cannot be edited');n.events[eventIndex]={...n.events[eventIndex],...copy(patch)};derive(n);return n}
 function editContact(m,rallyId,index,patch){const e=m.events.find(e=>e.type==='rally'&&e.id===rallyId);if(!e)throw Error('Rally not found');if(!Number.isInteger(index)||index<0||index>=e.contacts.length)throw Error('Contact not found');const contacts=copy(e.contacts);contacts[index]={...contacts[index],...copy(patch)};return editRally(m,rallyId,{contacts})}
 function addContact(m,id,contact){const e=m.events.find(e=>e.id===id);if(!e)throw Error('Rally not found');return editRally(m,id,{contacts:[...e.contacts,copy(contact)]})}
-return {newMatch,derive,statistics,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,appendAnnotation,editEvent,onCourt,rotate};
+function validateDraft(m,contacts){const state=derive(m);if(state.finished)throw Error('Set already finished');if(!Array.isArray(contacts))throw Error('Contacts must be array');validateContacts(m,state,contacts);return true}
+return {newMatch,derive,statistics,validateDraft,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,appendAnnotation,editEvent,onCourt,rotate};
 });
