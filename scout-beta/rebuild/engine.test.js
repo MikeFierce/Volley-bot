@@ -179,3 +179,34 @@ test('unlinked setter touch remains incomplete, opponent attack never becomes it
 test('negative video timestamp is rejected',()=>{
  assert.throws(()=>E.validateDraft(start(),[{side:'a',playerId:'A1',skill:'Подача',videoTimeSec:-1}]),/Invalid video time/);
 });
+
+
+test('A14 reference rally transcript has exact scores, rotations, SO/BP, serving and attack efficiency',()=>{
+ let m=match();
+ m=E.appendRally(m,{id:'1-ace',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'++',result:'point'}]});
+ m=E.appendRally(m,{id:'2-fault',winner:'b',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'=',result:'error'}]});
+ m=E.appendRally(m,{id:'3-sideout',winner:'a',contacts:[
+  {side:'b',playerId:'B2',skill:'Подача',quality:'+',result:'inplay'},
+  {side:'a',playerId:'A5',skill:'Приём',quality:'++'},
+  {side:'a',playerId:'A3',skill:'Передача',quality:'+'},
+  {side:'a',playerId:'A4',skill:'Атака',quality:'++',result:'point'}
+ ]});
+ m=E.appendRally(m,{id:'4-error',winner:'a',contacts:[
+  {side:'a',playerId:'A2',skill:'Подача',quality:'+',result:'inplay'},
+  {side:'b',playerId:'B5',skill:'Приём',quality:'+'},
+  {side:'b',playerId:'B3',skill:'Передача',quality:'+'},
+  {side:'b',playerId:'B4',skill:'Атака',quality:'=',result:'error'}
+ ]});
+ const state=E.derive(m),stat=E.statistics(m),t=E.tactics(m);
+ assert.deepEqual(state.score,{a:3,b:1});
+ assert.equal(state.serving,'a');
+ assert.equal(state.lineups.a['1'],'A2');
+ assert.equal(state.lineups.b['1'],'B2');
+ assert.deepEqual([stat.teams.a.sideOuts,stat.teams.a.receivingRallies,stat.teams.a.breakPoints,stat.teams.a.servingRallies],[1,1,2,3]);
+ assert.deepEqual([stat.teams.b.sideOuts,stat.teams.b.receivingRallies,stat.teams.b.breakPoints,stat.teams.b.servingRallies],[1,3,0,1]);
+ assert.equal(stat.teams.a.bySkill['Атака'].efficiencyPct,100);
+ assert.equal(stat.teams.b.bySkill['Атака'].efficiencyPct,-100);
+ assert.equal(stat.teams.a.bySkill['Подача'].efficiencyPct,0);
+ assert.equal(t.setters['a:A3'].byAttacker.A4.points,1);
+ assert.equal(t.setters['b:B3'].byAttacker.B4.errors,1);
+});
