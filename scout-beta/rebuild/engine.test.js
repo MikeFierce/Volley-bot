@@ -69,3 +69,20 @@ test('last completed rally contact can be removed without losing point',()=>{
  assert.equal(E.statistics(m).players['a:A1'].total,1);
  assert.equal(E.statistics(m).players['b:B6'],undefined);
 });
+
+test('team stats aggregate serve, setting quality and recorded faults',()=>{
+ let m=E.appendRally(start(),{id:'s1',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Передача',quality:'++',zone:'7',passType:'быстро',combination:'вход в зону'}]});
+ m=E.appendAnnotation(m,{side:'a',kind:'fault',note:'Сетка'});
+ const st=E.statistics(m);
+ assert.equal(st.teams.a.ralliesWon,1);
+ assert.equal(st.teams.a.bySkill['Передача'].total,1);
+ assert.equal(st.teams.a.bySkill['Передача'].positivePct,100);
+ assert.equal(st.teams.a.annotations.fault,1);
+ assert.equal(st.players['a:A1'].passTypes['быстро'],1);
+ assert.equal(st.players['a:A1'].combinations['вход в зону'],1);
+});
+test('setting details cannot be attached to attacks, impossible target zone rejected',()=>{
+ const contact={side:'a',playerId:'A1',skill:'Атака',quality:'+'};
+ assert.throws(()=>E.appendRally(start(),{id:'invalid1',winner:'a',contacts:[{...contact,passType:'быстро'}]}),/Pass details/);
+ assert.throws(()=>E.appendRally(start(),{id:'invalid2',winner:'a',contacts:[{...contact,zone:'90'}]}),/Invalid zone/);
+});
