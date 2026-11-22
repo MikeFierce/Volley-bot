@@ -85,6 +85,7 @@ test('substitution, libero entry, exit and sanction are recorded in their origin
  await page.locator('#incoming').selectOption('A-7');
  await page.locator('#apply').click();
  await expect(page.locator('#message')).toContainText('сохранено');
+ await page.locator('#winA').click();
  await page.locator('#operation').selectOption('exit');
  await page.locator('#apply').click();
  await expect(page.locator('#message')).toContainText('сохранено');
@@ -94,11 +95,12 @@ test('substitution, libero entry, exit and sanction are recorded in their origin
  await page.locator('#winA').click();
  await expect(page.locator('#history')).toContainText('Жёлтая карточка');
  const texts=await page.locator('#history').locator(':scope > *').allTextContents();
- expect(texts[0]).toContain('#1');
+ expect(texts[0]).toContain('#2');
  expect(texts[1]).toContain('Жёлтая карточка');
  expect(texts[2]).toContain('Либеро');
- expect(texts[3]).toContain('Либеро');
- expect(texts[4]).toContain('Замена');
+ expect(texts[3]).toContain('#1');
+ expect(texts[4]).toContain('Либеро');
+ expect(texts[5]).toContain('Замена');
 });
 test('roster error never destroys active match and score survives reload',async({page})=>{
  await newCoachMatch(page,{firstServer:'b'});
