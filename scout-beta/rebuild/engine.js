@@ -12,9 +12,10 @@ function liberoIds(m,side){return (rosterOf(m,side)||[]).filter(p=>p.role==='lib
 function onCourt(s,side){const l=s.lineups[side],x=s.liberos[side];return Object.fromEntries(zones.map(z=>[z,x&&x.zone===z?x.id:l[z]]))}
 function applyLibero(m,s,e){
  const {side,action}=e;if(!['a','b'].includes(side))throw Error('Invalid side');
- const active=s.liberos[side],ids=liberoIds(m,side);if(s.liberoActionAt[side]===s.rallies.length)throw Error('Completed rally required between Libero replacements');
+ const active=s.liberos[side],ids=liberoIds(m,side);
+ if(action==='enter'&&active)throw Error('Libero already on court');
+ if(s.liberoActionAt[side]===s.rallies.length)throw Error('Completed rally required between Libero replacements');
  if(action==='enter'){
-  if(active)throw Error('Libero already on court');
   if(!ids.includes(e.liberoId))throw Error('Unregistered libero');
   if(e.zone==='1')throw Error('Libero cannot serve');if(!['5','6'].includes(e.zone))throw Error('Libero must enter back row');
   if(s.lineups[side][e.zone]!==e.replacedId)throw Error('Replacement player not in zone');
