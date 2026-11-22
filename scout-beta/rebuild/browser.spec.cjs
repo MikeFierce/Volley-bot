@@ -105,6 +105,7 @@ test('roster error never destroys active match and score survives reload',async(
  await expect(page.locator('#server')).toContainText('Гости');
  await page.locator('#winB').click();
  await expect(page.locator('#score')).toHaveText('0 : 1');
+ await page.locator('#toggleSetup').click();
  await page.locator('#rosterA').fill('1, Один игрок, игрок');
  await page.locator('#createMatch').click();
  await expect(page.locator('#message')).toContainText('от 6 до 20');
@@ -138,6 +139,7 @@ test('JSON backup restores roster, team names and exact score after reset',async
 test('mobile court and inputs stay usable at phone width',async({page})=>{
  await page.setViewportSize({width:390,height:844});
  await newCoachMatch(page);
+ await page.locator('#toggleSetup').click();
  await expect(page.locator('#rosterA')).toBeVisible();
  await expect(page.locator('#courts .court')).toHaveCount(2);
  const width=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,view:innerWidth}));
@@ -195,6 +197,7 @@ test('passing tempo, tactical combination and court zone are saved in rally',asy
 });
 test('field and libero jersey colors are applied to court and saved in JSON backup',async({page})=>{
  await newCoachMatch(page);
+ await page.locator('#toggleSetup').click();
  await page.locator('#fieldColorA').evaluate(el=>{el.value='#123456';el.dispatchEvent(new Event('input',{bubbles:true}))});
  await expect(page.locator('#courts .court').first().locator('.player').first()).toHaveCSS('background-color','rgb(18, 52, 86)');
  const pending=page.waitForEvent('download');
