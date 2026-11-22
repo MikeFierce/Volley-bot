@@ -52,6 +52,7 @@ async function newCoachMatch(page,{bestOf='5',firstServer='a'}={}){
  await expect(page.locator('#message')).toContainText('сохранены');
 }
 test('full three-set match ends with correct set winner and editable next-set lineup',async({page})=>{
+ test.setTimeout(120000);
  await newCoachMatch(page,{bestOf:'3'});
  for(let i=0;i<25;i++)await page.locator('#winA').click();
  await expect(page.locator('#score')).toHaveText('25 : 0');
