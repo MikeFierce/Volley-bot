@@ -77,18 +77,29 @@ const before={score:copy(s.score),serving:s.serving,server:s.lineups[s.serving][
 }for(const side of ['a','b']){const l=s.liberos[side];if(l){const newZone=zones.find(z=>s.lineups[side][z]===l.replacedId);if(!newZone||!back.has(newZone))throw Error('Libero replacement must be recorded explicitly');else l.zone=newZone}}
 s.finished=Math.max(s.score.a,s.score.b)>=target&&Math.abs(s.score.a-s.score.b)>=2;s.rallies.push({id:e.id,contacts:copy(e.contacts),winner:e.winner,before,after:{score:copy(s.score),serving:s.serving,server:s.lineups[s.serving]['1'],lineups:copy(s.lineups),onCourt:{a:onCourt(s,'a'),b:onCourt(s,'b')}}})}return s}
 function statistics(m){
- const state=derive(m),players={},teams={a:{ralliesWon:0,contacts:0},b:{ralliesWon:0,contacts:0}};
+ const state=derive(m),players={},newTeam=()=>({ralliesWon:0,contacts:0,bySkill:{},qualities:{},annotations:{},substitutions:0,liberoActions:0}),teams={a:newTeam(),b:newTeam()};
+ const addGrade=(v,q)=>{v.total++;if(q!==undefined){v.graded++;v.qualities[q]=(v.qualities[q]||0)+1}};
+ for(const e of m.events){
+  if(e.type==='annotation')teams[e.side].annotations[e.kind]=(teams[e.side].annotations[e.kind]||0)+1;
+  if(e.type==='substitution')teams[e.side].substitutions++;
+  if(e.type==='libero')teams[e.side].liberoActions++;
+ }
  for(const rally of state.rallies){
   teams[rally.winner].ralliesWon++;
   for(const c of rally.contacts){
    const k=c.side+':'+c.playerId;
    if(!players[k])players[k]={side:c.side,playerId:c.playerId,total:0,skills:{},qualities:{},bySkill:{}};
-   const p=players[k];p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;const by=p.bySkill[c.skill]||(p.bySkill[c.skill]={total:0,graded:0,qualities:{}});by.total++;
-   if(c.quality!==undefined){p.qualities[c.quality]=(p.qualities[c.quality]||0)+1;by.graded++;by.qualities[c.quality]=(by.qualities[c.quality]||0)+1;}
-   teams[c.side].contacts++;
+   const p=players[k],t=teams[c.side];p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;
+   const by=p.bySkill[c.skill]||(p.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(by,c.quality);
+   const teamBy=t.bySkill[c.skill]||(t.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(teamBy,c.quality);
+   if(c.quality!==undefined){p.qualities[c.quality]=(p.qualities[c.quality]||0)+1;t.qualities[c.quality]=(t.qualities[c.quality]||0)+1;}
+   t.contacts++;
   }
  }
- for(const p of Object.values(players))for(const by of Object.values(p.bySkill)){by.positive=(by.qualities['++']||0)+(by.qualities['+']||0);by.negative=(by.qualities['-']||0)+(by.qualities['=']||0);by.positivePct=by.graded?Math.round(by.positive/by.graded*1000)/10:null;}return {score:copy(state.score),teams,players,rallies:state.rallies.length};
+ const summarize=by=>{by.positive=(by.qualities['++']||0)+(by.qualities['+']||0);by.negative=(by.qualities['-']||0)+(by.qualities['=']||0);by.positivePct=by.graded?Math.round(by.positive/by.graded*1000)/10:null;by.errorPct=by.graded?Math.round((by.qualities['=']||0)/by.graded*1000)/10:null};
+ for(const p of Object.values(players))for(const by of Object.values(p.bySkill))summarize(by);
+ for(const t of Object.values(teams))for(const by of Object.values(t.bySkill))summarize(by);
+ return {score:copy(state.score),teams,players,rallies:state.rallies.length};
 }
 function appendRally(m,{id,winner,contacts=[]}){if(!id)throw Error('Rally ID required');if(m.events.some(e=>e.id===id))throw Error('Duplicate rally ID');const n=copy(m);n.events.push({type:'rally',id,winner,contacts:copy(contacts)});derive(n);return n}
 function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.type==='rally'&&e.id===id);if(i<0)throw Error('Rally not found');if(patch.winner!==undefined)n.events[i].winner=patch.winner;if(patch.contacts!==undefined)n.events[i].contacts=copy(patch.contacts);derive(n);return n}
