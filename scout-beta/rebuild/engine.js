@@ -63,7 +63,7 @@ function validateContacts(m,s,contacts){
   const lib=liberoIds(m,c.side).includes(c.playerId);
   if(lib&&['serve','Подача','block','Блок'].includes(c.skill))throw Error('Illegal libero action');
   if(['serve','Подача'].includes(c.skill)&&(c.side!==s.serving||c.playerId!==court['1']))throw Error('Wrong server');
-  if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');if(c.result!==undefined&&c.result!==null){if(!['point','error','inplay'].includes(c.result)||!['serve','attack','block','Подача','Атака','Блок'].includes(c.skill))throw Error('Invalid skill outcome')}
+  if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');if(c.videoTimeSec!==undefined&&(!Number.isFinite(c.videoTimeSec)||c.videoTimeSec<0))throw Error('Invalid video time');if(c.result!==undefined&&c.result!==null){if(!['point','error','inplay'].includes(c.result)||!['serve','attack','block','Подача','Атака','Блок'].includes(c.skill))throw Error('Invalid skill outcome')}
   if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','7','8','9','стык 1/6','стык 5/6','стык 2/3','стык 3/4','стык 4/7','стык 3/8','стык 2/9','стык 7/8','стык 8/9'].includes(c.zone))throw Error('Invalid zone');if(c.passType!==undefined&&c.passType!==null&&!['быстро','высоко','иное','узко','широко'].includes(c.passType))throw Error('Invalid pass type');if(c.combination!==undefined&&c.combination!==null&&!['','вход в зону','забегание за голову'].includes(c.combination))throw Error('Invalid combination');if((c.passType!==undefined||c.combination!==undefined)&&!['set','Передача'].includes(c.skill))throw Error('Pass details require setting action');
  }
 }
