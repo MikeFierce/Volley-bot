@@ -86,3 +86,36 @@ test('setting details cannot be attached to attacks, impossible target zone reje
  assert.throws(()=>E.appendRally(start(),{id:'invalid1',winner:'a',contacts:[{...contact,passType:'быстро'}]}),/Pass details/);
  assert.throws(()=>E.appendRally(start(),{id:'invalid2',winner:'a',contacts:[{...contact,zone:'90'}]}),/Invalid zone/);
 });
+
+
+test('Side-Out and Break Point have correct numerators and denominators',()=>{
+ let m=start();
+ m=E.appendRally(m,{id:'a1',winner:'a'});
+ m=E.appendRally(m,{id:'b1',winner:'b'});
+ m=E.appendRally(m,{id:'b2',winner:'b'});
+ m=E.appendRally(m,{id:'a2',winner:'a'});
+ const x=E.statistics(m);
+ assert.deepEqual([x.teams.a.sideOuts,x.teams.a.receivingRallies,x.teams.a.breakPoints,x.teams.a.servingRallies],[1,2,1,2]);
+ assert.deepEqual([x.teams.b.sideOuts,x.teams.b.receivingRallies,x.teams.b.breakPoints,x.teams.b.servingRallies],[1,2,1,2]);
+ assert.equal(x.teams.a.sideOutPct,50);
+ assert.equal(x.teams.b.breakPointPct,50);
+});
+test('team with no receptions has undefined Side-Out rate',()=>{
+ const x=E.statistics(start());assert.equal(x.teams.a.sideOutPct,null);assert.equal(x.teams.a.breakPointPct,null);
+});
+test('scored serve outcome must match winning team',()=>{
+ assert.throws(()=>E.appendRally(start(),{id:'bad',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'=',result:'error'}]}),/Error outcome conflicts/);
+ const m=E.appendRally(start(),{id:'good',winner:'b',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'=',result:'error'}]});
+ assert.equal(E.derive(m).serving,'b');
+ assert.equal(E.statistics(m).teams.a.bySkill['Подача'].errors,1);
+});
+test('efficiency is withheld if any attempts have unclassified outcomes',()=>{
+ let m=E.appendRally(start(),{id:'first',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'++',result:'point'}]});
+ m=E.appendRally(m,{id:'second',winner:'a',contacts:[{side:'a',playerId:'A1',skill:'Подача',quality:'+'}]});
+ const stat=E.statistics(m).teams.a.bySkill['Подача'];assert.equal(stat.points,1);assert.equal(stat.outcomesTagged,1);assert.equal(stat.efficiencyPct,null);
+});
+test('draft contact validator rejects off-court and wrong server before score',()=>{
+ const m=match();assert.throws(()=>E.validateDraft(m,[{side:'a',playerId:'A7',skill:'Атака'}]),/not on court/);
+ assert.throws(()=>E.validateDraft(m,[{side:'a',playerId:'A5',skill:'Подача'}]),/Wrong server/);
+ assert.equal(E.validateDraft(m,[{side:'a',playerId:'A1',skill:'Подача'}]),true);
+});
