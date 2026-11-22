@@ -152,3 +152,30 @@ test('red penalty cannot be forged or credited to sanctioned team',()=>{
  const m=E.appendAnnotation(match(),{side:'a',kind:'red'});
  assert.throws(()=>E.appendRally(m,{id:'badpen',winner:'a',reason:'penalty'}),/must follow red/);
 });
+
+test('setter distributions are joined to the next own attack and actual reception',()=>{
+ let m=E.appendRally(start(),{id:'combo',winner:'b',contacts:[
+  {side:'a',playerId:'A1',skill:'Подача'},
+  {side:'b',playerId:'B5',skill:'Приём',quality:'++'},
+  {side:'b',playerId:'B3',skill:'Передача',quality:'+',passType:'быстро',combination:'вход в зону'},
+  {side:'b',playerId:'B4',skill:'Атака',quality:'++',result:'point'}
+ ]});
+ const t=E.tactics(m);
+ assert.equal(t.connections.length,1);
+ assert.deepEqual(t.connections[0].setterId,'B3');
+ assert.deepEqual(t.connections[0].attackerId,'B4');
+ assert.equal(t.connections[0].receptionQuality,'++');
+ assert.equal(t.connections[0].passType,'быстро');
+ assert.equal(t.setters['b:B3'].byAttacker.B4.points,1);
+});
+test('unlinked setter touch remains incomplete, opponent attack never becomes its recipient',()=>{
+ const m=E.appendRally(start(),{id:'no-link',winner:'a',contacts:[
+  {side:'a',playerId:'A3',skill:'Передача'},
+  {side:'b',playerId:'B4',skill:'Атака'}]});
+ const t=E.tactics(m);
+ assert.equal(t.connections[0].attackerId,null);
+ assert.equal(t.setters['a:A3'].linked,0);
+});
+test('negative video timestamp is rejected',()=>{
+ assert.throws(()=>E.validateDraft(start(),[{side:'a',playerId:'A1',skill:'Подача',videoTimeSec:-1}]),/Invalid video time/);
+});
