@@ -62,7 +62,7 @@ function validateContacts(m,s,contacts){
   if(lib&&['serve','Подача','block','Блок'].includes(c.skill))throw Error('Illegal libero action');
   if(['serve','Подача'].includes(c.skill)&&(c.side!==s.serving||c.playerId!==court['1']))throw Error('Wrong server');
   if(c.quality!==undefined&&!['++','+','/','-','=','!'].includes(c.quality))throw Error('Invalid quality');
-  if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','стык 1/6','стык 5/6'].includes(c.zone))throw Error('Invalid zone');
+  if(c.zone!==undefined&&c.zone!==null&&!['1','2','3','4','5','6','7','8','9','стык 1/6','стык 5/6','стык 2/3','стык 3/4','стык 4/7','стык 3/8','стык 2/9','стык 7/8','стык 8/9'].includes(c.zone))throw Error('Invalid zone');if(c.passType!==undefined&&c.passType!==null&&!['быстро','высоко','иное','узко','широко'].includes(c.passType))throw Error('Invalid pass type');if(c.combination!==undefined&&c.combination!==null&&!['','вход в зону','забегание за голову'].includes(c.combination))throw Error('Invalid combination');if((c.passType!==undefined||c.combination!==undefined)&&!['set','Передача'].includes(c.skill))throw Error('Pass details require setting action');
  }
 }
 function derive(m){const {lineups,firstServer,target}=m.initial;const s={score:{a:0,b:0},serving:firstServer,lineups:copy(lineups),rallies:[],finished:false,liberos:{a:null,b:null},substitutions:{a:[],b:[]},substitutionPairs:{a:{},b:{}},returnedStarters:{a:[],b:[]}};for(const e of m.events){if(e.type==='libero'){if(s.finished)throw Error('Set already finished');applyLibero(m,s,e);continue}
@@ -88,8 +88,8 @@ function statistics(m){
   teams[rally.winner].ralliesWon++;
   for(const c of rally.contacts){
    const k=c.side+':'+c.playerId;
-   if(!players[k])players[k]={side:c.side,playerId:c.playerId,total:0,skills:{},qualities:{},bySkill:{}};
-   const p=players[k],t=teams[c.side];p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;
+   if(!players[k])players[k]={side:c.side,playerId:c.playerId,total:0,skills:{},qualities:{},bySkill:{},passTypes:{},combinations:{}};
+   const p=players[k],t=teams[c.side];if(c.passType)p.passTypes[c.passType]=(p.passTypes[c.passType]||0)+1;if(c.combination)p.combinations[c.combination]=(p.combinations[c.combination]||0)+1;p.total++;p.skills[c.skill]=(p.skills[c.skill]||0)+1;
    const by=p.bySkill[c.skill]||(p.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(by,c.quality);
    const teamBy=t.bySkill[c.skill]||(t.bySkill[c.skill]={total:0,graded:0,qualities:{}});addGrade(teamBy,c.quality);
    if(c.quality!==undefined){p.qualities[c.quality]=(p.qualities[c.quality]||0)+1;t.qualities[c.quality]=(t.qualities[c.quality]||0)+1;}
