@@ -156,3 +156,50 @@ test('CSV match journal contains annotation and scored rally',async({page})=>{
  expect(bytes).toContain('Сетка');
  expect(bytes).toContain('rally');
 });
+
+
+test('saved team can be created independently, reloaded and chosen for a match',async({page})=>{
+ await page.goto(url);
+ await page.locator('#openTeamLibrary').click();
+ await expect(page.locator('#teamDialog')).toBeVisible();
+ await page.locator('#libraryName').fill('Команда-шаблон');
+ await page.locator('#libraryRoster').fill(roster8('Шаблон'));
+ await page.locator('#librarySave').click();
+ await expect(page.locator('#message')).toContainText('сохранена');
+ await page.reload();
+ await page.locator('#savedTeamA').selectOption('Команда-шаблон');
+ await page.locator('#loadTeamA').click();
+ await expect(page.locator('#teamA')).toHaveValue('Команда-шаблон');
+ await expect(page.locator('#rosterA')).toContainText('Шаблон');
+ await page.locator('#prepareLineup').click();
+ await expect(page.locator('#lineup-a-1')).toBeVisible();
+});
+test('passing tempo, tactical combination and court zone are saved in rally',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.getByRole('button',{name:'3. Передача'}).click();
+ await expect(page.locator('#passOptions')).toBeVisible();
+ await page.locator('#passType').selectOption('быстро');
+ await page.locator('#combination').selectOption('вход в зону');
+ await page.locator('#zones').getByRole('button',{name:'7',exact:true}).click();
+ await page.locator('#qualities').getByRole('button',{name:'++',exact:true}).click();
+ await page.locator('#add').click();
+ await expect(page.locator('#draft')).toContainText('быстро');
+ await page.locator('#winA').click();
+ const contact=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')).sets[0].events[0].contacts[0]);
+ expect(contact.passType).toBe('быстро');
+ expect(contact.combination).toBe('вход в зону');
+ expect(contact.zone).toBe('7');
+ expect(contact.quality).toBe('++');
+ await expect(page.locator('#teamStats')).toContainText('Передача');
+});
+test('field and libero jersey colors are applied to court and saved in JSON backup',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#fieldColorA').evaluate(el=>{el.value='#123456';el.dispatchEvent(new Event('input',{bubbles:true}))});
+ await expect(page.locator('#courts .court').first().locator('.player').first()).toHaveCSS('background-color','rgb(18, 52, 86)');
+ const pending=page.waitForEvent('download');
+ await page.locator('#export').click();
+ const saved=await pending;
+ const json=JSON.parse(fs.readFileSync(await saved.path(),'utf8'));
+ expect(json.teamColors.a.field).toBe('#123456');
+});
