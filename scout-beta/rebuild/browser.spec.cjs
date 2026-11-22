@@ -253,3 +253,26 @@ test('attack efficiency is marked incomplete if attack result is not classified'
  await page.locator('#winA').click();
  await expect(page.locator('#teamStats')).toContainText('эффективность: неполно 0/1');
 });
+
+
+test('red card gives opponent penalty point, records sanction, and reverses cleanly',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#journalSide').selectOption('a');
+ await page.locator('#journalKind').selectOption('red');
+ await page.locator('#journalNote').fill('Взыскание');
+ await page.locator('#journalAdd').click();
+ await expect(page.locator('#score')).toHaveText('0 : 1');
+ await expect(page.locator('#server')).toContainText('Гости');
+ await expect(page.locator('#history')).toContainText('штрафное очко');
+ await expect(page.locator('#teamStats')).toContainText('Side-Out 0/0');
+ await page.locator('#undoRally').click();
+ await expect(page.locator('#score')).toHaveText('0 : 0');
+ await expect(page.locator('#history')).not.toContainText('Красная карточка');
+});
+test('cannot request a third timeout for same team in a set',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#journalKind').selectOption('timeout');
+ for(let i=0;i<2;i++){await page.locator('#journalAdd').click();await expect(page.locator('#message')).toContainText('записано')}
+ await page.locator('#journalAdd').click();
+ await expect(page.locator('#message')).toContainText('Only two timeouts');
+});
