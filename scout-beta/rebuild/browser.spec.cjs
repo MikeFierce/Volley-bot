@@ -52,9 +52,9 @@ async function newCoachMatch(page,{bestOf='5',firstServer='a'}={}){
  await expect(page.locator('#message')).toContainText('сохранены');
 }
 test('full three-set match ends with correct set winner and editable next-set lineup',async({page})=>{
- test.setTimeout(120000);
+ test.setTimeout(60000);
  await newCoachMatch(page,{bestOf:'3'});
- for(let i=0;i<25;i++)await page.locator('#winA').click();
+ await page.evaluate(()=>{for(let i=0;i<25;i++)document.getElementById('winA').click()});
  await expect(page.locator('#score')).toHaveText('25 : 0');
  await expect(page.locator('#nextSet')).toBeEnabled();
  await page.locator('#nextSet').click();
@@ -64,13 +64,13 @@ test('full three-set match ends with correct set winner and editable next-set li
  await expect(page.locator('#next-a-1')).toBeVisible();
  await page.locator('#confirmNextSet').click();
  await expect(page.locator('#score')).toHaveText('0 : 0');
- for(let i=0;i<25;i++)await page.locator('#winB').click();
+ await page.evaluate(()=>{for(let i=0;i<25;i++)document.getElementById('winB').click()});
  await expect(page.locator('#score')).toHaveText('0 : 25');
  await page.locator('#nextSet').click();
  await expect(page.locator('#nextServer')).toBeEnabled();
  await page.locator('#nextServer').selectOption('a');
  await page.locator('#confirmNextSet').click();
- for(let i=0;i<15;i++)await page.locator('#winA').click();
+ await page.evaluate(()=>{for(let i=0;i<15;i++)document.getElementById('winA').click()});
  await expect(page.locator('#score')).toHaveText('15 : 0');
  await expect(page.locator('#matchScore')).toContainText('2 : 1');
  await expect(page.locator('#nextSet')).toBeDisabled();
