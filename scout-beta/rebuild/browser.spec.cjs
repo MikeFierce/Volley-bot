@@ -206,3 +206,48 @@ test('field and libero jersey colors are applied to court and saved in JSON back
  const json=JSON.parse(fs.readFileSync(await saved.path(),'utf8'));
  expect(json.teamColors.a.field).toBe('#123456');
 });
+
+
+test('A01 one-click serve fault awards sideout and rotates receiving team',async({page})=>{
+ await newCoachMatch(page);
+ const before=await page.locator('#courts .court').nth(1).locator('.player').allTextContents();
+ await page.locator('#quickFault').click();
+ await expect(page.locator('#score')).toHaveText('0 : 1');
+ await expect(page.locator('#server')).toContainText('Гости');
+ await expect(page.locator('#history')).toContainText('касаний: 1');
+ const payload=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')));
+ const c=payload.sets[0].events[0].contacts[0];
+ expect(c.skill).toBe('Подача');expect(c.result).toBe('error');expect(c.quality).toBe('=');
+ await expect(page.locator('#teamStats')).toContainText('Side-Out 1/1');
+});
+test('A02 one-click ace credits serving team without a sideout',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#quickAce').click();
+ await expect(page.locator('#score')).toHaveText('1 : 0');
+ await expect(page.locator('#server')).toContainText('Рубеж');
+ await expect(page.locator('#teamStats')).toContainText('Break Point 1/1');
+ const c=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')).sets[0].events[0].contacts[0]);
+ expect(c.result).toBe('point');
+});
+test('LIVE validates contact before draft and keyboard follows same path',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.keyboard.press('1');
+ await expect(page.locator('#message')).toContainText('Wrong server');
+ await expect(page.locator('#draft')).toContainText('0');
+ await page.locator('#courts .court').first().locator('.player').last().click();
+ await page.keyboard.press('1');
+ await expect(page.locator('#draft')).toContainText('1');
+ await page.reload();
+ await expect(page.locator('#draft')).toContainText('1');
+ await page.keyboard.press('Escape');
+ await expect(page.locator('#draft')).toContainText('0');
+});
+test('attack efficiency is marked incomplete if attack result is not classified',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.getByRole('button',{name:'4. Атака'}).click();
+ await page.locator('#add').click();
+ await page.locator('#winA').click();
+ await expect(page.locator('#teamStats')).toContainText('эффективность: неполно 0/1');
+});
