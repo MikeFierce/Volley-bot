@@ -1,4 +1,7 @@
 name: Scout browser acceptance
+concurrency:
+  group: scout-browser-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     paths:
