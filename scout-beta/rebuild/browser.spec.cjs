@@ -172,7 +172,7 @@ test('saved team can be created independently, reloaded and chosen for a match',
  await page.locator('#savedTeamA').selectOption('Команда-шаблон');
  await page.locator('#loadTeamA').click();
  await expect(page.locator('#teamA')).toHaveValue('Команда-шаблон');
- await expect(page.locator('#rosterA')).toContainText('Шаблон');
+ await expect(page.locator('#rosterA')).toHaveValue(/Шаблон/);
  await page.locator('#prepareLineup').click();
  await expect(page.locator('#lineup-a-1')).toBeVisible();
 });
