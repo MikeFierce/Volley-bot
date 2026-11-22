@@ -135,3 +135,20 @@ test('team cannot request third timeout in same set',()=>{
  assert.throws(()=>E.appendAnnotation(m,{kind:'timeout',side:'a'}),/two timeouts/);
  assert.equal(E.derive(m).timeouts.a,2);
 });
+
+test('red-card penalty awards score and service but is not a played rally for Side-Out stats',()=>{
+ let m=E.appendAnnotation(match(),{side:'a',kind:'red',note:'Неспортивное поведение'});
+ m=E.appendRally(m,{id:'pen1',winner:'b',reason:'penalty'});
+ const st=E.statistics(m),state=E.derive(m);
+ assert.deepEqual(state.score,{a:0,b:1});assert.equal(state.serving,'b');
+ assert.equal(st.teams.b.penaltyPoints,1);
+ assert.equal(st.teams.b.sideOuts,0);assert.equal(st.teams.b.receivingRallies,0);
+ assert.equal(st.teams.b.breakPoints,0);
+ assert.throws(()=>E.editRally(m,'pen1',{winner:'a'}),/Penalty winner/);
+ m=E.removeRally(m,'pen1');assert.equal(m.events.length,0);assert.deepEqual(E.derive(m).score,{a:0,b:0});
+});
+test('red penalty cannot be forged or credited to sanctioned team',()=>{
+ assert.throws(()=>E.appendRally(match(),{id:'badpen',winner:'b',reason:'penalty'}),/must follow red/);
+ const m=E.appendAnnotation(match(),{side:'a',kind:'red'});
+ assert.throws(()=>E.appendRally(m,{id:'badpen',winner:'a',reason:'penalty'}),/must follow red/);
+});
