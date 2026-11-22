@@ -45,7 +45,7 @@ function renderPointDraft(){
 }
 function updateConnectionStatus(){$('connectionStatus').textContent=navigator.onLine?'Автосохранение на этом устройстве':'Нет сети · ввод и данные доступны локально'};
 window.addEventListener('online',updateConnectionStatus);window.addEventListener('offline',updateConnectionStatus);updateConnectionStatus();
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&(location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname)))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 function saveDraft(){localStorage.setItem(key+'-draft',JSON.stringify(draft))}function notify(msg,bad=false){$('message').textContent=msg;$('message').className=bad?'error':'muted'}
 function persist(nextMatch){M.derive(nextMatch);localStorage.setItem(matchKey,JSON.stringify(nextMatch));match=nextMatch;m=match.sets.at(-1);pick=null;render();if($('journalPlayer'))updateJournalPlayers()}
 function save(next){E.derive(next);const n=JSON.parse(JSON.stringify(match));n.sets[n.sets.length-1]=next;persist(n)}
