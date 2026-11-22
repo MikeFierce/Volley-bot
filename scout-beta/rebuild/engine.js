@@ -105,6 +105,23 @@ function statistics(m){
  for(const t of Object.values(teams)){for(const by of Object.values(t.bySkill))summarize(by);t.sideOutPct=t.receivingRallies?Math.round(t.sideOuts/t.receivingRallies*1000)/10:null;t.breakPointPct=t.servingRallies?Math.round(t.breakPoints/t.servingRallies*1000)/10:null}
  return {score:copy(state.score),teams,players,rallies:state.rallies.length};
 }
+function tactics(m){
+ const state=derive(m),connections=[],setters={};
+ const isSet=c=>c.skill==='Передача'||c.skill==='set',isReceive=c=>c.skill==='Приём'||c.skill==='receive',isAttack=c=>c.skill==='Атака'||c.skill==='attack';
+ for(const rally of state.rallies){const cs=rally.contacts;
+  for(let i=0;i<cs.length;i++){const c=cs[i];if(!isSet(c))continue;
+   const key=c.side+':'+c.playerId,entry=setters[key]||(setters[key]={side:c.side,playerId:c.playerId,sets:0,linked:0,byAttacker:{}});
+   entry.sets++;
+   let reception=null;for(let j=i-1;j>=0;j--){if(isReceive(cs[j])&&cs[j].side===c.side){reception=cs[j];break}}
+   let attacker=null;for(let j=i+1;j<cs.length;j++){if(cs[j].side!==c.side||isSet(cs[j]))break;if(isAttack(cs[j])){attacker=cs[j];break}}
+   const position=Object.entries(rally.before.lineups[c.side]).find(([,id])=>id===c.playerId)?.[0]||null;
+   const link={rallyId:rally.id,side:c.side,setterId:c.playerId,attackerId:attacker?.playerId||null,rotation:position,receptionQuality:reception?.quality??null,passType:c.passType||null,combination:c.combination||null,attackResult:attacker?.result||null,videoTimeSec:c.videoTimeSec??null};
+   connections.push(link);
+   if(attacker){entry.linked++;const t=entry.byAttacker[attacker.playerId]||(entry.byAttacker[attacker.playerId]={count:0,points:0,errors:0,classified:0});t.count++;if(attacker.result){t.classified++;if(attacker.result==='point')t.points++;if(attacker.result==='error')t.errors++}}
+  }
+ }
+ return {connections,setters};
+}
 function appendRally(m,{id,winner,contacts=[],reason=null}){if(!id)throw Error('Rally ID required');if(m.events.some(e=>e.id===id))throw Error('Duplicate rally ID');const n=copy(m);n.events.push({type:'rally',id,winner,contacts:copy(contacts),...(reason?{reason}:{})});derive(n);return n}
 function editRally(m,id,patch){const n=copy(m),i=n.events.findIndex(e=>e.type==='rally'&&e.id===id);if(i<0)throw Error('Rally not found');if(patch.winner!==undefined){if(n.events[i].reason==='penalty'&&patch.winner!==n.events[i].winner)throw Error('Penalty winner cannot be edited');n.events[i].winner=patch.winner}if(patch.contacts!==undefined)n.events[i].contacts=copy(patch.contacts);derive(n);return n}
 function removeRally(m,id){const n=copy(m),i=n.events.findIndex(e=>e.type==='rally'&&e.id===id);if(i<0)throw Error('Rally not found');if(n.events[i].reason==='penalty'&&n.events[i-1]?.type==='annotation'&&n.events[i-1].kind==='red')n.events.splice(i-1,2);else n.events.splice(i,1);derive(n);return n}
@@ -114,5 +131,5 @@ function editEvent(m,eventIndex,patch){const n=copy(m);if(!Number.isInteger(even
 function editContact(m,rallyId,index,patch){const e=m.events.find(e=>e.type==='rally'&&e.id===rallyId);if(!e)throw Error('Rally not found');if(!Number.isInteger(index)||index<0||index>=e.contacts.length)throw Error('Contact not found');const contacts=copy(e.contacts);contacts[index]={...contacts[index],...copy(patch)};return editRally(m,rallyId,{contacts})}
 function addContact(m,id,contact){const e=m.events.find(e=>e.id===id);if(!e)throw Error('Rally not found');return editRally(m,id,{contacts:[...e.contacts,copy(contact)]})}
 function validateDraft(m,contacts){const state=derive(m);if(state.finished)throw Error('Set already finished');if(!Array.isArray(contacts))throw Error('Contacts must be array');validateContacts(m,state,contacts);return true}
-return {newMatch,derive,statistics,validateDraft,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,appendAnnotation,editEvent,onCourt,rotate};
+return {newMatch,derive,statistics,tactics,validateDraft,appendRally,editRally,removeRally,addContact,editContact,appendLineupEvent,appendAnnotation,editEvent,onCourt,rotate};
 });
