@@ -276,3 +276,28 @@ test('cannot request a third timeout for same team in a set',async({page})=>{
  await page.locator('#journalAdd').click();
  await expect(page.locator('#message')).toContainText('Only two timeouts');
 });
+
+
+test('coach edits a completed contact with dropdowns without losing the awarded point',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').last().click();
+ await page.locator('#add').click();
+ await page.locator('#winA').click();
+ await page.locator('#history button').first().click();
+ await expect(page.locator('#editRallyDialog')).toBeVisible();
+ await page.locator('#editContactQuality').selectOption('-');
+ await page.locator('#editContactZone').selectOption('5');
+ await page.locator('#saveRallyEdit').click();
+ await expect(page.locator('#score')).toHaveText('1 : 0');
+ const contact=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')).sets[0].events[0].contacts[0]);
+ expect(contact.quality).toBe('-');expect(contact.zone).toBe('5');
+});
+test('coach corrects past winner with automatic score and service replay',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#winA').click();
+ await page.locator('#history button').first().click();
+ await page.locator('#editRallyWinner').selectOption('b');
+ await page.locator('#saveRallyEdit').click();
+ await expect(page.locator('#score')).toHaveText('0 : 1');
+ await expect(page.locator('#server')).toContainText('Гости');
+});
