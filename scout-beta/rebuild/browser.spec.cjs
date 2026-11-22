@@ -334,3 +334,40 @@ test('video marker is stored with contact but not the video file',async({page})=
  expect(saved.sets[0].events[0].contacts[0].videoTimeSec).toBe(0);
  expect(JSON.stringify(saved)).not.toContain('sample.webm');
 });
+
+
+test('real x/y court positions are stored and map shows only actual measured markers',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.getByRole('button',{name:'4. Атака'}).click();
+ const svg=page.locator('#coordCourt'),rect=await svg.boundingBox();
+ expect(rect).toBeTruthy();
+ await page.locator('#pointModeOrigin').click();
+ await svg.click({position:{x:rect.width*.2,y:rect.height*.7}});
+ await page.locator('#pointModeTarget').click();
+ await svg.click({position:{x:rect.width*.8,y:rect.height*.3}});
+ await page.locator('#add').click();
+ await page.locator('#winA').click();
+ const contact=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')).sets[0].events[0].contacts[0]);
+ expect(contact.origin.x).toBeCloseTo(.2,1);
+ expect(contact.origin.y).toBeCloseTo(.7,1);
+ expect(contact.target.x).toBeCloseTo(.8,1);
+ expect(contact.target.y).toBeCloseTo(.3,1);
+ await expect(page.locator('#mapInfo')).toContainText('точек 1');
+ await page.locator('#mapPlot').selectOption('routes');
+ await expect(page.locator('#mapPoints line')).toHaveCount(1);
+ await page.reload();
+ await expect(page.locator('#mapPoints circle')).toHaveCount(2);
+});
+test('no made-up coordinates from zone-only events',async({page})=>{
+ await newCoachMatch(page);
+ await page.locator('#courts .court').first().locator('.player').first().click();
+ await page.getByRole('button',{name:'4. Атака'}).click();
+ await page.locator('#zones').getByRole('button',{name:'5',exact:true}).click();
+ await page.locator('#add').click();
+ await page.locator('#winA').click();
+ const contact=await page.evaluate(()=>JSON.parse(localStorage.getItem('scout-rebuild-live-v1-bestof5')).sets[0].events[0].contacts[0]);
+ expect(contact.zone).toBe('5');
+ expect(contact.target).toBeUndefined();
+ await expect(page.locator('#mapInfo')).toContainText('точек 0');
+});
