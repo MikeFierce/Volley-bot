@@ -78,9 +78,10 @@
   }
   function undoRally(match){
     const last=match.rallies?.at(-1);if(!last)return null;
-    if((match.events||[]).some(e=>Number(e.rally)===Number(last.number)))throw Error('У розыгрыша есть касания. Сначала исправьте или удалите связанные касания, иначе статистика станет неверной.');
     if(!last.before||!last.afterState)throw Error('Для старого розыгрыша нет полного снимка. Сначала экспортируйте матч.');
     const prev=match.rallies.pop();
+    prev.undoneEvents=(match.events||[]).filter(e=>Number(e.rally)===Number(prev.number));
+    match.events=(match.events||[]).filter(e=>Number(e.rally)!==Number(prev.number));
     (match.redoRallies??=[]).push(copy(prev));
     match.rallyNo=prev.number;
     if(prev.before){match.lineup=copy(prev.before.lineup);match.libero=copy(prev.before.libero);match.rotationNo=prev.before.rotationNo;match.servingTeam=prev.before.servingTeam}
@@ -92,7 +93,10 @@
     if(!entry.before||!entry.afterState)throw Error('Нет данных для безопасного повтора');
     const pre=entry.before;
     if(JSON.stringify({lineup:match.lineup||{},libero:match.libero||null,rotationNo:match.rotationNo||1,servingTeam:match.servingTeam})!==JSON.stringify(pre))throw Error('Расстановка изменилась после отмены. Повтор заблокирован.');
+    const eventIds=new Set((match.events||[]).map(e=>e.id));
+    if((entry.undoneEvents||[]).some(e=>eventIds.has(e.id)))throw Error('Касания уже присутствуют в журнале. Повтор заблокирован');
     match.redoRallies.pop();match.rallies.push(copy(entry));
+    match.events=[...(match.events||[]),...(entry.undoneEvents||[])];
     const after=entry.afterState;
     match.lineup=copy(after.lineup);match.libero=copy(after.libero);match.rotationNo=after.rotationNo;match.servingTeam=after.servingTeam;
     match.rallyNo=entry.number+1;return entry;
