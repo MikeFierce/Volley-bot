@@ -78,6 +78,7 @@
   }
   function undoRally(match){
     const last=match.rallies?.at(-1);if(!last)return null;
+    if((match.events||[]).some(e=>Number(e.rally)===Number(last.number)))throw Error('У розыгрыша есть касания. Сначала исправьте или удалите связанные касания, иначе статистика станет неверной.');
     if(!last.before||!last.afterState)throw Error('Для старого розыгрыша нет полного снимка. Сначала экспортируйте матч.');
     const prev=match.rallies.pop();
     (match.redoRallies??=[]).push(copy(prev));
