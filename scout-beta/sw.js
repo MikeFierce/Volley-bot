@@ -1,0 +1,5 @@
+const CACHE='piterskiy-scout-shell-v1';
+const SHELL=['./','./index.html','./manifest.webmanifest','./icon.svg'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('piterskiy-scout-shell-')&&k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()]))});
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;const url=new URL(req.url);if(req.mode==='navigate'){event.respondWith(fetch(req).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE).then(c=>c.put(req,copy)).catch(()=>{})}return response}).catch(async()=>await caches.match(req)||await caches.match('./index.html')));return}if(SHELL.some(p=>url.pathname.endsWith(p.replace('./','/')))){event.respondWith(caches.match(req).then(cached=>cached||fetch(req)));}});
