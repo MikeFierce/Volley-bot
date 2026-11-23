@@ -1,0 +1,34 @@
+name: Scout rebuild regression
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scout-beta/rebuild/**'
+      - '.github/workflows/scout-rebuild.yml'
+  pull_request:
+    paths:
+      - 'scout-beta/rebuild/**'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check production HTML and service worker syntax
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),vm=require('node:vm');
+          const html=fs.readFileSync('scout-beta/rebuild/index.html','utf8');
+          const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+          if(!scripts.length)throw Error('No inline scripts');
+          scripts.forEach((s,i)=>new vm.Script(s[1],{filename:'inline-'+i+'.js'}));
+          for(const file of ['engine.js','match.js','sw.js'])new vm.Script(fs.readFileSync('scout-beta/rebuild/'+file,'utf8'),{filename:file});
+          const manifest=JSON.parse(fs.readFileSync('scout-beta/rebuild/manifest.webmanifest','utf8'));
+          if(manifest.display!=='standalone')throw Error('PWA standalone not enabled');
+          console.log('Production syntax and PWA PASS');
+          NODE
+      - name: Run engine smoke tests
+        run: node scout-beta/rebuild/tests/smoke.test.cjs
