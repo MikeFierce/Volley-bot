@@ -1,0 +1,35 @@
+name: Scout regression checks
+on:
+  pull_request:
+    paths:
+      - 'scout-beta/**'
+      - '.github/workflows/scout-checks.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scout-beta/**'
+  workflow_dispatch:
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JS syntax of rally engine and app
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const vm=require('node:vm');
+          const html=fs.readFileSync('scout-beta/index.html','utf8');
+          const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)];
+          if(scripts.length!==2)throw Error('Unexpected number of scripts');
+          scripts.forEach((s,i)=>new vm.Script(s[1],{filename:'script-'+i+'.js'}));
+          new vm.Script(fs.readFileSync('scout-beta/sw.js','utf8'),{filename:'sw.js'});
+          const manifest=JSON.parse(fs.readFileSync('scout-beta/manifest.webmanifest','utf8'));
+          if(manifest.display!=='standalone')throw Error('PWA standalone mode missing');
+          console.log('Syntax and PWA metadata PASS');
+          NODE
+      - name: Run rally regression suite
+        run: node scout-beta/tests/undo-redo.test.cjs
