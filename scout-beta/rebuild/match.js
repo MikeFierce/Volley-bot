@@ -18,14 +18,14 @@ function derive(m){
  }
  return {sets,won,finished,winner:finished?(won.a>won.b?'a':'b'):null,nextSet:finished?null:sets.length+1};
 }
-function startSet(m,{lineups,firstServer}={}){
+function startSet(m,{lineups,firstServer,positions=null}={}){
  const n=clone(m),state=derive(n),i=n.sets.length;
  if(state.finished)throw Error('Match already finished');
  if(i>0&&!state.sets[i-1].finished)throw Error('Previous set unfinished');
  if(i>=n.bestOf)throw Error('Maximum sets reached');
  const server=firstServer||(i===0?'a':n.sets[i-1].initial.firstServer==='a'?'b':'a');
  if(i===n.bestOf-1&&!firstServer)throw Error('Deciding set requires explicit first server');
- n.sets.push(E.newMatch({lineups,rosters:n.rosters,firstServer:server,target:i===n.bestOf-1?15:25}));
+ const rs=clone(n.rosters);if(positions)for(const side of ['a','b'])for(const p of rs?.[side]||[]){const value=positions[side]?.[p.id];if(value!==undefined){if(p.role==='libero'||!['player','setter','outside','opposite','middle','universal'].includes(value))throw Error('Invalid set position');p.position=value}}n.sets.push(E.newMatch({lineups,rosters:rs,firstServer:server,target:i===n.bestOf-1?15:25}));
  derive(n);return n;
 }
 function updateCurrentSet(m,fn){
